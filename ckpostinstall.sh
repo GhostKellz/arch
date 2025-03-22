@@ -65,6 +65,8 @@ flatpak install -y flathub com.discordapp.Discord
 flatpak install -y flathub com.valvesoftware.Steam
 flatpak install -y flathub com.brave.Browser
 flatpak install -y flathub com.termius.Termius
+flatpak install -y flathub io.github.FeralInteractive.GreenWithEnvy
+flatpak install -y flathub io.github.shiftey.Desktop 
 
 # --- Docker Setup ---
 echo "Installing Docker and enabling for user 'chris'..."
