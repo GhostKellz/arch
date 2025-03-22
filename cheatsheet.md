@@ -1,1 +1,1 @@
-#Arch Linux Cheatsheet
+# Arch Linux Cheatsheet
