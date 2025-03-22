@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # CK Post Install Script for Arch Linux Workstation
-# Includes: Zen Kernel, NVIDIA Open Drivers, KDE + PipeWire, Flatpak, ZRAM, SDDM + Nordic Theme, Dev Tools, AUR Support
+# Includes: Zen Kernel, NVIDIA Open Drivers, KDE + PipeWire, Flatpak, ZRAM, SDDM + Nordic Theme, Dev Tools, AUR Support, Virtualization, Docker, NFS
 
 set -e
 
@@ -19,7 +19,7 @@ sudo pacman -S --noconfirm \
   flatpak git base-devel curl wget nano neofetch \
   btrfs-progs snapper grub grub-btrfs \
   systemd-zram-generator xdg-user-dirs \
-  noto-fonts ttf-fira-code
+  noto-fonts ttf-fira-code nfs-utils
 
 # --- Enable KDE and SDDM ---
 echo "Enabling KDE and SDDM..."
@@ -60,5 +60,17 @@ flatpak install -y flathub com.valvesoftware.Steam
 flatpak install -y flathub com.brave.Browser
 flatpak install -y flathub com.termius.Termius
 
+# --- Docker Setup ---
+echo "Installing Docker and enabling for user 'chris'..."
+sudo pacman -S --noconfirm docker docker-compose
+sudo systemctl enable --now docker
+sudo usermod -aG docker chris
+
+# --- Virtualization Setup (QEMU + libvirt) ---
+echo "Installing virtualization tools..."
+sudo pacman -S --noconfirm qemu libvirt virt-manager dnsmasq vde2 bridge-utils openbsd-netcat
+sudo systemctl enable --now libvirtd
+sudo usermod -aG libvirt,kvm chris
+
 # --- Done ---
-echo "\n Post-install setup complete. Please reboot and log into KDE Wayland session."
+echo "\n✅ Post-install setup complete. Please reboot and log into KDE Wayland session."
