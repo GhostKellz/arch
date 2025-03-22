@@ -1,8 +1,7 @@
-
 #!/usr/bin/env bash
 
 # CK Post Install Script for Arch Linux Workstation
-# Includes: Zen Kernel, NVIDIA Open Drivers, KDE + PipeWire, Flatpak, ZRAM, SDDM + Nordic Theme, Dev Tools
+# Includes: Zen Kernel, NVIDIA Open Drivers, KDE + PipeWire, Flatpak, ZRAM, SDDM + Nordic Theme, Dev Tools, AUR Support
 
 set -e
 
@@ -31,6 +30,12 @@ sudo systemctl enable NetworkManager
 echo "Setting up Flatpak..."
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
+# --- Install AUR Helper (yay) ---
+echo "Installing yay AUR helper..."
+git clone https://aur.archlinux.org/yay.git ~/yay
+cd ~/yay && makepkg -si --noconfirm
+cd ~ && rm -rf ~/yay
+
 # --- ZRAM Config ---
 echo "Configuring ZRAM..."
 echo -e "[zram0]\nzram-size = ram / 2\ncompression-algorithm = zstd" | sudo tee /etc/systemd/zram-generator.conf > /dev/null
@@ -41,13 +46,19 @@ echo "Installing Nordic SDDM theme..."
 yay -S --noconfirm sddm-nordic-theme-git
 sudo sed -i 's/^Current=.*/Current=Nordic/' /etc/sddm.conf
 
-# --- VSCode, Brave, Discord, OBS, Steam (via Flatpak) ---
+# --- Performance Tweaks ---
+echo "Applying system performance tweaks..."
+echo -e 'vm.swappiness=10\nvm.vfs_cache_pressure=50' | sudo tee /etc/sysctl.d/99-sysctl.conf > /dev/null
+sudo sysctl --system
+
+# --- Dev and Desktop Apps (via Flatpak) ---
 echo "Installing dev and desktop apps via Flatpak..."
 flatpak install -y flathub com.visualstudio.code
 flatpak install -y flathub com.obsproject.Studio
 flatpak install -y flathub com.discordapp.Discord
 flatpak install -y flathub com.valvesoftware.Steam
 flatpak install -y flathub com.brave.Browser
+flatpak install -y flathub com.termius.Termius
 
 # --- Done ---
-echo "\n✅ Post-install setup complete. Please reboot and log into KDE Wayland session."
+echo "\n Post-install setup complete. Please reboot and log into KDE Wayland session."
