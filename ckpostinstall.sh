@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # CK Post Install Script for Arch Linux Workstation
-# Includes: Zen Kernel, NVIDIA Open Drivers, KDE + PipeWire, Flatpak, ZRAM, SDDM + Nordic Theme, Dev Tools, AUR Support, Virtualization, Docker, NFS
+# Includes: Zen Kernel, NVIDIA Open Drivers, KDE + PipeWire, Flatpak, ZRAM, SDDM + Nordic Theme, Dev Tools, AUR Support, Virtualization, Docker, NFS, Wayland Tweaks
 
 set -e
 
@@ -14,12 +14,13 @@ echo "Installing base packages..."
 sudo pacman -S --noconfirm \
   linux-zen linux-zen-headers \
   nvidia-open-dkms nvidia-utils libva \
-  plasma kde-applications sddm sddm-kcm \
-  pipewire pipewire-alsa pipewire-pulse pipewire-jack \
-  flatpak git base-devel curl wget nano neofetch \
+  plasma kde-applications plasma-wayland-session \
+  sddm sddm-kcm pipewire pipewire-alsa pipewire-pulse pipewire-jack \
+  flatpak git base-devel curl wget nano vim neofetch \
   btrfs-progs snapper grub grub-btrfs \
   systemd-zram-generator xdg-user-dirs \
-  noto-fonts ttf-fira-code nfs-utils
+  noto-fonts ttf-fira-code nfs-utils \
+  egl-wayland vulkan-tools mesa-utils
 
 # --- Enable KDE and SDDM ---
 echo "Enabling KDE and SDDM..."
@@ -50,6 +51,11 @@ sudo sed -i 's/^Current=.*/Current=Nordic/' /etc/sddm.conf
 echo "Applying system performance tweaks..."
 echo -e 'vm.swappiness=10\nvm.vfs_cache_pressure=50' | sudo tee /etc/sysctl.d/99-sysctl.conf > /dev/null
 sudo sysctl --system
+
+# --- Wayland + NVIDIA Open Driver Compatibility ---
+echo "Adding NVIDIA Wayland compatibility layer..."
+echo 'export KWIN_DRM_USE_EGL_STREAMS=1' | sudo tee /etc/profile.d/nvidia-wayland.sh > /dev/null
+sudo chmod +x /etc/profile.d/nvidia-wayland.sh
 
 # --- Dev and Desktop Apps (via Flatpak) ---
 echo "Installing dev and desktop apps via Flatpak..."
