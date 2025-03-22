@@ -20,7 +20,8 @@ sudo pacman -S --noconfirm \
   btrfs-progs snapper grub grub-btrfs \
   systemd-zram-generator xdg-user-dirs \
   noto-fonts ttf-fira-code nfs-utils \
-  egl-wayland vulkan-tools mesa-utils
+  egl-wayland vulkan-tools mesa-utils \
+  net-tools unzip
 
 # --- Enable KDE and SDDM ---
 echo "Enabling KDE and SDDM..."
@@ -66,7 +67,8 @@ flatpak install -y flathub com.valvesoftware.Steam
 flatpak install -y flathub com.brave.Browser
 flatpak install -y flathub com.termius.Termius
 flatpak install -y flathub io.github.FeralInteractive.GreenWithEnvy
-flatpak install -y flathub io.github.shiftey.Desktop 
+flatpak install -y flathub io.github.shiftey.Desktop
+flatpak install -y flathub org.gimp.GIMP
 
 # --- Docker Setup ---
 echo "Installing Docker and enabling for user 'chris'..."
