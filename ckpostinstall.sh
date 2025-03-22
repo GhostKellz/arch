@@ -21,7 +21,7 @@ sudo pacman -S --noconfirm \
   systemd-zram-generator xdg-user-dirs \
   noto-fonts ttf-fira-code nfs-utils \
   egl-wayland vulkan-tools mesa-utils \
-  net-tools unzip
+  net-tools unzip p7zip unrar
 
 # --- Enable KDE and SDDM ---
 echo "Enabling KDE and SDDM..."
