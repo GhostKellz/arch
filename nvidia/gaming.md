@@ -1,0 +1,3 @@
+# Gamescope 
+# Proton 
+# Performance
