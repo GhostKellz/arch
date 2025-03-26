@@ -85,9 +85,9 @@ Use a live ISO or recovery method to:
 
 **Next:** See `backup-strategy.md` for syncing snapshots to Synology or another external location.
 
-### Commands 
-- This is also possible via archinstall script when declaring subvolumes/layout 
---- 
+
+### 6. Commands list
+```bash
 sudo pacman -S snapper snap-pac
 sudo btrfs subvolume create /.snapshots
 sudo chmod 750 /.snapshots
@@ -104,4 +104,5 @@ sudo snapper -c home create --description "initial home snapshot"
 sudo snapper -c home list
 sudo systemctl enable --now snapper-timeline.timer
 sudo systemctl enable --now snapper-cleanup.timer
----
+```
+
