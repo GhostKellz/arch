@@ -1,7 +1,7 @@
 # Arch Linux Cheatsheet
 
 ### Snapper 
-### 1. Commands list
+- Commands list for setup
 ```bash
 sudo pacman -S snapper snap-pac
 sudo btrfs subvolume create /.snapshots
