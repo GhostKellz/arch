@@ -1,7 +1,7 @@
 # Arch Linux Cheatsheet
 
 ### Snapper test snapshot
-#### / dir 
+- / dir 
 sudo snapper -c root create --description "snapshot_#1_$(date +%Y-%m-%d)"
 
 - /home dir
