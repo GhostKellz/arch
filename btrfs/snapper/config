@@ -1,0 +1,48 @@
+# Snapper configuration
+# /etc/snapper/configs/root 
+
+# subvolume to snapshot
+SUBVOLUME="/"
+
+# filesystem type
+FSTYPE="btrfs"
+
+# btrfs qgroup for space-aware cleanup algorithms
+QGROUP=""
+
+# fraction or absolute size of the filesystem the snapshots may use
+SPACE_LIMIT="0.5"
+
+# fraction or absolute size of the filesystem that should remain free
+FREE_LIMIT="0.2"
+
+# users and groups allowed to work with this config
+ALLOW_USERS="chris"
+ALLOW_GROUPS="wheel"
+
+# sync users and groups to .snapshots directory ACL
+SYNC_ACL="yes"
+
+# background comparison after post-snapshot creation
+BACKGROUND_COMPARISON="yes"
+
+# cleanup for number-based snapshots
+NUMBER_CLEANUP="yes"
+NUMBER_MIN_AGE="3600"
+NUMBER_LIMIT="30"
+NUMBER_LIMIT_IMPORTANT="10"
+
+# timeline (hourly/daily) snapshot creation and cleanup
+TIMELINE_CREATE="yes"
+TIMELINE_CLEANUP="yes"
+TIMELINE_MIN_AGE="3600"
+TIMELINE_LIMIT_HOURLY="6"
+TIMELINE_LIMIT_DAILY="7"
+TIMELINE_LIMIT_WEEKLY="0"
+TIMELINE_LIMIT_MONTHLY="3"
+TIMELINE_LIMIT_QUARTERLY="0"
+TIMELINE_LIMIT_YEARLY="1"
+
+# remove empty pre/post snapshot pairs
+EMPTY_PRE_POST_CLEANUP="yes"
+EMPTY_PRE_POST_MIN_AGE="3600"
