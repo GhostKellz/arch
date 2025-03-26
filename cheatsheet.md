@@ -8,4 +8,4 @@ sudo snapper -c root create --description "snapshot_#1_$(date +%Y-%m-%d)"
 sudo snapper -c home create --description "initial home snapshot"
 sudo snapper -c home list
 
-###
+### Restic
