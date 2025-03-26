@@ -1,0 +1,15 @@
+[Unit]
+Description=Restic Backup to MinIO (restic-arch bucket)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/restic.env
+ExecStart=/usr/bin/restic backup /home
+ExecStartPost=/usr/bin/restic forget --keep-daily 7 --keep-weekly 4 --keep-monthly 6 --prune
+Nice=19
+IOSchedulingClass=2
+IOSchedulingPriority=7
+StandardOutput=append:/var/log/restic.log
+StandardError=append:/var/log/restic.log
