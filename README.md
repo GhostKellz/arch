@@ -9,6 +9,9 @@ This repository is a structured collection of configuration files, reference gui
 ```
 arch/
 ├── cheatsheet.md           # General-purpose command and fix reference
+├── git-cheatsheet.md       # Basic Git usage tips
+├── nvim-cheatsheet.md      # Neovim configuration and plugin commands
+├── zsh-cheatsheet.md       # Zsh basics, plugins, and shortcuts
 ├── ckpostinstall.sh        # Post-install script for configuring system packages and services
 ├── btrfs/                  # Snapper and backup strategies using BTRFS
 │   └── snapper/            # Root snapper config and layout
@@ -39,6 +42,9 @@ arch/
 
 - **ckpostinstall.sh** – testing... Automates base system configuration (Zen kernel, NVIDIA open drivers, PipeWire, Flatpak, ZRAM, SDDM + Nordic theme, etc.)
 - **cheatsheet.md** – Central markdown file for commands, aliases, tweaks, and troubleshooting
+- **git-cheatsheet.md** – A quick reference guide for basic Git usage
+- **nvim-cheatsheet.md** – A quick guide for working with Neovim and its plugins
+- **zsh-cheatsheet.md** – A quick guide to using Zsh, its plugins, and configuration tips
 - **btrfs/** – Snapper setup, GRUB integration, permissions, and subvol layout
 - **restic/** – Systemd backup service/timer units and sensitive `.env` config (excluded from sync) along with minio S3 compatible backup
 - **dotfiles/** – Centralized system configuration and customization files, used for managing shell settings, terminal appearance, development tools, and environment setup across machines. including:
