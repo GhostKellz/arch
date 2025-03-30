@@ -1,6 +1,6 @@
-#CK Wezterm.lua 
-# ~/.config/wezterm
-# Termius hacker blue like theme 
+-- CK 2025 Theme 
+--  ~/.config/wezterm/wezterm.lua
+-- Termius hacker blue inspired theme 
 
 local wezterm = require 'wezterm'
 
