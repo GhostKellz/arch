@@ -1,5 +1,13 @@
 # Arch Linux Cheatsheet
 
+## BTRFS Commands
+- List subvolumes: `btrfs subvolume list /`
+- Create snapshot: `btrfs subvolume snapshot /mnt/data /mnt/data_snap`
+- Delete snapshot: `btrfs subvolume delete /mnt/data_snap`
+- Check filesystem status: `btrfs device stats /mnt/data`
+- Repair filesystem: `btrfs check --repair /dev/sda`
+
+
 ### Snapper 
 - Commands list for setup
 ```bash
