@@ -21,16 +21,23 @@ arch/
 │   ├── starship.toml       # Prompt theming (Starship)
 │   └── bootstrap.sh        # Local environment bootstrap script
 ├── restic/                 # Restic systemd service/timer and env vars
-├── nvidia/                 # NVIDIA-specific Wayland, OBS, and fixes
+├── nvidia/                 # NVIDIA-specific tweaks and fixes
 ├── networking/             # Network configs (Tailscale, NFS, etc.)
-└── virtualization/         # Libvirt/QEMU tools and backup notes
+├── performance/            # General system performance and stability tweaks (ZRAM, systemd, I/O, etc.)
+├── virtualization/         # Libvirt/QEMU tools and backup notes
+├── wayland/                # Wayland-specific tweaks, environment variables, app fixes, and scaling issues
+│   ├── tweaks.md              # General Wayland vars & settings
+│   ├── compatibility.md       # OBS, Discord, Electron, etc.
+│   ├── input.md               # libinput, gestures, polling
+│   ├── fractional-scaling.md  # DPI, HiDPI, multi-monitor
+│   └── nvidia.md              # NVIDIA-specific Wayland quirks (XWayland, env vars, EGLStream notes)
 ```
 
 ---
 
 ## ✅ Key Components
 
-- **ckpostinstall.sh** – Automates base system configuration (Zen kernel, NVIDIA open drivers, PipeWire, Flatpak, ZRAM, SDDM + Nordic theme, etc.)
+- **ckpostinstall.sh** – testing... Automates base system configuration (Zen kernel, NVIDIA open drivers, PipeWire, Flatpak, ZRAM, SDDM + Nordic theme, etc.)
 - **cheatsheet.md** – Central markdown file for commands, aliases, tweaks, and troubleshooting
 - **btrfs/** – Snapper setup, GRUB integration, permissions, and subvol layout
 - **restic/** – Systemd backup service/timer units and sensitive `.env` config (excluded from sync) along with minio S3 compatible backup
@@ -40,20 +47,13 @@ arch/
   - Oh My Zsh + plugins
   - WezTerm colors & font tweaks
   - Bootstrap shell script
-- **nvidia/** – Wayland, OBS/NVENC configs, kernel params, and performance enhancements
+- **nvidia/** – tweaks, fixes, OBS/NVENC configs, kernel params, and performance enhancements
 - **networking/** – WireGuard, NFS mounts, and Tailscale settings
+- **performance/** – ZRAM tuning, swappiness, systemd, I/O scheduling, and overall resource optimization
 - **virtualization/** – VM management with libvirt, remote backups, and host tuning
-
+- **wayland/** – Standalone Wayland-specific fixes: fractional scaling, app compatibility, gestures, and environment tweaks, nvidia tweaks
 ---
-
-## 🖥️ Terminal Preview
-
-<p align="center">
-  <img alt="WezTerm Preview" src="./dotfiles/wezterm/assets/wezterm-PreviewPic.png" width="700" />
-</p>
-
----
-
 ### 🔍 Maintained by [Christopher Kelley](https://github.com/Christopherkelley89)  
 Feel free to fork or submit pull requests!
+---
 
