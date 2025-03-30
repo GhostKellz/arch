@@ -1,86 +1,82 @@
 #!/usr/bin/env bash
-
 # CK Post Install Script for Arch Linux Workstation
-# Includes: Zen Kernel, NVIDIA Open Drivers, KDE + PipeWire, Flatpak, ZRAM, SDDM + Nordic Theme, Dev Tools, AUR Support, Virtualization, Docker, NFS, Wayland Tweaks
 
 set -e
 
 # --- System Update ---
-echo "Updating system..."
+echo "🔄 Updating system..."
 sudo pacman -Syu --noconfirm
 
-# --- Base Packages ---
-echo "Installing base packages..."
+# --- Kernel + NVIDIA ---
+echo "🖥 Installing Zen kernel and NVIDIA Open drivers..."
 sudo pacman -S --noconfirm \
   linux-zen linux-zen-headers \
-  nvidia-open-dkms nvidia-utils libva \
-  plasma kde-applications plasma-wayland-session \
-  sddm sddm-kcm pipewire pipewire-alsa pipewire-pulse pipewire-jack \
-  flatpak git base-devel curl wget nano vim neofetch \
-  btrfs-progs snapper grub grub-btrfs \
-  systemd-zram-generator xdg-user-dirs \
-  noto-fonts ttf-fira-code nfs-utils \
-  egl-wayland vulkan-tools mesa-utils \
-  net-tools unzip p7zip unrar snap-pac
+  nvidia-open-dkms nvidia-utils libva-utils libvdpau
 
-# --- Enable KDE and SDDM ---
-echo "Enabling KDE and SDDM..."
-sudo systemctl enable sddm
-sudo systemctl enable NetworkManager
+# --- Essentials ---
+echo "🧰 Installing base tools..."
+sudo pacman -S --noconfirm \
+  git curl wget unzip nano zsh \
+  flatpak neovim neofetch \
+  firefox \
+  wine winetricks bottles \
+  steam
 
-# --- Set Up Flatpak ---
-echo "Setting up Flatpak..."
+# --- Enable Zsh + Plugins (placeholder for Oh My Zsh) ---
+echo "⚙️ Setting default shell to Zsh..."
+chsh -s /bin/zsh $USER
+
+# TODO: Add Oh My Zsh, autosuggestions, syntax highlighting, etc.
+
+# --- Flatpak & Flathub Setup ---
+echo "📦 Setting up Flatpak & installing apps..."
+sudo pacman -S --noconfirm flatpak
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-# --- Install AUR Helper (yay) ---
-echo "Installing yay AUR helper..."
-git clone https://aur.archlinux.org/yay.git ~/yay
-cd ~/yay && makepkg -si --noconfirm
-cd ~ && rm -rf ~/yay
+flatpak install -y flathub \
+  com.visualstudio.code \
+  com.obsproject.Studio \
+  com.discordapp.Discord \
+  com.valvesoftware.Steam \
+  com.termius.Termius \
+  io.github.FeralInteractive.GreenWithEnvy \
+  io.github.shiftey.Desktop \
+  org.gimp.GIMP
 
-# --- ZRAM Config ---
-echo "Configuring ZRAM..."
-echo -e "[zram0]\nzram-size = ram / 2\ncompression-algorithm = zstd" | sudo tee /etc/systemd/zram-generator.conf > /dev/null
-sudo systemctl daemon-reexec
+# --- Docker Setup ---
+echo "🐳 Installing Docker..."
+sudo pacman -S --noconfirm docker docker-compose
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
 
-# --- SDDM Nordic Theme Setup ---
-echo "Installing Nordic SDDM theme..."
-yay -S --noconfirm sddm-nordic-theme-git
-sudo sed -i 's/^Current=.*/Current=Nordic/' /etc/sddm.conf
+# --- QEMU/KVM Virtualization ---
+echo "🖧 Setting up virtualization (QEMU + libvirt)..."
+sudo pacman -S --noconfirm qemu libvirt virt-manager dnsmasq vde2 bridge-utils openbsd-netcat
+sudo systemctl enable --now libvirtd
+sudo usermod -aG libvirt,kvm $USER
+
+# --- KDE Theming ---
+echo "🎨 Applying KDE + SDDM theming..."
+# SDDM: Dracula
+sudo pacman -S --noconfirm sddm
+sudo systemctl enable sddm
+
+# KDE Look-and-Feel (manual step for now)
+echo "🔔 Remember to apply the following:"
+echo "- KDE Global Theme: Sweet Amber"
+echo "- Icons: Tela Manjaro Light"
+echo "- SDDM Theme: Dracula"
+echo "- Firefox: Set icon to Developer Edition manually"
 
 # --- Performance Tweaks ---
-echo "Applying system performance tweaks..."
+echo "🚀 Applying performance sysctl tweaks..."
 echo -e 'vm.swappiness=10\nvm.vfs_cache_pressure=50' | sudo tee /etc/sysctl.d/99-sysctl.conf > /dev/null
 sudo sysctl --system
 
-# --- Wayland + NVIDIA Open Driver Compatibility ---
-echo "Adding NVIDIA Wayland compatibility layer..."
+# --- Wayland + NVIDIA ---
+echo "🧠 Enabling NVIDIA Wayland support..."
 echo 'export KWIN_DRM_USE_EGL_STREAMS=1' | sudo tee /etc/profile.d/nvidia-wayland.sh > /dev/null
 sudo chmod +x /etc/profile.d/nvidia-wayland.sh
 
-# --- Dev and Desktop Apps (via Flatpak) ---
-echo "Installing dev and desktop apps via Flatpak..."
-flatpak install -y flathub com.visualstudio.code
-flatpak install -y flathub com.obsproject.Studio
-flatpak install -y flathub com.discordapp.Discord
-flatpak install -y flathub com.valvesoftware.Steam
-flatpak install -y flathub com.brave.Browser
-flatpak install -y flathub com.termius.Termius
-flatpak install -y flathub io.github.FeralInteractive.GreenWithEnvy
-flatpak install -y flathub io.github.shiftey.Desktop
-flatpak install -y flathub org.gimp.GIMP
-
-# --- Docker Setup ---
-echo "Installing Docker and enabling for user 'chris'..."
-sudo pacman -S --noconfirm docker docker-compose
-sudo systemctl enable --now docker
-sudo usermod -aG docker chris
-
-# --- Virtualization Setup (QEMU + libvirt) ---
-echo "Installing virtualization tools..."
-sudo pacman -S --noconfirm qemu libvirt virt-manager dnsmasq vde2 bridge-utils openbsd-netcat
-sudo systemctl enable --now libvirtd
-sudo usermod -aG libvirt,kvm chris
-
-# --- Done ---
-echo "\n✅ Post-install setup complete. Please reboot and log into KDE Wayland session."
+# --- Final Touches ---
+echo -e "\n✅ Setup complete. Please reboot and log into KDE Wayland session."
