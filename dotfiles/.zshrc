@@ -39,16 +39,26 @@ PS1="%{$fg[lightblue]%}%n@%m %{$fg[lightblue]%}%~ %{$reset_color%}$ "  # Set pro
 export CLICOLOR=1
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
 
-# Optional: Enable completion for zsh
+#Enable completion for zsh
 autoload -Uz compinit
 compinit
 
 # Set correct path for sudo and allow commands without needing the full sudo password
 alias sudo="sudo -E"
 
+### NVIDIA SETTINGS #####
+## Test Running a file: 
+# mpv --vo=vappi --hwdec=vdpau  /home/chris/Videos/TestVid.mp4
+
+# Disable Gallium driver for NVIDIA on Wayland
 export KDE_NO_GALLIUM=1
 export KWIN_DRM_NO_VAAPI=1
+
+# Enable NVIDIA rendering via PRIME offloading (for multi-GPU setups)
 export DRI_PRIME=1
 export __NV_PRIME_RENDER_OFFLOAD=1
+
+# VA-API & VDPAU (for hardware acceleration)
 export VDPAU_DRIVER=nvidia
 export LIBVA_DRIVER_NAME=nvidia
+
