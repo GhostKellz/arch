@@ -34,7 +34,7 @@ arch/
 - **cheatsheet.md** – Central markdown file for commands, aliases, tweaks, and troubleshooting
 - **btrfs/** – Snapper setup, GRUB integration, permissions, and subvol layout
 - **restic/** – Systemd backup service/timer units and sensitive `.env` config (excluded from sync) along with minio S3 compatible backup
-- **dotfiles/** – Local dev environment config, including:
+- **dotfiles/** – Centralized system configuration and customization files, used for managing shell settings, terminal appearance, development tools, and environment setup across machines. including:
   - LazyVim + Lua
   - Starship prompt
   - Oh My Zsh + plugins
