@@ -27,7 +27,7 @@ custom_scheme.brights = {
   "#57c7ff", -- hacker blue
   "#ff6ac1", -- pink-purple
   "#9aedfe", -- light blue
-  "#57c7ff", -- light blue (again, white set to blue)
+  "#57c7ff", -- light blue (white originally, set to blue testing)
 }
 
 -- Set the background and foreground colors to match the theme
@@ -40,9 +40,9 @@ custom_scheme.selection_fg = "#ffffff"
 
 return {
   color_schemes = {
-    ["CustomBlueText"] = custom_scheme,  -- Custom theme name
+    ["ckterm"] = custom_scheme,  -- Custom theme name
   },
-  color_scheme = "CustomBlueText",  -- Use this scheme as default
+  color_scheme = "ckterm",  -- Use this scheme as default
   enable_wayland = true,  
   front_end = "WebGpu",
   font = wezterm.font_with_fallback {
