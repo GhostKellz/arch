@@ -12,7 +12,7 @@ arch/
 ├── git-cheatsheet.md       # Basic Git usage tips
 ├── nvim-cheatsheet.md      # Neovim configuration and plugin commands
 ├── zsh-cheatsheet.md       # Zsh basics, plugins, and shortcuts
-├── ckpostinstall.sh        # Post-install script for configuring system packages and services
+├── scripts/       	    # Modular post-install script for configuring system packages, services, and pulling dotfile configs
 ├── btrfs/                  # Snapper and backup strategies using BTRFS
 │   └── snapper/            # Root snapper config and layout
 ├── dotfiles/               # Shell and app config files
@@ -40,7 +40,6 @@ arch/
 
 ## ✅ Key Components
 
-- **ckpostinstall.sh** – testing... Automates base system configuration (Zen kernel, NVIDIA open drivers, PipeWire, Flatpak, ZRAM, SDDM + Nordic theme, etc.)
 - **cheatsheet.md** – Central markdown file for commands, aliases, tweaks, and troubleshooting
 - **git-cheatsheet.md** – A quick reference guide for basic Git usage
 - **nvim-cheatsheet.md** – A quick guide for working with Neovim and its plugins
@@ -58,6 +57,11 @@ arch/
 - **performance/** – ZRAM tuning, swappiness, systemd, I/O scheduling, and overall resource optimization
 - **virtualization/** – VM management with libvirt, remote backups, and host tuning
 - **wayland/** – Standalone Wayland-specific fixes: fractional scaling, app compatibility, gestures, and environment tweaks, nvidia tweaks
+- **scripts/** – Modular post-install automation scripts for Arch Linux provisioning:
+  - `ckel.sh`: main setup tool for installing system packages, configuring services, enabling Flatpak, Docker, virtualization, and performance tweaks
+  - Automatically pulls personal GitHub repos (arch, docker, proxmox)
+  - Includes backup setup with Snapper and Restic
+  - Preps KDE theming, Zsh shell, and Tailscale for zero-config networking
 ---
 ### 🔍 Maintained by [Christopher Kelley](https://github.com/Christopherkelley89)  
 Feel free to fork or submit pull requests!
