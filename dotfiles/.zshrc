@@ -46,19 +46,25 @@ compinit
 # Set correct path for sudo and allow commands without needing the full sudo password
 alias sudo="sudo -E"
 
-### NVIDIA SETTINGS #####
-## Test Running a file: 
-# mpv --vo=vappi --hwdec=vdpau  /home/chris/Videos/TestVid.mp4
+### NVIDIA ENVIRONMENT VARIABLES ###
 
-# Disable Gallium driver for NVIDIA on Wayland
+# Disable fallback drivers that conflict with NVIDIA (Wayland + KDE-specific)
 export KDE_NO_GALLIUM=1
 export KWIN_DRM_NO_VAAPI=1
 
-# Enable NVIDIA rendering via PRIME offloading (for multi-GPU setups)
-export DRI_PRIME=1
-export __NV_PRIME_RENDER_OFFLOAD=1
+# Force NVIDIA as the Wayland renderer
+export GBM_BACKEND=nvidia-drm
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
 
-# VA-API & VDPAU (for hardware acceleration)
+# Hardware acceleration for media
 export VDPAU_DRIVER=nvidia
 export LIBVA_DRIVER_NAME=nvidia
 
+# PRIME offloading (for hybrid GPU setups — optional if desktop with single GPU)
+export DRI_PRIME=1
+export __NV_PRIME_RENDER_OFFLOAD=1
+export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0  # Only if you're sure this is the correct provider
+
+# NVIDIA GL rendering behavior
+export __GL_YIELD="USLEEP"             # Lower latency
+export __GL_SYNC_TO_VBLANK="1"         # Sync to monitor refresh rate
