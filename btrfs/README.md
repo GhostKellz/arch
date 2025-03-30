@@ -1,4 +1,4 @@
-# BTRFS Snapper 
+# Snapper 
 
 ## Snapper Setup 
 
