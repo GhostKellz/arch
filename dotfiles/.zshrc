@@ -45,6 +45,8 @@ compinit
 
 # Set correct path for sudo and allow commands without needing the full sudo password
 alias sudo="sudo -E"
+alias vi='nvim'
+alias vim='nvim'
 
 ### NVIDIA ENVIRONMENT VARIABLES ###
 
@@ -68,3 +70,9 @@ export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0  # Only if you're sure this 
 # NVIDIA GL rendering behavior
 export __GL_YIELD="USLEEP"             # Lower latency
 export __GL_SYNC_TO_VBLANK="1"         # Sync to monitor refresh rate
+
+# GTK + QT Theming Harmony 
+export GTK_THEME=Sweet-Amber
+export XCURSOR_THEME=Tela
+
+
