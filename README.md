@@ -8,45 +8,52 @@ This repository is a structured collection of configuration files, reference gui
 
 ```
 arch/
-├── cheatsheet.md           # General-purpose command and fix reference
-├── git-cheatsheet.md       # Basic Git usage tips
-├── nvim-cheatsheet.md      # Neovim configuration and plugin commands
-├── zsh-cheatsheet.md       # Zsh basics, plugins, and shortcuts
+├── cheatsheet.md             # General-purpose command and fix reference
+├── git-cheatsheet.md         # Basic Git usage tips
+├── nvim-cheatsheet.md        # Neovim configuration and plugin commands
+├── zsh-cheatsheet.md         # Zsh basics, plugins, and shortcuts
 
-├── scripts/                # Modular post-install script for configuring system packages, services, and pulling dotfile configs
+├── scripts/                  # Modular post-install script for configuring system packages, services, and pulling dotfile configs
 
-├── btrfs/                  # Snapper and backup strategies using BTRFS
-│   └── snapper/            # Root snapper config and layout
+├── btrfs/                    # Snapper and backup strategies using BTRFS
+│   └── snapper/              # Root snapper config and layout
 
-├── dotfiles/               # Shell and app config files
-│   ├── nvim/               # LazyVim setup with Lua config
-│   ├── oh-my-zsh/          # Zsh plugin manager and custom setup
-│   ├── wezterm/            # WezTerm themes, colors, and config
-│   ├── zsh/                # Modular Zsh config
-│   │   ├── .zshrc              # Main Zsh config with Starship + NVIDIA env
-│   │   └── .zshrc.d/           # Modular aliases and functions
-│   │       ├── docker.zsh
-│   │       ├── git-aliases.zsh
-│   │       ├── restic.zsh
-│   │       ├── snapper.zsh
-│   │       ├── system.zsh
-│   │       └── wezterm.zsh
-│   ├── .bashrc             # Bash configuration (fallback)
-│   ├── starship.toml       # Prompt theming (Starship)
-│   └── bootstrap.sh        # Local environment bootstrap script
+├── dotfiles/                 # Shell and app config files
+│   ├── nvim/                 # LazyVim setup with Lua config
+│   ├── wezterm/              # WezTerm themes, colors, and config
+│   ├── zsh/                  # Modular Zsh configuration
+│   │   ├── .zshrc                # Main Zsh config (Starship + NVIDIA + loader)
+│   │   ├── starship.toml        # Starship prompt theming
+│   │   ├── bootstrap.sh         # Zsh bootstrap script (symlinks, plugin setup, etc.)
+│   │   ├── .zshrc.d/            # Modular aliases and functions
+│   │   │   ├── docker.zsh
+│   │   │   ├── git-aliases.zsh
+│   │   │   ├── restic.zsh
+│   │   │   ├── snapper.zsh
+│   │   │   ├── system.zsh
+│   │   │   └── wezterm.zsh
+│   │   └── oh-my-zsh/           # Custom plugins/themes (not full Oh My Zsh install)
+│   │       └── custom/
+│   │           ├── plugins/
+│   │           │   ├── zsh-autosuggestions/
+│   │           │   └── zsh-syntax-highlighting/
+│   │           └── themes/
+│   │               └── your-theme.zsh-theme
+│   ├── .bashrc               # Bash configuration (fallback)
 
-├── restic/                 # Restic systemd service/timer and env vars
-├── nvidia/                 # NVIDIA-specific tweaks and fixes
-├── networking/             # Network configs (Tailscale, NFS, etc.)
-├── performance/            # General system performance and stability tweaks (ZRAM, systemd, I/O, etc.)
-├── virtualization/         # Libvirt/QEMU tools and backup notes
+├── restic/                   # Restic systemd service/timer and env vars
+├── nvidia/                   # NVIDIA-specific tweaks and fixes
+├── networking/               # Network configs (Tailscale, NFS, etc.)
+├── performance/              # System performance tweaks (ZRAM, swappiness, I/O, etc.)
+├── virtualization/           # Libvirt/QEMU tools and remote backup notes
 
-├── wayland/                # Wayland-specific tweaks, environment variables, app fixes, and scaling issues
-│   ├── tweaks.md              # General Wayland vars & settings
-│   ├── compatibility.md       # OBS, Discord, Electron, etc.
-│   ├── input.md               # libinput, gestures, polling
-│   ├── fractional-scaling.md  # DPI, HiDPI, multi-monitor
-│   └── nvidia.md              # NVIDIA-specific Wayland quirks (XWayland, env vars, EGLStream notes)
+├── wayland/                  # Wayland-specific tweaks, env vars, gestures, scaling, app fixes
+│   ├── tweaks.md                # Global Wayland settings
+│   ├── compatibility.md         # OBS, Discord, Electron, Firefox, etc.
+│   ├── input.md                 # libinput configs, gestures, touchpad polling
+│   ├── fractional-scaling.md    # DPI, multi-monitor, scaling tweaks
+│   └── nvidia.md                # NVIDIA-specific Wayland quirks (XWayland, env vars, EGLStream)
+
 ```
 
 ---
@@ -60,11 +67,9 @@ arch/
 - **restic/** – Systemd backup service/timer units and sensitive `.env` config (excluded from sync) along with MinIO/S3-compatible remote backup
 - **dotfiles/** – Centralized system configuration and customization files, used for managing shell settings, terminal appearance, development tools, and environment setup across machines. Including:
   - LazyVim + Lua config
-  - Starship prompt
-  - Modular Zsh config (`.zshrc` + `.zshrc.d/`)
-  - Oh My Zsh + plugins
+  - Modular Zsh config (`.zshrc`, `.zshrc.d/`, `starship.toml`, `bootstrap.sh`)
+  - Oh My Zsh with custom plugins/themes (stored in `zsh/oh-my-zsh/`)
   - WezTerm colors, font tweaks, and hot-reload alias
-  - Bootstrap shell script for syncing setup across devices
 - **nvidia/** – Tweaks, fixes, OBS/NVENC configs, kernel params, and performance enhancements specific to NVIDIA + Wayland setups
 - **networking/** – WireGuard, NFS mounts, Tailscale settings, and LAN/cloud mesh configuration
 - **performance/** – ZRAM tuning, swappiness, systemd optimizations, I/O scheduling, and system responsiveness tweaks
@@ -80,8 +85,11 @@ arch/
   - Automatically pulls personal GitHub repos (`arch`, `docker`, `proxmox`)
   - Includes backup setup with Snapper + Restic
   - Preps KDE theming, modular Zsh, and Tailscale for zero-config networking
+
 ---
+
 ### 🔍 Maintained by [Christopher Kelley](https://github.com/Christopherkelley89)  
 Feel free to fork or submit pull requests!
 ---
+
 
