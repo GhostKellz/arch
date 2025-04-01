@@ -74,3 +74,4 @@ export __GL_YIELD="USLEEP"
 export __GL_SYNC_TO_VBLANK="1"
 export GTK_THEME=Sweet-Amber
 export XCURSOR_THEME=Tela
+export PATH="$HOME/.local/bin:$PATH"

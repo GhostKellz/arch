@@ -1,0 +1,8 @@
+#!/bin/bash
+
+WLR_NO_HARDWARE_CURSORS=1 \
+VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json \
+VK_LAYER_PATH=/usr/share/vulkan/explicit_layer.d \
+__GLX_VENDOR_LIBRARY_NAME=nvidia \
+GBM_BACKEND=nvidia-drm \
+gamescope -e -- "$@"

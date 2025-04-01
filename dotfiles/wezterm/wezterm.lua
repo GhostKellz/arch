@@ -1,7 +1,7 @@
 local wezterm = require 'wezterm'
 
 -- Custom color scheme
-local custom_scheme = wezterm.color.get_builtin_schemes()["Catppuccin Mocha"]
+local custom_scheme = wezterm.color.get_builtin_schemes()["tokyonight"]
 
 -- Custom color adjustments
 custom_scheme.ansi = {
