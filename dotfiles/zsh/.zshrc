@@ -1,5 +1,5 @@
 export ZSH="/home/chris/.oh-my-zsh"
-ZSH_THEME="jonathan"
+ZSH_THEME=""
 
 # Plugins
 plugins=(
@@ -19,8 +19,8 @@ eval "$(zoxide init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Prompt styling
-autoload -U colors && colors
-PS1="%{$fg[lightblue]%}%n@%m %{$fg[lightblue]%}%~ %{$reset_color%}$ "
+#autoload -U colors && colors
+#PS1="%{$fg[lightblue]%}%n@%m %{$fg[lightblue]%}%~ %{$reset_color%}$ "
 
 # Terminal colors
 export CLICOLOR=1
@@ -48,6 +48,7 @@ alias ll='ls -lah'
 alias la='ls -A'
 alias l='ls -CF'
 alias update="sudo pacman -Syu && yay -Syu"
+alias ffx='MOZ_ENABLE_WAYLAND=1 firefox --profile ~/.mozilla/firefox/b2s53f9w.default-release'
 
 # Completion system
 autoload -Uz compinit
