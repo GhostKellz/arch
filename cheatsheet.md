@@ -110,18 +110,14 @@ sudo systemctl start restic-backup.service
 # View backup logs
 sudo tail -f /var/log/restic.log
 ```
-### regenerates the initramfs
+## regenerates the initramfs
 sudo mkinitcpio -P
 
-### Quick Frozen Monitor KDE Fix
-#  Switch to TTY to unfreeze Wayland/KDE session with nvidia GPU
-# When one monitor freezes or KDE becomes unresponsive:
-# Switch to TTY then back to graphical session
-Ctrl + Alt + F3  # (or F2/F4/etc. to switch to TTY)
-Ctrl + Alt + F1  # (return to graphical session, usually F1)
+## KDE / Wayland Frozen Monitor Workaround Nvidia
 
-# Notes:
-- Works around frozen screen Tested with zen kernel, Now on custom TKG Kernel which reduced frequency
--  See nvidia directory for more info for boot parameters and drivers used
-- Does not kill session, just refreshes it
-- Alternatively you could reboot or logout / logon to fix as well this just is a bit less time consuming...
+- Switch to TTY with `Ctrl + Alt + F3` (or F2/F4/etc.)
+- Return to graphical session with `Ctrl + Alt + F1`
+- Works around frozen monitor bug on KDE + Wayland with NVIDIA GPU
+- Session is not killed — just refreshed
+- Faster than rebooting or logging out
+- Issue appears reduced when using TKG kernel (lower GSP frequency)
