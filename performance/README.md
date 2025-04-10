@@ -18,6 +18,15 @@ Here you'll find tweaks and settings related to:
 
 These tips are aimed at ensuring performance without sacrificing stability, especially on modern hardware.
 
+TSG Kernal for Zen3d
+- Custom Kernel Boot Entry (systemd-boot)
+- See: `performance/linux-tkg-kernel.conf`
+- Replace 'PARTUUID' with your root volume ID
+
+## Nvidia Driver Module Config
+- See: 'performance/nvidia.conf'
+- Disables GSP firmware Offload (Fixes DRM Flip bugs frozen monitor on KDE forcing log off/on and or tty
+- Enables VRAM pereservation, PAT, Resizable BAR, and more.
 ---
 
 ## 📁 File Index
