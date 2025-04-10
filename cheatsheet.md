@@ -110,3 +110,5 @@ sudo systemctl start restic-backup.service
 # View backup logs
 sudo tail -f /var/log/restic.log
 ```
+### regenerates the initramfs
+sudo mkinitcpio -P
