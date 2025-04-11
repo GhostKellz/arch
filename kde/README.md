@@ -20,7 +20,7 @@
 - May require kernel parameter or env var tweaks
 
 ## 📂 Assets
-- `assets/kde/frozen-monitor-log.png`: Screenshot of journal log with `pageflip timeout` errors
+- `assets/kde-wayland-nvidia-kwin-pageflip-timedout-error.png`: Screenshot of journal log with `pageflip timeout` errors
 
 ## 📎 Notes
 - Session is not killed—refresh only.
@@ -28,8 +28,3 @@
 - Might be tied to power management or multi-monitor on NVIDIA.
 
 ---
-
-## 🧠 TODO
-- Try `nvidia-drm.modeset=1` boot param
-- Test under Plasma 6
-- Compare behavior with other compositors
