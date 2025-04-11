@@ -7,14 +7,11 @@
   - Switch to a TTY: `Ctrl + Alt + F3` (or F2/F4)
   - Return to graphical session: `Ctrl + Alt + F1`
   - This refreshes the compositor without rebooting or killing session. Or also logging off and logging back in
+
 ![System Info](assets/kde-wl-pageflip-error.png)
 
 ## 🪛 System Info
-- **GPU:** NVIDIA (check `nvidia-smi`)
-- **Kernel:** TKG / Zen tested
-- **Display Server:** Wayland (KWin)
-- **Compositor:** KWin (KDE)
-![System Info](assets/CK-Arch-System.png)
+![System Info](../assets/CK-Arch-System.png)
 
 ## 🛠️ Workarounds
 - Tested with TKG kernel (reduced occurrence)
