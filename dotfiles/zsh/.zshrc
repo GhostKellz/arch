@@ -50,6 +50,7 @@ alias l='ls -CF'
 alias update="sudo pacman -Syu && yay -Syu"
 alias ffx='MOZ_ENABLE_WAYLAND=1 firefox --profile ~/.mozilla/firefox/b2s53f9w.default-release'
 
+
 # Completion system
 autoload -Uz compinit
 compinit
@@ -75,3 +76,9 @@ export __GL_SYNC_TO_VBLANK="1"
 export GTK_THEME=Sweet-Amber
 export XCURSOR_THEME=Tela
 export PATH="$HOME/.local/bin:$PATH"
+autoload -U compinit; compinit
+
+# GPG 
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
+export GPG_AGENT_INFO=
