@@ -76,32 +76,52 @@ arch/
 ---
 ## ✅ Key Components
 
-- **cheatsheet.md** – Central markdown file for commands, aliases, tweaks, and troubleshooting
-- **git-cheatsheet.md** – A quick reference guide for basic Git usage
-- **nvim-cheatsheet.md** – A quick guide for working with Neovim and its plugins
-- **zsh-cheatsheet.md** – A quick guide to using Zsh, its plugins, and configuration tips
-- **btrfs/** – Snapper setup, GRUB/systemd-boot integration, permissions, and subvol layout
-- **restic/** – Systemd backup service/timer units and sensitive `.env` config (excluded from sync) along with MinIO/S3-compatible remote backup
-- **dotfiles/** – Centralized system configuration and customization files, used for managing shell settings, terminal appearance, development tools, and environment setup across machines. Including:
-  - LazyVim + Lua config
-  - Modular Zsh config (`.zshrc`, `.zshrc.d/`, `starship.toml`, `bootstrap.sh`)
-  - Oh My Zsh with custom plugins/themes (stored in `zsh/oh-my-zsh/`)
-  - WezTerm colors, font tweaks, and hot-reload alias
-- **nvidia/** – Tweaks, fixes, OBS/NVENC configs, kernel params, and performance enhancements specific to NVIDIA + Wayland setups
-- **networking/** – WireGuard, NFS mounts, Tailscale settings, and LAN/cloud mesh configuration
-- **performance/** – ZRAM tuning, swappiness, systemd optimizations, I/O scheduling, and system responsiveness tweaks
-- **virtualization/** – QEMU/libvirt configs, host tuning, and Proxmox integration for remote VM backups
-- **wayland/** – Wayland-specific fixes and tweaks:
-  - Fractional scaling
-  - Multi-monitor and DPI fixes
-  - Input tweaks (gestures, polling)
-  - App compatibility (Electron, OBS, Discord, etc.)
-  - NVIDIA Wayland-specific setup and env vars
-- **scripts/** – Modular post-install automation scripts for Arch Linux provisioning:
-  - `ckel.sh`: main setup tool for installing system packages, Flatpak, Docker, virtualization, and performance tuning
-  - Automatically pulls personal GitHub repos (`arch`, `docker`, `proxmox`)
-  - Includes backup setup with Snapper + Restic
-  - Preps KDE theming, modular Zsh, and Tailscale for zero-config networking
+- **`cheatsheet.md`** – Common commands, tips, and troubleshooting notes for Arch Linux systems  
+- **`git-cheatsheet.md`** – Git basics, branch management, and daily use shortcuts  
+- **`nvim-cheatsheet.md`** – Neovim keybindings, plugin manager (LazyVim), and LSP tips  
+- **`zsh-cheatsheet.md`** – Zsh shell shortcuts, plugin usage, and shell script tips  
+
+- **`scripts/`** – Modular `ckel.sh` script for provisioning, setup, and automation  
+  - Automates: package install, system services, dotfile linking, Tailnet setup, etc.  
+  - Also triggers theme/app sync (KDE), Restic/backup prep, and networking  
+
+- **`dotfiles/`** – All shell configs and app setups (Zsh, WezTerm, Neovim)  
+  - LazyVim Lua config (Neovim)  
+  - Modular Zsh setup using `.zshrc.d/`  
+  - Starship prompt and loader  
+  - Custom Oh My Zsh theme + plugins  
+
+- **`restic/`** – S3-compatible backup system (MinIO) with systemd timers and `.env`  
+  - Includes: timer, service, config, and Restic environment file  
+
+- **`btrfs/`** – Subvolume layout, Snapper setup, systemd-boot integration  
+
+- **`nvidia/`** – NVIDIA Open Driver (DKMS) fixes, gaming/NVENC, kernel params  
+  - Includes: gamescope tweaks, modprobe options, GSP tuning  
+
+- **`system/`** – Core system tuning (ZRAM, IO, kernel, suspend)  
+  - Includes:  
+    - `kernel/`: TKG boot config, kernel parameters  
+    - `power.md`: CPU frequency and suspend/hibernate tweaks  
+    - `memory.md`: Swappiness, ZRAM with Zstd compression  
+    - `systemd.md`: Custom overrides, timers, journaling  
+
+- **`wayland/`** – Wayland tweaks (input, scaling, env vars, NVIDIA fixes)  
+  - Compositor-agnostic: Gnome/KDE/Hyprland  
+  - Includes: fractional scaling, app compatibility, NVIDIA tweaks  
+
+- **`kde/`** – KDE + Wayland tuning, bug tracking, and freeze workaround  
+  - Pageflip timeout issue, monitor freezes  
+  - Known issue tracking file with logs and screenshots  
+
+- **`networking/`** – Tailnet/Headscale, WireGuard, and remote access routing  
+  - Also includes NGINX Proxy and split-DNS setups  
+
+- **`virtualization/`** – KVM, QEMU, passthrough fixes, and host tuning  
+  - PCIe passthrough, libvirt configs, and isolation tips  
+
+- **`assets/`** – Screenshots and images for markdown docs
+
 
 ---
 
