@@ -1,4 +1,4 @@
-# KDE + Wayland Quirks (NVIDIA)
+# KDE
 
 ## ❄️ Frozen Screen Bug (Pageflip Timeout)
 - **Symptom:** One monitor freezes or entire desktop becomes unresponsive under KDE Wayland.
@@ -20,7 +20,7 @@
 - May require kernel parameter or env var tweaks
 
 ## 📂 Assets
-- `assets/kde-wayland-nvidia-kwin-pageflip-timedout-error.png`: Screenshot of journal log with `pageflip timeout` errors
+- `assets/kde-wl-pageflip-error.png`: Screenshot of journal log with `pageflip timeout` errors
 
 ## 📎 Notes
 - Session is not killed—refresh only.
