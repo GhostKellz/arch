@@ -125,7 +125,7 @@ arch/
 
 ---
 
-### 🔍 Maintained by [Christopher Kelley](https://github.com/Christopherkelley89)  
+### 🔍 Maintained by [Christopher Kelley](https://github.com/ghostkellz)  
 Feel free to fork or submit pull requests!
 ---
 
