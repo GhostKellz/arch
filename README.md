@@ -126,6 +126,30 @@ arch/
 ---
 
 ### 🔍 Maintained by [Christopher Kelley](https://github.com/ghostkellz)  
+### 🔐 GPG Commit Signing
+
+This repository supports verified commits using GPG.
+
+**Author GPG Key:** `ckelley@ghostkellz.sh`
+
+All signed commits from this repository are made using a trusted GPG key and should appear as **Verified** on GitHub.
+
+#### 🔑 Verifying & Importing the Public Key
+If you want to verify commits or clone the trust for your own use:
+
+```bash
+gpg --locate-keys ckelley@ghostkellz.sh
+```
+
+#### 🔧 Enabling GPG Signing in Git
+If you'd like to sign your own commits with GPG:
+
+```bash
+gpg --list-keys
+# Locate your KEY_ID, then:
+git config --global user.signingkey <KEY_ID>
+git config --global commit.gpgsign true
+```
 Feel free to fork or submit pull requests!
 ---
 
