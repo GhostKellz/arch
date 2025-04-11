@@ -8,52 +8,69 @@ This repository is a structured collection of configuration files, reference gui
 
 ```
 arch/
-├── cheatsheet.md             # General-purpose command and fix reference
-├── git-cheatsheet.md         # Basic Git usage tips
-├── nvim-cheatsheet.md        # Neovim configuration and plugin commands
-├── zsh-cheatsheet.md         # Zsh basics, plugins, and shortcuts
+├── cheatsheet.md              # General-purpose command and fix reference
+├── git-cheatsheet.md          # Basic Git usage tips
+├── nvim-cheatsheet.md         # Neovim configuration and plugin commands
+├── zsh-cheatsheet.md          # Zsh basics, plugins, and shortcuts
 
-├── scripts/                  # Modular post-install script for configuring system packages, services, and pulling dotfile configs
+├── scripts/                   # Modular post-install script for configuring system packages
 
-├── btrfs/                    # Snapper and backup strategies using BTRFS
-│   └── snapper/              # Root snapper config and layout
+├── btrfs/                     # Snapper and backup strategies using BTRFS
+│   └── snapper/               # Root snapper config and layout
 
-├── dotfiles/                 # Shell and app config files
-│   ├── nvim/                 # LazyVim setup with Lua config
-│   ├── wezterm/              # WezTerm themes, colors, and config
-│   ├── zsh/                  # Modular Zsh configuration
-│   │   ├── .zshrc                # Main Zsh config (Starship + NVIDIA + loader)
-│   │   ├── starship.toml        # Starship prompt theming
-│   │   ├── bootstrap.sh         # Zsh bootstrap script (symlinks, plugin setup, etc.)
-│   │   ├── .zshrc.d/            # Modular aliases and functions
+├── dotfiles/                  # Shell and app config files
+│   ├── nvim/                  # LazyVim setup with Lua config
+│   ├── wezterm/               # WezTerm themes, colors, and config
+│   ├── zsh/                   # Modular Zsh configuration
+│   │   ├── .zshrc             # Main Zsh config (Starship + NVIDIA + loader)
+│   │   ├── starship.toml      # Starship prompt theming
+│   │   ├── bootstrap.sh       # Zsh bootstrap script (symlinks, plugin setup, etc.)
+│   │   ├── .zshrc.d/          # Modular aliases and functions
 │   │   │   ├── docker.zsh
 │   │   │   ├── git-aliases.zsh
 │   │   │   ├── restic.zsh
 │   │   │   ├── snapper.zsh
 │   │   │   ├── system.zsh
 │   │   │   └── wezterm.zsh
-│   │   └── oh-my-zsh/           # Custom plugins/themes (not full Oh My Zsh install)
-│   │       └── custom/
-│   │           ├── plugins/
-│   │           │   ├── zsh-autosuggestions/
-│   │           │   └── zsh-syntax-highlighting/
-│   │           └── themes/
-│   │               └── your-theme.zsh-theme
-│   ├── .bashrc               # Bash configuration (fallback)
+│   └── oh-my-zsh/             # Custom plugins/themes (not full Oh My Zsh install)
+│       └── custom/
+│           ├── plugins/
+│           │   ├── zsh-autosuggestions/
+│           │   └── zsh-syntax-highlighting/
+│           └── themes/
+│               └── your-theme.zsh-theme
+├── .bashrc                    # Bash configuration (fallback)
 
-├── restic/                   # Restic systemd service/timer and env vars
-├── nvidia/                   # NVIDIA-specific tweaks and fixes
-├── networking/               # Network configs (Tailscale, NFS, etc.)
-├── performance/              # System performance tweaks (ZRAM, swappiness, I/O, etc.)
-├── virtualization/           # Libvirt/QEMU tools and remote backup notes
+├── restic/                    # Restic systemd service/timer and env vars
+├── nvidia/                    # NVIDIA-specific tweaks and fixes
+├── networking/                # Network configs (Headscale, Tailnet, NGINX, etc.)
+├── system/                    # System-wide tuning (ZRAM, systemd, memory, kernel)
+│   ├── kernel/                # Kernel tweaks and boot configuration
+│   │   ├── tkg/               # Custom bootloader entry and customization.cfg
+│   │   └── kernel-params.md   # Boot parameter summary
+│   ├── io.md                  # I/O scheduler tweaks and disk settings
+│   ├── memory.md              # ZRAM, swappiness, and caching behavior
+│   ├── power.md               # Power profiles, suspend tuning
+│   └── systemd.md             # Systemd timers, journal, and overrides
 
-├── wayland/                  # Wayland-specific tweaks, env vars, gestures, scaling, app fixes
-│   ├── tweaks.md                # Global Wayland settings
-│   ├── compatibility.md         # OBS, Discord, Electron, Firefox, etc.
-│   ├── input.md                 # libinput configs, gestures, touchpad polling
-│   ├── fractional-scaling.md    # DPI, multi-monitor, scaling tweaks
-│   └── nvidia.md                # NVIDIA-specific Wayland quirks (XWayland, env vars, EGLStream)
+├── virtualization/            # QEMU, passthrough, and Libvirt tuning
+│   ├── kvm.md
+│   ├── libvirt.md
+│   ├── passthrough.md
+│   └── tweaks.md
 
+├── kde/                       # KDE-specific quirks, bugs, and tuning (Wayland-specific)
+│   ├── README.md              # KDE + Wayland + NVIDIA freeze fix (pageflip)
+│   └── known_issues.md        # Known issues tracking (Wayland pageflip bug, etc.)
+
+├── wayland/                   # Wayland (non-DE specific) tweaks and guides
+│   ├── tweaks.md              # Global Wayland environment variables
+│   ├── compatibility.md       # App compatibility: Discord, OBS, Firefox, etc.
+│   ├── input.md               # libinput, gestures, touchpads
+│   ├── fractional-scaling.md  # Multi-monitor DPI, scaling fixes
+│   └── nvidia.md              # NVIDIA + Wayland driver and rendering tweaks
+
+└── assets/                    # Shared images and screenshots for documentation
 ```
 
 ---
