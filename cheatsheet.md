@@ -110,9 +110,10 @@ sudo systemctl start restic-backup.service
 # View backup logs
 sudo tail -f /var/log/restic.log
 ```
+---
 ## regenerates the initramfs
 sudo mkinitcpio -P
-
+---
 ## KDE / Wayland Frozen Monitor Workaround Nvidia
 
 - Switch to TTY with `Ctrl + Alt + F3` (or F2/F4/etc.)
@@ -121,3 +122,55 @@ sudo mkinitcpio -P
 - Session is not killed — just refreshed
 - Faster than rebooting or logging out
 - Issue appears reduced when using TKG kernel (lower GSP frequency)
+---
+### Memory & Swap 
+# Check swap devices (zram, regular swap)
+```bash
+swapon --show --bytes
+```
+# Check current zram config (if using zram-generator)
+```bash
+cat /etc/systemd/zram-generator.conf
+```
+# Show current vm tunables
+```bash
+sysctl vm.swappiness
+sysctl vm.vfs_cache_pressure
+sysctl vm.dirty_ratio
+sysctl vm.dirty_background_ratio
+```
+# Show if zswap is enabled
+```bash
+cat /sys/module/zswap/parameters/enabled
+```
+# Early OOM killer or custom OOM settings
+```bash
+cat /etc/sysctl.d/* | grep -i oom || echo "No custom OOM killer settings"
+```
+---
+## Power Management  
+# Show CPU frequency governor settings (per core)
+```bash
+cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+```
+# Show active power profiles (req. power-profiles-daemon)
+'''bash
+powerprofilesctl list
+```
+# Check if TLP is installed and active
+```bash
+systemctl status tlp.service
+```
+# Check your current sleep/hibernate settings
+```bash
+cat /etc/systemd/sleep.conf
+```
+# See what services are inhibiting suspend/sleep
+```bash
+systemd-inhibit --list
+```
+# See any tuned profiles
+```bash
+tuned-adm active
+```
+---
