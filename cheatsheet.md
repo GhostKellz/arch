@@ -112,7 +112,7 @@ sudo tail -f /var/log/restic.log
 ```
 ---
 ### 🧬 Regenerate Initramfs
--Rebuilds the initial ramdisk image for kernel boot. Run this after kernel or hook changes.
+- Rebuilds the initial ramdisk image for kernel boot. Run this after kernel or hook changes.
 ```bash
 sudo mkinitcpio -P
 ```
