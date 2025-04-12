@@ -1,6 +1,6 @@
-# Arch Linux Cheatsheet
+# 🐉 🐧 Arch Linux Cheatsheet 
 
-## BTRFS Commands
+##📸 BTRFS Commands
 - List subvolumes: `btrfs subvolume list /`
 - Create snapshot: `btrfs subvolume snapshot /mnt/data /mnt/data_snap`
 - Delete snapshot: `btrfs subvolume delete /mnt/data_snap`
@@ -8,7 +8,7 @@
 - Repair filesystem: `btrfs check --repair /dev/sda`
 
 
-### Snapper 
+### 📸Snapper 
 - Commands list for setup
 ```bash
 sudo pacman -S snapper snap-pac
@@ -28,7 +28,7 @@ sudo snapper -c home list
 sudo systemctl enable --now snapper-timeline.timer
 sudo systemctl enable --now snapper-cleanup.timer
 ```
-### Restic
+###💾 Restic
 - Encrypted, deduplicated backups from /home to a MinIO S3 bucket (e.g. on Synology)
 - Uses /etc/restic.env to store S3 credentials and repo info
 ```bash
@@ -123,7 +123,7 @@ sudo mkinitcpio -P
 - Faster than rebooting or logging out
 - Issue appears reduced when using TKG kernel (lower GSP frequency)
 ---
-### Memory & Swap 
+###🧠 Memory & Swap 
 # Check swap devices (zram, regular swap)
 ```bash
 swapon --show --bytes
@@ -148,7 +148,7 @@ cat /sys/module/zswap/parameters/enabled
 cat /etc/sysctl.d/* | grep -i oom || echo "No custom OOM killer settings"
 ```
 ---
-## Power Management  
+## 🔋Power Management  
 # Show CPU frequency governor settings (per core)
 ```bash
 cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
@@ -174,3 +174,12 @@ systemd-inhibit --list
 tuned-adm active
 ```
 ---
+## 🔧 Fix Chaotic AUR Mirror Errors
+
+```bash
+# Re-sync the Chaotic AUR mirror list
+sudo pacman -Sy chaotic-mirrorlist
+
+# Then force-refresh all package databases and upgrade
+sudo pacman -Syyu
+```
