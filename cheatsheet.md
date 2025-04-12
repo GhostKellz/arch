@@ -1,6 +1,6 @@
 # 🐉 🐧 Arch Linux Cheatsheet 
 
-##📸 BTRFS Commands
+###📸 BTRFS Commands
 - List subvolumes: `btrfs subvolume list /`
 - Create snapshot: `btrfs subvolume snapshot /mnt/data /mnt/data_snap`
 - Delete snapshot: `btrfs subvolume delete /mnt/data_snap`
