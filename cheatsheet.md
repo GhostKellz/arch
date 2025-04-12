@@ -111,8 +111,11 @@ sudo systemctl start restic-backup.service
 sudo tail -f /var/log/restic.log
 ```
 ---
-## regenerates the initramfs
+### 🧬 Regenerate Initramfs
+-Rebuilds the initial ramdisk image for kernel boot. Run this after kernel or hook changes.
+```bash
 sudo mkinitcpio -P
+```
 ---
 ## KDE / Wayland Frozen Monitor Workaround Nvidia
 
