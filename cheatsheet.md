@@ -1,6 +1,6 @@
 # 🐉 🐧 Arch Linux Cheatsheet 
 
-###📸 BTRFS Commands
+### 📸 BTRFS Commands
 - List subvolumes: `btrfs subvolume list /`
 - Create snapshot: `btrfs subvolume snapshot /mnt/data /mnt/data_snap`
 - Delete snapshot: `btrfs subvolume delete /mnt/data_snap`
@@ -28,7 +28,7 @@ sudo snapper -c home list
 sudo systemctl enable --now snapper-timeline.timer
 sudo systemctl enable --now snapper-cleanup.timer
 ```
-###💾 Restic
+### 💾 Restic
 - Encrypted, deduplicated backups from /home to a MinIO S3 bucket (e.g. on Synology)
 - Uses /etc/restic.env to store S3 credentials and repo info
 ```bash
@@ -123,7 +123,7 @@ sudo mkinitcpio -P
 - Faster than rebooting or logging out
 - Issue appears reduced when using TKG kernel (lower GSP frequency)
 ---
-###🧠 Memory & Swap 
+### 🧠 Memory & Swap 
 # Check swap devices (zram, regular swap)
 ```bash
 swapon --show --bytes
