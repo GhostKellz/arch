@@ -186,3 +186,15 @@ sudo pacman -Sy chaotic-mirrorlist
 # Then force-refresh all package databases and upgrade
 sudo pacman -Syyu
 ```
+---
+## 🔐 Verify Keystone Pro 3 Firmware Checksum
+
+```bash
+# Check the SHA-256 checksum of the firmware .bin file
+sha256sum keystone3.bin
+```
+
+# Match the result with the official hash (v2.0.4) MultiCoin: 
+# dccbb843b33f26cdb11093e9c5a38d32cedc05b95593a4ada2eb82c4a08db0eb
+```
+---
