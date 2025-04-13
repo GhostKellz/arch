@@ -14,8 +14,8 @@ return {
     },
     sidebars = { "qf", "help", "neo-tree", "lazy", "mason", "terminal" },
     on_highlights = function(hl, c)
-      hl.Normal = { bg = "none" }
-      hl.NormalNC = { bg = "none" }
+      hl.Normal = { fg = "#7dcfff", bg = "none", bold = false }
+      hl.NormalNC = { fg = "#8aff80", bg = "none" }
       hl.FloatBorder = { fg = c.blue, bg = "none" }
       hl.TelescopeBorder = { fg = c.blue, bg = "none" }
       hl.TelescopePromptBorder = { fg = c.blue, bg = "none" }
@@ -34,10 +34,10 @@ return {
       hl.VertSplit = { fg = c.bg_highlight }
 
       -- Extra minty tweaks
-      hl.Function = { fg = "#8aff80", bold = true } -- functions in mint green
-      hl.Comment = { fg = "#57c7ff", italic = true } -- comments in hacker blue
-      hl.Number = { fg = "#f3f99d", bold = true } -- numbers in yellow
-      h1.Normal = { fg = "#8aff80", bold=true } -- normal mint green
+      hl.Function = { fg = "#8aff80", bold = true }     -- functions in mint green
+      hl.Comment = { fg = "#57c7ff", italic = true }    -- comments in hacker blue
+      hl.Number = { fg = "#f3f99d", bold = true }       -- numbers in yellow
+      hl.Normal = { fg = "#8aff80", bold = true }       -- normal mint green (corrected from h1 to hl)
     end,
   },
   config = function(_, opts)

@@ -1,0 +1,5 @@
+return {
+  colorscheme = "tokyonight"
+}
+
+
