@@ -7,6 +7,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Plugins
 require("lazy").setup({
+  { import = "plugins" }, -- Import Plugins Folder
   { "nvim-lua/plenary.nvim" },
   { "nvim-telescope/telescope.nvim", tag = "0.1.5" },
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
@@ -50,5 +51,9 @@ vim.keymap.set("n", "<leader>g", "<cmd>Telescope live_grep<cr>", { noremap = tru
 local lsp = require("lspconfig")
 lsp.lua_ls.setup({})
 lsp.pyright.setup({})
-lsp.tsserver.setup({})
 
+-- Deprecated - using new typescript-tools instead
+-- lsp.tsserver.setup({})
+
+-- Recommended replacement using typescript-tools
+require("typescript-tools").setup({})
