@@ -1,4 +1,5 @@
-# 🌧️ Custom `linux-tkg` Kernel Setup (Ryzen + EEVDF + NVIDIA Open DKMS)
+# 🌧️ Custom `linux-tkg` Kernel Setup 
+
 
 This directory contains the files and documentation for my custom `linux-tkg` kernel configuration. It’s optimized for:
 
