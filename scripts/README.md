@@ -14,7 +14,7 @@ Automates installation of base packages, NVIDIA drivers, virtualization tools, F
 _Automatic GPG & Keyring Sync Script_  
 Refreshes pacman keys and GPG trust database. Intended to run as a cronjob at 2AM. Logs to `~/.logs/ckel/gpgsync.log`.
 
-### `ghostctl-kernel-install.sh`
+### `ghost-kernel-install.sh`
 _Failsafe Custom Kernel + NVIDIA Installer_  
 Automates the full build and installation process for a custom `linux-tkg` kernel with NVIDIA 570 DKMS support. It includes:
 
