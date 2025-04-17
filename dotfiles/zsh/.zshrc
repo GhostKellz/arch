@@ -94,3 +94,9 @@ export PATH="$HOME/.local/bin:$PATH"
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
 export GPG_AGENT_INFO=
+
+# ── Zsh Autocomplete ────────────────────────────────────────
+if [[ -r /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
+  source /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+  echo "%F{green}[zsh-autocomplete] loaded ✅%f"
+fi
