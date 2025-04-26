@@ -50,7 +50,9 @@ alias la='ls -A'
 alias l='ls -CF'
 alias dotls='exa -a --icons --group-directories-first | grep "^\\."'
 alias dotfiles='exa -a --icons --group-directories-first | grep "^\\."'
-alias update='sudo pacman -Syu && yay -Syu'
+#alias update='sudo pacman -Syu && yay -Syu'
+#alias update='sudo pacman -Syu --noconfirm && yay -Qua --devel --quiet'
+alias update='sudo pacman -Syu --noconfirm && yay -Qua --quiet | grep -v "ignoring package upgrade"'
 alias ffx='MOZ_ENABLE_WAYLAND=1 firefox --profile ~/.mozilla/firefox/b2s53f9w.default-release'
 
 # ── Git Aliases ─────────────────────────────────────────────
@@ -60,6 +62,28 @@ alias gps='git push origin main'
 
 # ── GPG Aliases ─────────────────────────────────────────────
 alias gpgchk='gpg --locate-keys ckelley@ghostkellz.sh'
+
+# ── Network Aliases ───────────────────────────────────────
+alias pgd='ping google.com'
+alias p8='ping 8.8.8.8'
+alias p1='ping 1.1.1.1'
+alias digg='dig +nocmd +nocomments +noquestion +noauthority +noadditional'
+
+alias dnscheck='dig +dnssec +multi'
+alias dnstest='dig @1.1.1.1 google.com'
+alias dnshit='dig @127.0.0.1 -p 53 example.com ANY'
+
+alias dnsflush='sudo resolvectl flush-caches'
+alias ns='nslookup'
+alias tracer='traceroute'
+
+alias myip='curl ifconfig.me'
+alias localip="ip a | grep inet"
+alias publicip='dig @resolver4.opendns.com myip.opendns.com +short'
+
+alias portscan='nmap -Pn -p-'
+alias sniff='sudo tcpdump -i any -n'
+
 
 # ── Completion System ───────────────────────────────────────
 autoload -Uz compinit
@@ -87,6 +111,15 @@ export __GL_SYNC_TO_VBLANK="1"
 export GTK_THEME=Sweet-Amber
 export XCURSOR_THEME=Tela
 
+# ── Gaming Environment ──────────────────────────────────────
+export DXVK_ASYNC=1
+export WINE_FULLSCREEN_FSR=1
+export __GL_GSYNC_ALLOWED=1
+export __GL_VRR_ALLOWED=1
+export STEAM_FORCE_DESKTOPUI_SCALING=1
+export MANGOHUD=1
+
+
 # ── Paths ───────────────────────────────────────────────────
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -100,3 +133,4 @@ if [[ -r /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
   source /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
   echo "%F{green}[zsh-autocomplete] loaded ✅%f"
 fi
+
