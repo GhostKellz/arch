@@ -150,9 +150,9 @@ gpg --list-keys
 git config --global user.signingkey <KEY_ID>
 git config --global commit.gpgsign true
 ```
-Feel free to fork or submit pull requests!
 ---
-### 🖋️ GPG Key Visual
+
+### 🔐 GPG Key Visual
 
 Here is a visual confirmation of the GPG key used to sign commits for this repository:
 
@@ -161,15 +161,25 @@ Here is a visual confirmation of the GPG key used to sign commits for this repos
 </p>
 
 ---
----
 
 ### 🖥️ CK-Arch System Overview
 
 A look at the setup powering this repository:
 
-| System Overview | NVIDIA RTX 4090 Configuration |
-|:---|:---|
-| <img src="arch/assets/CK-Arch-System.png" alt="CK Arch System" width="400"/> | <img src="arch/assets/NVIDIA_RTX-4090-config.png" alt="NVIDIA RTX 4090 Config" width="400"/> |
+<table align="center">
+<tr>
+<td align="center">
+<b>System Overview</b><br><br>
+<img src="arch/assets/CK-Arch-System.png" alt="CK Arch System" width="400"/>
+</td>
+<td align="center">
+<b>NVIDIA RTX 4090 Configuration</b><br><br>
+<img src="arch/assets/NVIDIA_RTX-4090-config.png" alt="NVIDIA RTX 4090 Config" width="400"/>
+</td>
+</tr>
+</table>
 
+---
+Feel free to fork or submit pull requests!
 ---
 
