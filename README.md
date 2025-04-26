@@ -7,6 +7,8 @@
   <img src="https://img.shields.io/badge/GPG%20Signed-Verified-brightgreen"/> &nbsp;&nbsp;
   <img src="https://img.shields.io/badge/GhostKellz-👻-blueviolet"/> &nbsp;&nbsp;
   <img src="https://img.shields.io/badge/Optimized-⚡🚀🔒-00bcd4"/>
+  <img src="https://img.shields.io/badge/CPU-Ryzen_9_7950X3D-d24c1a?logo=amd&logoColor=white"/>
+
 </p>
 
 ---
