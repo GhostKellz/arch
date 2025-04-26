@@ -151,13 +151,12 @@ git config --global user.signingkey <KEY_ID>
 git config --global commit.gpgsign true
 ```
 ---
-
 ### 🔐 GPG Key Visual
 
 Here is a visual confirmation of the GPG key used to sign commits for this repository:
 
 <p align="center">
-  <img src="arch/assets/ckelley-GPG.png" alt="GPG Key Screenshot" width="800"/>
+  <img src="assets/ckelley-GPG.png" alt="GPG Key Screenshot" width="800"/>
 </p>
 
 ---
@@ -167,14 +166,13 @@ Here is a visual confirmation of the GPG key used to sign commits for this repos
 A look at the setup powering this repository:
 
 <p align="center">
-  <img src="arch/assets/CK-Arch-System.png" alt="CK Arch System" width="700"/>
+  <img src="assets/CK-Arch-System.png" alt="CK Arch System" width="700"/>
 </p>
 
 <p align="center">
-  <img src="arch/assets/NVIDIA_RTX-4090-config.png" alt="NVIDIA RTX 4090 Config" width="700"/>
+  <img src="assets/NVIDIA_RTX-4090-config.png" alt="NVIDIA RTX 4090 Config" width="700"/>
 </p>
 
 ---
 
-Feel free to fork or submit pull requests!
-
+<p align="center"><b>Feel free to fork or submit pull requests!</b></p>
