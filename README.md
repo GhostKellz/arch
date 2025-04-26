@@ -1,6 +1,16 @@
 # CK Arch Linux Repository
 
-This repository is a structured collection of configuration files, reference guides, and scripts used to set up and maintain Arch Linux across various use cases, including backup automation, NVIDIA performance tweaks, and personalized dotfiles.
+<p align="center">
+  <img src="https://img.shields.io/badge/Arch_Linux-1793D1?logo=arch-linux&logoColor=white"/>
+  <img src="https://img.shields.io/badge/NVIDIA-RTX_4090-76B900?logo=nvidia&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Wayland-1793D1?logo=wayland&logoColor=white"/>
+  <img src="https://img.shields.io/badge/GPG%20Signed-Verified-brightgreen"/>
+  <img src="https://img.shields.io/badge/Made%20with-%F0%9F%94%A5-orange"/>
+</p>
+
+---
+
+This repository is a structured collection of configuration files, reference guides, and scripts used to set up and maintain Arch Linux across various use cases.
 
 ---
 
