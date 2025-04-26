@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/NVIDIA-RTX_4090-76B900?logo=nvidia&logoColor=white"/>
   <img src="https://img.shields.io/badge/Wayland-1793D1?logo=wayland&logoColor=white"/>
   <img src="https://img.shields.io/badge/GPG%20Signed-Verified-brightgreen"/>
-  <img src="https://img.shields.io/badge/Made%20with-%F0%9F%94%A5-orange"/>
+  <img src="https://img.shields.io/badge/GhostKellz-👻⚡🚀🔒-blueviolet"/>
 </p>
 
 ---
