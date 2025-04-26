@@ -1,11 +1,12 @@
 # CK Arch Linux Repository
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Arch_Linux-1793D1?logo=arch-linux&logoColor=white"/>
-  <img src="https://img.shields.io/badge/NVIDIA-RTX_4090-76B900?logo=nvidia&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Wayland-1793D1?logo=wayland&logoColor=white"/>
-  <img src="https://img.shields.io/badge/GPG%20Signed-Verified-brightgreen"/>
-  <img src="https://img.shields.io/badge/GhostKellz-👻⚡🚀🔒-blueviolet"/>
+  <img src="https://img.shields.io/badge/Arch_Linux-1793D1?logo=arch-linux&logoColor=white"/> &nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/NVIDIA-RTX_4090-76B900?logo=nvidia&logoColor=white"/> &nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/Wayland-1793D1?logo=wayland&logoColor=white"/> &nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/GPG%20Signed-Verified-brightgreen"/> &nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/GhostKellz-👻-blueviolet"/> &nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/Optimized-⚡🚀🔒-00bcd4"/>
 </p>
 
 ---
