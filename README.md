@@ -10,7 +10,9 @@
 
 ---
 
-This repository is a structured collection of configuration files, reference guides, and scripts used to set up and maintain Arch Linux across various use cases.
+> 🛠️ **About this repository:**  
+> This is a personal, modular, and actively maintained Arch Linux configuration.  
+> Tuned for performance, security, and professional daily driver use.
 
 ---
 
