@@ -1,102 +1,85 @@
-# Arch Linux Script Suite 🌍🌐✨
+# Arch Linux Scripts 👻🔥🌐
 
-[![Built for Arch Linux](https://img.shields.io/badge/Built%20for-Arch%20Linux-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org) 
-[![Shell Powered](https://img.shields.io/badge/Powered%20By-Zsh-6A5ACD?logo=gnu-bash&logoColor=white)](https://zsh.org)
-[![Maintenance](https://img.shields.io/badge/Status-Actively%20Maintained-brightgreen)]()
+> **by GhostKellz**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org)
+[![Zsh Powered](https://img.shields.io/badge/Shell-Zsh-89e051?logo=gnu-bash&logoColor=white)](https://www.zsh.org)
 
 ---
 
 ## 🔍 About
 
-This directory houses professional-grade **Zsh** scripts tailored for managing, maintaining, and enhancing a custom Arch Linux system. Each script is built with clarity, rollback protection, and efficiency in mind, ideal for real-world workstation use.
+This is a curated, professional-grade collection of ZSH-powered scripts for managing and optimizing my **personal Arch Linux workstation** setup. Focused on:
 
-Built by **CK Technology** and maintained by **GhostKellz**.
+- Automating post-install tasks
+- Bulletproof kernel upgrades and fallbacks
+- Secure GPG key syncing
+- Full system resilience and rollback ability
+
+Every script here is designed for **speed**, **stability**, and **GhostKellz-level efficiency**.
 
 ---
 
-## 👨‍💻 Scripts Overview
+## 🔧 Scripts Included
 
 ### `ckel.sh`
-_Initial Post-Install Script_
-- Automates installation of critical packages.
-- Handles NVIDIA driver setup, virtualization tools, Flatpak, KDE tweaks.
-- Continually evolving based on workstation needs.
+_Post-Install Setup (WIP)_
+- Installs critical packages, NVIDIA drivers, Flatpak, virtualization tools, and applies KDE customizations.
 
 ### `gpgsync.sh`
-_GPG & Keyring Auto-Sync_
-- Syncs GPG keys and Pacman trust database.
-- Designed for cron-based execution (nightly).
-- Logs activity to `~/.logs/ckel/gpgsync.log`.
+_GPG + Keyring Auto-Sync_
+- Refreshes pacman keys and GPG trust DB nightly.
+- Cron-ready for background syncing.
 
 ### `ghost-kernel-install.sh`
-_Atomic Custom Kernel Installer_
-- Builds and installs a custom `linux-tkg` kernel with NVIDIA 570 DKMS.
-- Automatic backup of `/boot`, `initramfs`, `/lib/modules`, and configs.
-- Optional Snapper snapshot before operation.
-- Systemd-boot integration and optional default kernel selection.
-- **Essential for pre-NVIDIA upgrade rollbacks.**
-
-##### 🧬 Kernel Installer Backup Includes
-```
-/boot/vmlinuz-*
-/boot/initramfs-*
-/lib/modules/<running-version>
-~/ghostctl/linux-tkg/customization.cfg
-~/ghostctl/linux-tkg/linux615rc2-tkg-userpatches/
-```
-
-##### 🔍 Example Kernel Install
-```bash
-cd ~/ghostctl
-./ghostctl-kernel-install.sh
-```
+_Custom Kernel Installer + Failsafe Backup_
+- Builds custom `linux-tkg` kernels
+- Fully backs up `/boot`, `initramfs`, `/lib/modules` into `/data/recovery/<timestamp>`
+- Optionally Snapper snapshot before any kernel install
+- Auto-updates systemd-boot entries
+- Sets default kernel cleanly
 
 ### `ghostboot.zsh`
-_Dead Kernel / Boot Cleaner_
-- Scans `/boot` for unused kernels and initramfs images.
-- Safely deletes **only** files not associated with your running kernel.
-- Helps maintain clean boot partitions post-upgrades.
+_Boot Image Cleaner_
+- Smartly cleans old `/boot` kernels and initramfs files
+- Prevents boot partition overflow
+- Only keeps your active working kernels (safe and quick!)
 
-##### 🧹 Example Boot Cleanup
+---
+
+## 🔍 Example Usage
+
 ```bash
 cd ~/arch/scripts
 ./ghostboot.zsh
 ```
-
----
-
-## 🤓 Philosophy
-- **Zsh-native** and optimized for fast, local execution.
-- **Fail-safe** by design (critical backups, rollback points).
-- **Self-host friendly** for maximum control.
-- **Actively updated** based on real workstation use.
-
----
-
-## 🕒 Cron Example
-Set up GPG syncing automatically:
 ```bash
-crontab -e
-```
-Add:
-```cron
-0 2 * * * /home/chris/arch/scripts/gpgsync.sh
+cd ~/ghostctl
+./ghost-kernel-install.sh
 ```
 
 ---
 
-## 🛠️ Future Enhancements
-- Dotfile sync & backup automation.
-- Kernel patch toggling (BORE, EEVDF, future schedulers).
-- Advanced Snapper snapshot management.
-- Full multi-system recovery tooling.
+## 🚀 Features
+
+- 🌐 Full ZSH script style for speed and clarity
+- 🔍 Minimal safe dependency footprint
+- 🔧 Designed around **BTRFS root** + **systemd-boot** workflow
+- 💀 Resilient against failed kernel upgrades or NVIDIA DKMS issues
+- 🔔 Cron-ready tools for unattended maintenance
+- 👻 Ghost-themed branding throughout
 
 ---
 
-> ✨ This directory is **actively growing**. Expect frequent updates, polish, and new utilities.
+## 🧹 Future Plans
+
+- Dotfile backup automation
+- Automated Snapper pre/post snapshot scripts
+- Faster Nvidia DKMS build detection hooks
+- Full GitHub Actions template for GhostKellz Arch recovery system
 
 ---
 
-**Made with 💛 by CK Technology**
+> This repository is actively developed by **GhostKellz** under **CK Technology**. Scripts are version-controlled and battle-tested. Updates incoming!
 
----
