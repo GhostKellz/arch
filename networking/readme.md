@@ -3,7 +3,7 @@
 [![Tailscale](https://img.shields.io/badge/Tailscale-ZeroTrust-007ACC?logo=tailscale&logoColor=white)](https://tailscale.com) 
 [![Headscale](https://img.shields.io/badge/Headscale-SelfHosted-00BFFF)](https://github.com/juanfont/headscale) 
 [![WireGuard VPN](https://img.shields.io/badge/WireGuard-ModernVPN-88171A?logo=wireguard&logoColor=white)](https://www.wireguard.com) 
-[![Fortinet Secured](https://img.shields.io/badge/Fortigate-90G-Secure-red?logo=fortinet)](https://www.fortinet.com) 
+[![Fortinet Secured](https://img.shields.io/badge/Fortinet-Secured-red?logo=fortinet&logoColor=white&style=flat)](https://www.fortinet.com/)		
 [![SD-WAN Powered](https://img.shields.io/badge/SD--WAN-Enabled-00B386)](https://en.wikipedia.org/wiki/SD-WAN) 
 [![Next-Gen Networking](https://img.shields.io/badge/Networking-CuttingEdge-0078D7)]()
 
