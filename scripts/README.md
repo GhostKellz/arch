@@ -1,43 +1,42 @@
-# Arch Linux Scripts
+# Arch Linux Script Suite 🌍🌐✨
 
-This directory is a collection of scripts used to manage and automate various aspects of my Arch Linux system. It includes everything from post-install setup to system maintenance, package management, NVIDIA support, backups, and more.
+[![Built for Arch Linux](https://img.shields.io/badge/Built%20for-Arch%20Linux-1793D1?logo=arch-linux&logoColor=white)](https://archlinux.org) 
+[![Shell Powered](https://img.shields.io/badge/Powered%20By-Zsh-6A5ACD?logo=gnu-bash&logoColor=white)](https://zsh.org)
+[![Maintenance](https://img.shields.io/badge/Status-Actively%20Maintained-brightgreen)]()
 
 ---
 
-## 📜 Scripts Included
+## 🔍 About
+
+This directory houses professional-grade **Zsh** scripts tailored for managing, maintaining, and enhancing a custom Arch Linux system. Each script is built with clarity, rollback protection, and efficiency in mind, ideal for real-world workstation use.
+
+Built by **CK Technology** and maintained by **GhostKellz**.
+
+---
+
+## 👨‍💻 Scripts Overview
 
 ### `ckel.sh`
-_Post-Install Script (WIP)_  
-Automates installation of base packages, NVIDIA drivers, virtualization tools, Flatpak, KDE tweaks, and system settings. Still evolving based on real-world usage.
+_Initial Post-Install Script_
+- Automates installation of critical packages.
+- Handles NVIDIA driver setup, virtualization tools, Flatpak, KDE tweaks.
+- Continually evolving based on workstation needs.
 
 ### `gpgsync.sh`
-_Automatic GPG & Keyring Sync Script_  
-Refreshes pacman keys and GPG trust database. Intended to run as a cronjob at 2AM. Logs to `~/.logs/ckel/gpgsync.log`.
+_GPG & Keyring Auto-Sync_
+- Syncs GPG keys and Pacman trust database.
+- Designed for cron-based execution (nightly).
+- Logs activity to `~/.logs/ckel/gpgsync.log`.
 
 ### `ghost-kernel-install.sh`
-_Failsafe Custom Kernel + NVIDIA Installer_  
-Automates the full build and installation process for a custom `linux-tkg` kernel with NVIDIA 570 DKMS support. It includes:
+_Atomic Custom Kernel Installer_
+- Builds and installs a custom `linux-tkg` kernel with NVIDIA 570 DKMS.
+- Automatic backup of `/boot`, `initramfs`, `/lib/modules`, and configs.
+- Optional Snapper snapshot before operation.
+- Systemd-boot integration and optional default kernel selection.
+- **Essential for pre-NVIDIA upgrade rollbacks.**
 
-- 🔐 Automatic `/boot`, `initramfs`, and `/lib/modules` backups to `/data/recovery`
-- 🧷 Optional Snapper snapshot before install
-- ⚙️ Systemd-boot loader entry creation
-- 🎯 Optional default kernel selection
-
-Designed to protect against failed boots and provide easy rollback capability.  
-> ⚠️ Tested with **BTRFS root** and **systemd-boot** only.
-
-#### 🧠 Configuration Overview
-
-| Variable                  | Purpose                                          |
-|---------------------------|--------------------------------------------------|
-| `KERNEL_NAME`             | Systemd-boot kernel name (e.g., `linux-ck-615rc2`) |
-| `LINUX_TKG_DIR`           | Path to your linux-tkg directory                |
-| `NVIDIA_ALL_DIR`          | Path to your nvidia-all build directory         |
-| `SNAPSHOT_BEFORE_INSTALL` | Create a Snapper snapshot before install        |
-| `SET_AS_DEFAULT`          | Set this kernel as the default boot entry       |
-| `BACKUP_DIR`              | Auto-created under `/data/recovery/<timestamp>` |
-
-#### 🧼 Backup Contents
+##### 🧬 Kernel Installer Backup Includes
 ```
 /boot/vmlinuz-*
 /boot/initramfs-*
@@ -46,27 +45,36 @@ Designed to protect against failed boots and provide easy rollback capability.
 ~/ghostctl/linux-tkg/linux615rc2-tkg-userpatches/
 ```
 
-#### 📍 Example Usage
+##### 🔍 Example Kernel Install
 ```bash
 cd ~/ghostctl
 ./ghostctl-kernel-install.sh
 ```
 
-This is one of the most important scripts in the system — run it **before every kernel or NVIDIA upgrade** to ensure you can safely revert.
+### `ghostboot.zsh`
+_Dead Kernel / Boot Cleaner_
+- Scans `/boot` for unused kernels and initramfs images.
+- Safely deletes **only** files not associated with your running kernel.
+- Helps maintain clean boot partitions post-upgrades.
+
+##### 🧹 Example Boot Cleanup
+```bash
+cd ~/arch/scripts
+./ghostboot.zsh
+```
 
 ---
 
-## 🧠 Purpose
-This folder is intended as a flexible script hub to:
-- Simplify my Arch post-install workflow
-- Automate key maintenance tasks
-- Keep all workstation setup scripts centralized and version-controlled
+## 🤓 Philosophy
+- **Zsh-native** and optimized for fast, local execution.
+- **Fail-safe** by design (critical backups, rollback points).
+- **Self-host friendly** for maximum control.
+- **Actively updated** based on real workstation use.
 
 ---
 
-## ⏱️ Cron Example
-To sync GPG keys nightly:
-
+## 🕒 Cron Example
+Set up GPG syncing automatically:
 ```bash
 crontab -e
 ```
@@ -77,11 +85,18 @@ Add:
 
 ---
 
-## 🛠 Future Plans
-- Dotfile sync and backup automation
-- Kernel patch switching (BORE/EEVDF)
-- Snapper snapshot management
+## 🛠️ Future Enhancements
+- Dotfile sync & backup automation.
+- Kernel patch toggling (BORE, EEVDF, future schedulers).
+- Advanced Snapper snapshot management.
+- Full multi-system recovery tooling.
 
 ---
 
-> This folder is actively growing. Scripts may be WIP unless otherwise noted.
+> ✨ This directory is **actively growing**. Expect frequent updates, polish, and new utilities.
+
+---
+
+**Made with 💛 by CK Technology**
+
+---
