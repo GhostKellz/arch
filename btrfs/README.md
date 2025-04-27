@@ -1,11 +1,23 @@
-# Backup Strategy for Arch with BTRFS and Synology NAS
+# 🌐 BTRFS Backup Strategy 🔥👻 | GhostKellz
 
-This guide outlines a hybrid local + remote backup strategy using BTRFS snapshots and syncing them to a Synology NAS.
+[![Arch Linux](https://img.shields.io/badge/Arch-Linux-1793D1?style=flat&logo=arch-linux&logoColor=white)](https://archlinux.org) [![BTRFS Snapshots](https://img.shields.io/badge/BTRFS-Snapshots-blue)](https://btrfs.readthedocs.io) [![Synology NAS](https://img.shields.io/badge/Synology-NAS-2d3037)](https://www.synology.com/) [![Restic Backup](https://img.shields.io/badge/Restic-EncryptedBackup-green)](https://restic.net/) [![MinIO Storage](https://img.shields.io/badge/MinIO-Object_Storage-red)](https://min.io/) [![Microsoft Azure](https://img.shields.io/badge/Microsoft-Azure-blue)](https://azure.microsoft.com)
 
 ---
 
-## 📸 Step 1: Take Snapshots with Snapper
-Use Snapper to automate snapshot creation on your BTRFS system.
+# 🔄 Overview
+This guide outlines a **hybrid local + remote backup** strategy for Arch Linux systems using:
+- **BTRFS snapshots** (with Snapper)
+- **Synology NAS** storage (via NFS share)
+- **Optional encrypted backups** (with Restic)
+- **MinIO** object storage (optional cloud backup)
+- **Azure** cloud integration (future expansion)
+
+Designed for resilience, rollback capability, and automation.
+
+---
+
+# 📸 Step 1: Take Snapshots with Snapper
+Use Snapper to automate snapshot creation.
 
 ### Enable Snapshot Timers
 ```bash
@@ -20,12 +32,12 @@ yay -S snap-pac
 
 ---
 
-## 🗃️ Step 2: Mount Synology NAS Share (Preferred via NFS)
+# 📃 Step 2: Mount Synology NAS Share (Preferred via NFS)
 
 ### On Synology:
-1. Enable NFS on the NAS.
+1. Enable **NFS** service.
 2. Create a shared folder (e.g., `linux-backups`).
-3. Allow access to your Arch machine's IP address in NFS permissions.
+3. Allow access to your Arch machine's IP in NFS permissions.
 
 ### On Arch:
 ```bash
@@ -34,56 +46,61 @@ sudo mkdir -p /mnt/nas
 sudo mount -t nfs 192.168.x.x:/volume1/linux-backups /mnt/nas
 ```
 
-Optional: Add to `/etc/fstab`:
+Optional: Add permanent mount to `/etc/fstab`:
 ```bash
 192.168.x.x:/volume1/linux-backups /mnt/nas nfs defaults,noatime,x-systemd.automount 0 0
 ```
 
 ---
 
-## 🔄 Step 3: Sync Snapshots to NAS
+# 🔄 Step 3: Sync Snapshots to NAS
 
-### Option 1: `btrfs send` + `btrfs receive`
+### 🔗 Option 1: `btrfs send` + `btrfs receive`
 ```bash
 sudo btrfs send //.snapshots/XX/snapshot | ssh user@nas 'btrfs receive /volume1/linux-backups/snapshots'
 ```
-- Efficient and fast
-- Requires NAS to support BTRFS (only possible with Synology EXT4-to-BTRFS setup)
+- Fastest method
+- Requires BTRFS support on NAS
 
-### Option 2: `rsync` (Simpler & Reliable)
+### 📁 Option 2: `rsync` (Recommended)
 ```bash
 sudo rsync -aAXv /.snapshots /mnt/nas/arch-snapshots --delete
 ```
-- Works with any NAS filesystem (EXT4, BTRFS, etc.)
-- Use cron or a systemd timer for automation
+- More compatible (works with EXT4, BTRFS, etc.)
+- Easier automation with `cron` or systemd timers
 
 ---
 
-## 🔐 Option 3: Use `restic` for Encrypted Deduplicated Backups
+# 🔐 Option 3: Encrypted Deduplicated Backup with `restic`
+
 ### Install Restic
 ```bash
 sudo pacman -S restic
 ```
 
-### Initialize Backup Repo on NAS
+### Initialize Repository
 ```bash
 restic init --repo /mnt/nas/restic-arch
 ```
 
-### Backup a Folder (e.g., `/home`, `/etc`, `/var`) with Snapshots
+### Backup Important Directories
 ```bash
 restic -r /mnt/nas/restic-arch backup / --exclude={"/mnt","/proc","/sys","/dev","/run"}
 ```
 
-Add password in `/etc/restic/restic.env` or use environment variable securely.
+**Tip:** Store password in `/etc/restic/restic.env` or secure environment variables.
 
 ---
 
-## 🧠 Best Practice
-- Use **Snapper** for rollback and versioning
-- Use **rsync or restic** to back up snapshots and important data to Synology
-- Schedule with **systemd timers** or `cron`
+# 👀 Best Practices
+- ✨ Use **Snapper** for rollback/versioning.
+- ✨ Use **rsync** or **restic** to back up to your Synology NAS.
+- ✨ Use **MinIO** or **Azure** for advanced cloud-based backups.
+- ⏰ Schedule backups via **systemd timers** or `cron` for automation.
 
 ---
 
-**See also:** `snapper.md` for snapshot setup and usage.
+# 🔹 Related
+- See [`snapper.md`](snapper.md) for more detailed snapshot configuration.
+
+> 📢 **This BTRFS backup strategy is proudly maintained and battle-tested by GhostKellz!**
