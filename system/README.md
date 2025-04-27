@@ -1,85 +1,99 @@
-# 🛠️ system/
+# 🛠 CKTech Linux Optimizations
 
-This directory contains system-wide configuration files and tuning tips to help improve performance, responsiveness, and reliability across Arch-based Linux systems. These optimizations are particularly helpful for custom desktop setups, gaming workstations, development environments, and advanced systemd configurations.
+[![Kernel Customization](https://img.shields.io/badge/Kernel-Custom_Tuning-blue)](https://www.kernel.org/) [![System Performance](https://img.shields.io/badge/System-Optimized-brightgreen)](https://archlinux.org) [![ZRAM](https://img.shields.io/badge/ZRAM-Enabled-5C6BC0)](https://wiki.archlinux.org/title/Zram) [![Restic Backups](https://img.shields.io/badge/Backups-Restic-orange)](https://restic.net) [![GhostCache](https://img.shields.io/badge/CachyOS-GhostCache-ff69b4)](https://cachyos.org/) [![AMD Ryzen](https://img.shields.io/badge/Ryzen-7950X3D-ED1C24)](https://www.amd.com/en/processors/ryzen)
 
 ---
 
-## 🧠 Memory and Swap
+## Overview
 
-This section focuses on virtual memory tuning, swap behavior, and low-memory edge cases:
+This directory contains system-wide configuration files and tuning tips to improve **performance**, **responsiveness**, and **reliability** across Arch-based Linux setups. Targeted for custom desktop environments, gaming rigs, dev workstations, and high-efficiency systemd infrastructures.
 
-- **ZRAM Setup** using `zram-generator` with `zstd` compression for faster and more efficient compressed swap
-- Tuning `vm.swappiness` to influence swap tendency
-- Hybrid swap strategies using multiple swap devices
-- Notes on configuring OOM killer behavior to reduce the chance of lockups
+Ghost-tuned for speed, resilience, and clean rollback paths.
 
-> See `memory.md` for full configuration examples and parameter references.
+---
+
+## 🧬 Memory and Swap
+
+Focus on virtual memory optimizations:
+
+- **ZRAM Setup** using `zram-generator` (compression: `zstd`)
+- Smart `vm.swappiness` tuning
+- Hybrid swap strategies
+- OOM killer behaviors tweaked for system stability
+
+> See `memory.md` for full parameter examples and notes.
 
 ---
 
 ## 🧬 Kernel Configuration
 
-Custom kernel and bootloader options for performance tuning and hardware compatibility:
+Updated kernel stack focused on peak performance:
 
-- **Custom Kernel (TKG)** entries for EEVDF scheduler with AMD microcode
-- Bootloader entries using `systemd-boot`
-- `nvidia_drm.modeset=1` and GSP-related NVIDIA toggles
-- `zswap.enabled=0` and `zram` interaction
-- Organize per-kernel boot entries in `kernel/tkg/` or other subfolders
+- **Primary Kernel:** Custom **CachyOS GhostCache** variant (EEVDF scheduler)
+- **Fallback Kernel:** **Custom linux-tkg 6.15 EEVDF** for testing/experimentation
+- Optimized for NVIDIA Open 575 DKMS and AMD 7950X3D
+- Boot entries organized under `systemd-boot`
 
-> See `kernel/` for parameter files and boot configuration examples.
+Boot parameters fine-tuned for:
+- NVIDIA DRM modeset
+- Microcode loading
+- Reduced boot/init delays
+
+> See `kernel/` for full parameter tuning and systemd-boot configs.
 
 ---
 
 ## ⚙️ systemd and Services
 
-Tuning and customizing `systemd` units and logging behavior:
+Custom systemd improvements:
 
-- Override unit files to improve startup times or behavior
-- Journal optimizations (persistent logs, compression)
-- User timers and system-wide timers
-- Startup reliability and service prioritization
-- Restic backup services live under `/restic` for systemd-based backup jobs
+- Unit file overrides for better startup reliability
+- Journal compression & persistent logging
+- System-wide timers for backups, maintenance, health checks
+- Prioritized service launches
 
-> See `systemd.md` for system-level overrides and logging tweaks.
+> See `systemd.md` for examples and reference materials.
 
 ---
 
 ## 💽 Disk I/O and Filesystem Tuning
 
-Optimize disk throughput, latency, and responsiveness:
+Optimized throughput and latency:
 
-- I/O scheduler tuning (`none`, `mq-deadline`, `bfq`) based on device type
-- Disk readahead size tuning
-- Filesystem mount options for performance (e.g., `noatime`, `commit=60`)
-- `udev` rules for persistent block device settings
+- I/O Scheduler tuning (`none`, `mq-deadline`, or `bfq`) based on drive
+- Read-ahead buffer size adjustments
+- Smart `fstab` mount options: `noatime`, `commit=60`, etc.
+- `udev` rules for persistent disk tuning
 
-> See `io.md` for detailed scheduler configurations and notes.
+> See `io.md` for deep dive examples.
 
 ---
 
 ## 🔋 Power Management
 
-Energy efficiency and power-saving tips for desktop and mobile use:
+Energy efficiency options:
 
-- CPU frequency scaling (schedutil, performance, powersave)
-- Power-saving options for idle systems
-- Suspend/hibernate configuration and wake-up behavior
+- CPU Frequency scaling (schedutil/performance)
+- Smart suspend & wake behaviors
+- Power-saving policies for low-load situations
 
-> See `power.md` for power-related sysfs toggles and policies.
+> See `power.md` for tunable values and power scripts.
 
 ---
 
-## 📚 File Index
+## 📘 File Index
 
-| File               | Description                                                             |
-|--------------------|-------------------------------------------------------------------------|
-| `kernel/`          | Kernel tuning: parameters, custom bootloader entries, and TKG configs   |
-| `memory.md`        | ZRAM, swap strategies, and OOM tuning                                   |
-| `io.md`            | Disk scheduler tweaks, disk caching, and readahead settings              |
-| `power.md`         | Desktop and laptop power-saving options                                 |
-| `systemd.md`       | systemd unit overrides, journald configuration, and timers              |
+| File/Folder        | Purpose                                                             |
+|--------------------|---------------------------------------------------------------------|
+| `kernel/`          | Kernel tuning: parameters, systemd-boot configs, fallback options  |
+| `memory.md`        | ZRAM configs, hybrid swap strategies, OOM tweaks                   |
+| `io.md`            | I/O scheduler tuning, disk optimizations                           |
+| `power.md`         | CPU scaling, suspend, power-saving tricks                          |
+| `systemd.md`       | Systemd unit overrides, journald tuning, timer setups              |
 
-> 🗃️ Additional kernel boot settings (e.g. for NVIDIA/AMD) can be found in `kernel/tkg/` and `nvidia/`.
+> 📂 Additional boot settings and fallback kernels in `kernel/tkg/` and `kernel/cachy/`.
 
-Feel free to contribute your own system tuning tips or open issues for deeper topics!
+---
+
+> 🛡️ This directory embodies a Ghost-optimized system: fast, efficient, and prepared for anything.
+
