@@ -1,29 +1,39 @@
-# KDE
+# 👻  KDE + Wayland GhostKellz Setup
+
+[![KDE Plasma](https://img.shields.io/badge/KDE-Plasma-1D99F3)](https://kde.org/plasma-desktop/) [![Wayland](https://img.shields.io/badge/Wayland-Protocol-5C6BC0)](https://wayland.freedesktop.org/) [![NVIDIA Open Kernel](https://img.shields.io/badge/NVIDIA-Open_575_DKMS-76B900)](https://github.com/NVIDIA/open-gpu-kernel-modules) [![AMD Ryzen](https://img.shields.io/badge/Ryzen-7950X3D-ED1C24)](https://www.amd.com/en/processors/ryzen)
+
+---
 
 ## ❄️ Frozen Screen Bug (Pageflip Timeout)
+
 - **Symptom:** One monitor freezes or entire desktop becomes unresponsive under KDE Wayland.
 - **Cause:** `Pageflip timed out! This is a bug in the nvidia-drm kernel driver` (see journal logs).
 - **Temporary Fix:**
   - Switch to a TTY: `Ctrl + Alt + F3` (or F2/F4)
   - Return to graphical session: `Ctrl + Alt + F1`
-  - This refreshes the compositor without rebooting or killing session. Or also logging off and logging back in
-## Error Log
-![System Info](../assets/kde-wl-pageflip-error.png)
+  - This refreshes the compositor without rebooting or killing session. Or also logging off and logging back in.
+
+✅ **Update:** As of **NVIDIA Open Beta DKMS 575** and recent **CachyOS 6.14 kernel**, this pageflip timeout issue appears resolved under standard usage.
 
 ## 🪛 System Info
+
 ![System Info](../assets/CK-Arch-System.png)
 
-## 🛠️ Workarounds
-- Tested with TKG kernel (reduced occurrence)
-- Alternative: Use GNOME (issue does not occur)
-- May require kernel parameter or env var tweaks
+## 🎮 Current NVIDIA RTX 4090 Config
 
-## 📂 Assets
-- `assets/kde-wl-pageflip-error.png`: Screenshot of journal log with `pageflip timeout` errors
+![NVIDIA Config](../assets/NVIDIA_RTX-4090-config.png)
+
+## 🛠️ Workarounds (historical)
+- Previously tested with TKG kernel (reduced occurrence)
+- Alternative: Use GNOME (issue did not occur)
+- Required kernel parameter or env var tweaks before fixes arrived.
 
 ## 📎 Notes
-- Session is not killed—refresh only.
-- Logout or reboot will also resolve temporarily.
-- Might be tied to power management or multi-monitor on NVIDIA.
+- Session was not killed—refresh only.
+- Logout or reboot also resolved temporarily.
+- Originally tied to power management or multi-monitor setups on NVIDIA.
 
 ---
+
+> 🛡️ System is now stable under **KDE + Wayland + NVIDIA Open 575** + **CachyOS 6.14** kernel with AMD 7950X3D architecture.
+
