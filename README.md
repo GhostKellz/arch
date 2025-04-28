@@ -182,15 +182,6 @@ git config --global user.signingkey <KEY_ID>
 git config --global commit.gpgsign true
 ```
 ---
-### 🔐 GPG Key Visual
-
-Here is a visual confirmation of the GPG key used to sign commits for this repository:
-
-<p align="center">
-  <img src="assets/ckelley-GPG.png" alt="GPG Key Screenshot" width="800"/>
-</p>
-
----
 
 ### 🖥️ CK-Arch System Overview
 
@@ -206,4 +197,27 @@ A look at the setup powering this repository:
 
 ---
 
+## 🌐 Join the GhostForge Community
+
+[![GhostKellz.gg Community](https://github.com/GhostKellz/arch/blob/main/assets/Discord.png)](https://ghostkellz.gg)
+
+> **GhostForge** is our growing community for Linux users, gamers, IT professionals, and programmers.
+>  
+> Connect, collaborate, share projects, and vibe with others who believe in the future of open source + tech freedom.
+>  
+> **🌎 Join us today at [GhostKellz.gg](https://ghostkellz.gg) → Discord invite awaits!**
+
+---
+
+
+---
+### 🔐 GPG Key Visual
+
+Here is a visual confirmation of the GPG key used to sign commits for this repository:
+
+<p align="center">
+  <img src="assets/ckelley-GPG.png" alt="GPG Key Screenshot" width="800"/>
+</p>
+
+---
 <p align="center"><b>Feel free to fork or submit pull requests!</b></p>
