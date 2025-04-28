@@ -22,6 +22,12 @@ You can verify signed commits or manually import the GPG public key by visiting 
 
 ---
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/GhostKellz/arch/main/assets/AVATAR-GhostKellz.png" alt="GhostKellz Branding" width="90%"/>
+</p>
+
+
+---
 ## 📂 Repository Structure
 
 ```
