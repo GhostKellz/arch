@@ -9,6 +9,9 @@
   <img src="https://img.shields.io/badge/Optimized-⚡🚀🔒-00bcd4"/>
   <img src="https://img.shields.io/badge/CPU-Ryzen_9_7950X3D-d24c1a?logo=amd&logoColor=white"/>
 
+# Testing Badge
+<img src="https://img.shields.io/badge/GPG_Public_Key-GhostKellz.sh-brightgreen" /> &nbsp;&nbsp;
+<img src="https://img.shields.io/badge/Public_Key-ghostkellz.sh-blue" /> &nbsp;&nbsp;
 </p>
 
 ---
