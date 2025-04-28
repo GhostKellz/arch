@@ -72,8 +72,8 @@ arch/
 │   ├── kvm.md
 │   ├── libvirt.md
 │   ├── passthrough.md
-│   └── tweaks.md
-
+│   ├── tweaks.md
+│   └── docker/                # Docker Compose stacks that live on this workstation
 ├── kde/                       # KDE-specific quirks, bugs, and tuning (Wayland-specific)
 │   ├── README.md              # KDE + Wayland + NVIDIA freeze fix (pageflip)
 │   └── known_issues.md        # Known issues tracking (Wayland pageflip bug, etc.)
@@ -91,52 +91,59 @@ arch/
 ---
 ## ✅ Key Components
 
-- **`cheatsheet.md`** – Common commands, tips, and troubleshooting notes for Arch Linux systems  
-- **`git-cheatsheet.md`** – Git basics, branch management, and daily use shortcuts  
-- **`nvim-cheatsheet.md`** – Neovim keybindings, plugin manager (LazyVim), and LSP tips  
-- **`zsh-cheatsheet.md`** – Zsh shell shortcuts, plugin usage, and shell script tips  
+- **`cheatsheet.md`** – Common commands, tips, and troubleshooting notes for Arch Linux systems
 
-- **`scripts/`** – Modular `ckel.sh` script for provisioning, setup, and automation  
-  - Automates: package install, system services, dotfile linking, Tailnet setup, etc.  
-  - Also triggers theme/app sync (KDE), Restic/backup prep, and networking  
+- **`git-cheatsheet.md`** – Git basics, branch management, and daily use shortcuts
 
-- **`dotfiles/`** – All shell configs and app setups (Zsh, WezTerm, Neovim)  
-  - LazyVim Lua config (Neovim)  
-  - Modular Zsh setup using `.zshrc.d/`  
-  - Starship prompt and loader  
-  - Custom Oh My Zsh theme + plugins  
+- **`nvim-cheatsheet.md`** – Neovim keybindings, plugin manager (LazyVim), and LSP tips
 
-- **`restic/`** – S3-compatible backup system (MinIO) with systemd timers and `.env`  
-  - Includes: timer, service, config, and Restic environment file  
+- **`zsh-cheatsheet.md`** – Zsh shell shortcuts, plugin usage, and shell script tips
 
-- **`btrfs/`** – Subvolume layout, Snapper setup, systemd-boot integration  
+- **`scripts/`** – Modular `ckel.sh` script for provisioning, setup, and automation
 
-- **`nvidia/`** – NVIDIA Open Driver (DKMS) fixes, gaming/NVENC, kernel params  
-  - Includes: gamescope tweaks, modprobe options, GSP tuning  
+  - Automates: package installs, system services, dotfile linking, Tailnet setup, Restic backup prep, and networking tweaks
 
-- **`system/`** – Core system tuning (ZRAM, IO, kernel, suspend)  
-  - Includes:  
-    - `kernel/`: TKG boot config, kernel parameters  
-    - `power.md`: CPU frequency and suspend/hibernate tweaks  
-    - `memory.md`: Swappiness, ZRAM with Zstd compression  
-    - `systemd.md`: Custom overrides, timers, journaling  
+- **`dotfiles/`** – Shell and application configs (Zsh, WezTerm, Neovim)
 
-- **`wayland/`** – Wayland tweaks (input, scaling, env vars, NVIDIA fixes)  
-  - Compositor-agnostic: Gnome/KDE/Hyprland  
-  - Includes: fractional scaling, app compatibility, NVIDIA tweaks  
+  - LazyVim Lua config for Neovim
+  - Modular Zsh setup using `.zshrc.d/`
+  - Starship prompt and custom Oh My Zsh plugin + theme framework
 
-- **`kde/`** – KDE + Wayland tuning, bug tracking, and freeze workaround  
-  - Pageflip timeout issue, monitor freezes  
-  - Known issue tracking file with logs and screenshots  
+- **`restic/`** – S3-compatible encrypted backup system (MinIO / Synology NAS)
 
-- **`networking/`** – Tailnet/Headscale, WireGuard, and remote access routing  
-  - Also includes NGINX Proxy and split-DNS setups  
+  - Includes: systemd timer, service, environment config, automated pruning
 
-- **`virtualization/`** – KVM, QEMU, passthrough fixes, and host tuning  
-  - PCIe passthrough, libvirt configs, and isolation tips  
+- **`btrfs/`** – BTRFS subvolume layouts, Snapper snapshot automation, systemd-boot integration
 
-- **`assets/`** – Screenshots and images for markdown docs
+- **`nvidia/`** – NVIDIA OpenDKMS fixes and performance tuning
 
+  - Gamescope tweaks, modprobe parameters, GSP firmware handling
+
+- **`system/`** – Core system tuning (ZRAM, disk IO, memory, suspend behavior)
+
+  - Kernel customizations (Cachy/BORE/EEVDF)
+  - ZRAM with zstd, I/O scheduler tuning, swap management
+
+- **`wayland/`** – Wayland-specific tweaks (global env vars, app compatibility, NVIDIA fixes)
+
+  - Covers KDE, GNOME, Hyprland environments
+
+- **`kde/`** – KDE Plasma Wayland tweaks and bug workarounds
+
+  - Solves multi-monitor pageflip timeout bugs
+
+- **`networking/`** – Advanced home + cloud networking (Headscale, WireGuard SD-WAN, NGINX proxying)
+
+  - Split DNS setups, secure remote access, multi-WAN routing
+
+- **`virtualization/`** – KVM, Libvirt, PCIe passthrough optimizations for workstation VMs
+
+- **`docker/`** – LXC/Docker AI Services and Automation Hub
+
+  - Includes: OpenWebUI frontend, Ollama backend, NGINX proxy stacks
+  - Additional Compose files at [GhostKellz Docker Repo](https://github.com/ghostkellz/docker)
+
+- **`assets/`** – Screenshots and visual resources for all documentation
 
 ---
 
