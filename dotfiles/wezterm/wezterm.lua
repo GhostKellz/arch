@@ -1,65 +1,81 @@
+-- GhostKellz Terminal 2.0 --
 local wezterm = require 'wezterm'
+local act = wezterm.action
 
--- Custom color scheme
-local custom_scheme = wezterm.color.get_builtin_schemes()["tokyonight"]
+-- Define the custom GhostKellz color scheme
+local ghostkellz_scheme = wezterm.color.get_builtin_schemes()["tokyonight"]
 
--- Custom color adjustments
-custom_scheme.ansi = {
-  "#0c0f17", -- black (bg)
-  "#ff5c57", -- red
-  "#8aff80", -- green
-  "#f3f99d", -- yellow
-  "#57c7ff", -- hacker blue
-  "#ff6ac1", -- pink-purple
-  "#9aedfe", -- light blue
-  "#57c7ff", -- light blue (white set to blue)
+ghostkellz_scheme.ansi = {
+  "#0c0f17", "#ff5c57", "#8aff80", "#f3f99d",
+  "#57c7ff", "#ff6ac1", "#9aedfe", "#57c7ff",
 }
-
-custom_scheme.brights = {
-  "#686868", -- dark gray
-  "#ff5c57", -- red
-  "#8aff80", -- green
-  "#f3f99d", -- yellow
-  "#57c7ff", -- hacker blue
-  "#ff6ac1", -- pink-purple
-  "#9aedfe", -- light blue
-  "#57c7ff", -- light blue (again, white set to blue)
+ghostkellz_scheme.brights = {
+  "#686868", "#ff5c57", "#8aff80", "#f3f99d",
+  "#57c7ff", "#ff6ac1", "#9aedfe", "#57c7ff",
 }
-
--- Set the background and foreground colors to match the theme
-custom_scheme.background = "#0d1117"
-custom_scheme.foreground = "#57c7ff" -- This sets all the text to light blue (your desired color)
-custom_scheme.cursor_bg = "#57c7ff"
-custom_scheme.cursor_fg = "#0d1117"
-custom_scheme.selection_bg = "#23476a"
-custom_scheme.selection_fg = "#ffffff"
+ghostkellz_scheme.background = "#0d1117"
+ghostkellz_scheme.foreground = "#57c7ff"
+ghostkellz_scheme.cursor_bg = "#57c7ff"
+ghostkellz_scheme.cursor_fg = "#0d1117"
+ghostkellz_scheme.selection_bg = "#23476a"
+ghostkellz_scheme.selection_fg = "#ffffff"
 
 return {
+  -- Color Scheme (ghostkellz customized)
   color_schemes = {
-    ["ckterm"] = custom_scheme,  -- Custom theme name
+    ["ghostkellz"] = ghostkellz_scheme,
   },
-  color_scheme = "ckterm",  -- Use this scheme as default
+  color_scheme = "ghostkellz",
+
+  -- GPU and rendering
   enable_wayland = true,
   front_end = "WebGpu",
+  webgpu_power_preference = "HighPerformance",
+  webgpu_force_fallback_adapter = false,
+
+  -- Font settings
   font = wezterm.font_with_fallback {
-    "JetBrainsMono Nerd Font",
-    "FiraCode Nerd Font",
+    { family = "JetBrainsMono Nerd Font", weight = "Regular" },
+    { family = "FiraCode Nerd Font", weight = "Regular" },
+    { family = "Symbols Nerd Font Mono", weight = "Regular" },
+    { family = "Noto Color Emoji" },
+    { family = "Noto Sans", weight = "Regular" },
   },
   font_size = 13.0,
-  default_prog = { "/bin/zsh" },
+
+  -- Appearance
   window_background_opacity = 0.95,
   hide_tab_bar_if_only_one_tab = true,
   use_fancy_tab_bar = false,
-  keys = {
-    { key = "v", mods = "CTRL|SHIFT", action = wezterm.action.SplitHorizontal { domain = "CurrentPaneDomain" } },
-    { key = "s", mods = "CTRL|SHIFT", action = wezterm.action.SplitVertical { domain = "CurrentPaneDomain" } },
-    { key = "V", mods = "CTRL|SHIFT", action = wezterm.action.PasteFrom("Clipboard") },
-    { key = "C", mods = "CTRL|SHIFT", action = wezterm.action.CopyTo("Clipboard") },
-  },
+  default_prog = { "/bin/zsh" },
+
+  -- Cursor behavior
+  default_cursor_style = "BlinkingBlock",
+  cursor_blink_rate = 800,
+
+  -- Window padding
   window_padding = {
     left = 4,
     right = 4,
     top = 2,
     bottom = 2,
   },
+
+  -- Keybindings
+  keys = {
+    -- Split panes
+    { key = "v", mods = "CTRL|SHIFT", action = act.SplitHorizontal { domain = "CurrentPaneDomain" } },
+    { key = "s", mods = "CTRL|SHIFT", action = act.SplitVertical { domain = "CurrentPaneDomain" } },
+
+    -- Clipboard
+    { key = "V", mods = "CTRL|SHIFT", action = act.PasteFrom("Clipboard") },
+    { key = "C", mods = "CTRL|SHIFT", action = act.CopyTo("Clipboard") },
+
+    -- Debug overlay
+    { key = "L", mods = "CTRL|SHIFT", action = act.ShowDebugOverlay },
+  },
+
+  -- Performance
+  adjust_window_size_when_changing_font_size = false,
+  native_macos_fullscreen_mode = true,
 }
