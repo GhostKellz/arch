@@ -73,13 +73,20 @@ Otherwise, Trayscale will fail to connect to the local Tailscale daemon.
 
 ---
 
-# 📸 Showcasing The Setup
-
-| Screenshot        | Description |
-|-------------------|-------------|
-| ![Headscale-DERP Map](../../assets/Headscale-derper.png) | Custom DERP Region Map View |
+# 📸 Showcase Mesh VPN Stack
+| Screenshot | Description |
+|:-----------|:------------|
+| ![Headscale DERP Map](../../assets/headscale-derper.png) | Custom DERP Region Map View |
 | ![Headplane GUI](../../assets/headplane.png) | Headplane Web UI (OIDC Login) |
 | ![Trayscale GUI](../../assets/trayscale.png) | Live Peer Connection Graph |
+
+---
+
+> 👻 **GhostKellz Networking Stack**: Zero Trust. Maximum Resilience. Absolute Control.
+>  
+> 🛡️ _Stay encrypted. Stay sovereign._
+
+
 
 ---
 
