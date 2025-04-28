@@ -17,6 +17,9 @@
 > This is a personal, modular, and actively maintained Arch Linux configuration.  
 > Tuned for performance, security, and professional daily driver use.
 
+🔐 This repository uses GPG commit signing with a private WKD-compliant public key.
+You can verify signed commits or manually import the GPG public key by visiting ghostkellz.sh.
+
 ---
 
 ## 📂 Repository Structure
