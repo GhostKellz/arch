@@ -76,7 +76,7 @@ Otherwise, Trayscale will fail to connect to the local Tailscale daemon.
 
 | Screenshot | Description |
 |:-----------|:------------|
-| ![Headscale DERP Map](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/headscale-derper.png) | Custom DERP Region Map View |
+| ![Headscale DERP Map](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/Headscale-derper.png) | Custom DERP Region Map View |
 | ![Headplane GUI](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/headplane.png) | Headplane Web UI (OIDC Login) |
 | ![Trayscale GUI](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/trayscale.png) | Live Peer Connection Graph |
 
