@@ -20,6 +20,7 @@
 🔐 This repository uses GPG commit signing with a private WKD-compliant public key.
 You can verify signed commits or manually import the GPG public key by visiting ghostkellz.sh.
 
+🌐 The GPG public key is hosted and visually confirmed on the GhostKellz.sh landing page for transparency and trust validation.
 ---
 
 ## 📂 Repository Structure
