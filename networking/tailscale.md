@@ -72,13 +72,18 @@ Otherwise, Trayscale will fail to connect to the local Tailscale daemon.
 - Uptime backed by multiple UPS units for servers + home system,  Standby Generator at home, SDWAN Technology for ISP interruptions 
 
 ---
+## 📸 Showcasing The Setup
 
-# 📸 Showcase Mesh VPN Stack
 | Screenshot | Description |
 |:-----------|:------------|
-| ![Headscale DERP Map](../../assets/headscale-derper.png) | Custom DERP Region Map View |
-| ![Headplane GUI](../../assets/headplane.png) | Headplane Web UI (OIDC Login) |
-| ![Trayscale GUI](../../assets/trayscale.png) | Live Peer Connection Graph |
+| ![Headscale DERP Map](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/headscale-derper.png) | Custom DERP Region Map View |
+| ![Headplane GUI](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/headplane.png) | Headplane Web UI (OIDC Login) |
+| ![Trayscale GUI](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/trayscale.png) | Live Peer Connection Graph |
+
+---
+
+> 👻 **GhostKellz Networking Stack**: Zero Trust. Maximum Resilience. Absolute Control.  
+> 🛡️ _Stay encrypted. Stay sovereign._
 
 ---
 
