@@ -55,6 +55,10 @@ alias dotfiles='exa -a --icons --group-directories-first | grep "^\\."'
 alias update='sudo pacman -Syu --noconfirm && yay -Qua --quiet | grep -v "ignoring package upgrade"'
 alias ffx='MOZ_ENABLE_WAYLAND=1 firefox --profile ~/.mozilla/firefox/b2s53f9w.default-release'
 
+# ⚙️ Rebuild DKMS and Initramfs (ernel)manually
+alias rebuild='echo "[+] Rebuilding DKMS modules..." && sudo dkms autoinstall && echo "[+] Regenerating initramfs..." && sudo mkinitcpio -P && echo "[+] Done ✅"'
+alias rebuild-test='echo "[TEST] Rebuilding DKMS modules..." && sudo dkms autoinstall && echo "[TEST] Regenerating initramfs..." && sudo mkinitcpio -P && echo "[TEST] Finished ✅"'
+
 # ── Git Aliases ─────────────────────────────────────────────
 alias gcm='git commit -m'
 alias gaa='git add .'
@@ -84,7 +88,6 @@ alias publicip='dig @resolver4.opendns.com myip.opendns.com +short'
 alias portscan='nmap -Pn -p-'
 alias sniff='sudo tcpdump -i any -n'
 
-
 # ── Completion System ───────────────────────────────────────
 autoload -Uz compinit
 compinit
@@ -107,6 +110,11 @@ export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
 export __GL_YIELD="USLEEP"
 export __GL_SYNC_TO_VBLANK="1"
 
+# ── NVIDIA Vulkan Environment Variables ────────────────────────────
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json
+export VK_LAYER_PATH=/usr/share/vulkan/explicit_layer.d
+
 # ── GTK / Cursor Theme ──────────────────────────────────────
 export GTK_THEME=Sweet-Amber
 export XCURSOR_THEME=Tela
@@ -114,11 +122,14 @@ export XCURSOR_THEME=Tela
 # ── Gaming Environment ──────────────────────────────────────
 export DXVK_ASYNC=1
 export WINE_FULLSCREEN_FSR=1
+export WINE_FULLSCREEN_FSR_STRENGTH=5
 export __GL_GSYNC_ALLOWED=1
 export __GL_VRR_ALLOWED=1
+export __GL_SHADER_DISK_CACHE=1
+export __GL_SHADER_DISK_CACHE_PATH="$HOME/.nv_shader_cache"
 export STEAM_FORCE_DESKTOPUI_SCALING=1
+export VKD3D_CONFIG=dxr11
 export MANGOHUD=1
-
 
 # ── Paths ───────────────────────────────────────────────────
 export PATH="$HOME/.local/bin:$PATH"
