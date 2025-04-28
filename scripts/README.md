@@ -46,6 +46,23 @@ _Boot Image Cleaner_
 - Prevents boot partition overflow
 - Only keeps your active working kernels (safe and quick!)
 
+### 🌐 `update-root-hints.zsh`
+_Weekly Root DNS Hints Refresher._
+
+This script automates downloading the latest `root.hints` file from [Internic](https://www.internic.net/domain/named.root).  
+Keeping your root servers up-to-date ensures maximum resolver reliability, DNSSEC validation, and minimal lookup errors.
+
+It automatically:
+- Downloads the newest root hints to `/var/lib/unbound/root.hints`
+- Restarts Unbound cleanly to apply updates
+- Is scheduled via `systemd` to run once a week without any user action required
+- No manual steps are needed under normal conditions — the systemd timer handles everything.
+
+
+_Example usage (manual):_
+```bash
+sudo /usr/local/bin/update-root-hints.zsh
+```
 ---
 
 ## 🔍 Example Usage
