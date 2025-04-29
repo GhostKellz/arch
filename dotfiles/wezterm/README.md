@@ -1,5 +1,10 @@
 # 👻🖥️ GhostKellz Terminal 2.0
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) 
+[![Arch Linux](https://img.shields.io/badge/built%20for-Arch-blue)](https://archlinux.org/) 
+[![GPU: NVIDIA](https://img.shields.io/badge/GPU-NVIDIA-green)](https://www.nvidia.com/) 
+[![Neovim](https://img.shields.io/badge/Neovim-0.9+-green?logo=neovim&logoColor=white)](https://neovim.io/)
+
 A performance-focused, minimalist WezTerm setup with a hacker-blue aesthetic and GPU acceleration. Designed for modern Arch-based environments running Wayland + NVIDIA.
 
 ---
@@ -42,10 +47,10 @@ dotfiles/wezterm/
 ## 📸 Previews
 
 ### WezTerm Appearance
-![WezTerm Preview](assets/wezterm-PreviewPic.png)
+![WezTerm Preview](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/wezterm-PreviewPic.png)
 
 ### Neovim Inside WezTerm
-![Neovim Preview](assets/nvim-preview.png)
+![Neovim Preview](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/nvim-preview.png)
 
 ---
 
@@ -59,4 +64,3 @@ Wayland/NVIDIA is fully supported.
 ---
 
 👻 Made by [GhostKellz](https://github.com/ghostkellz)
-
