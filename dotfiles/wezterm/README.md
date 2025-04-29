@@ -42,10 +42,10 @@ dotfiles/wezterm/
 ## 📸 Previews
 
 ### WezTerm Appearance
-![WezTerm Preview](./assets/wezterm-PreviewPic.png)
+![WezTerm Preview](assets/wezterm-PreviewPic.png)
 
 ### Neovim Inside WezTerm
-![Neovim Preview](./assets/nvim-preview.png)
+![Neovim Preview](assets/nvim-preview.png)
 
 ---
 
