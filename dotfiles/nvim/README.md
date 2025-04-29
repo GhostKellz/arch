@@ -1,6 +1,8 @@
 # 👻 GhostKellz Neovim Theme
 
-![Preview](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/Neovim-theme.png)
+![Neovim](https://img.shields.io/badge/Neovim-0.9+-brightgreen?style=for-the-badge&logo=neovim&logoColor=white)
+![GPU Accelerated (NVIDIA)](https://img.shields.io/badge/GPU_Accelerated-NVIDIA-76b900?style=for-the-badge&logo=nvidia&logoColor=white)
+![Arch Linux](https://img.shields.io/badge/Arch_Linux-Powered-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)
 
 A clean, GPU-accelerated, Wayland-optimized Neovim setup built for speed, precision, and style.
 Designed around a heavily enhanced **TokyoNight** theme with custom tweaks for an improved developer experience.
