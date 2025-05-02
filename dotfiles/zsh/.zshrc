@@ -145,3 +145,8 @@ if [[ -r /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
   echo "%F{green}[zsh-autocomplete] loaded ✅%f"
 fi
 
+# ─── Go Environment  ────────────────────────────────────────────────
+# Go environment Variables
+export GOPATH=$HOME/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
