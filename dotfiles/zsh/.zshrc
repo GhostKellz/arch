@@ -145,8 +145,16 @@ if [[ -r /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
   echo "%F{green}[zsh-autocomplete] loaded ✅%f"
 fi
 
-# ─── Go Environment  ────────────────────────────────────────────────
+# ─── Go Dev Environment  ────────────────────────────────────────────────
 # Go environment Variables
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
+
+# ─── Python Dev Environment  ────────────────────────────────────────────────
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# ─── Rust Dev Environment  ────────────────────────────────────────────────
+export PATH="$HOME/.cargo/bin:$PATH"
