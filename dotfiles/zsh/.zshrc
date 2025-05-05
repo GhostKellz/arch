@@ -158,3 +158,6 @@ eval "$(pyenv init -)"
 
 # ─── Rust Dev Environment  ────────────────────────────────────────────────
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# ─── ccache  ────────────────────────────────────────────────
+export PATH="/usr/lib/ccache/bin:$PATH"
