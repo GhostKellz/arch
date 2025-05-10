@@ -15,6 +15,7 @@ plugins=(
   zsh-completions
   zsh-history-substring-search
   colored-man-pages
+  zsh-syntax-highlighting
 )
 source $ZSH/oh-my-zsh.sh
 
@@ -64,8 +65,10 @@ alias gcm='git commit -m'
 alias gaa='git add .'
 alias gps='git push origin main'
 
-# ── GPG Aliases ─────────────────────────────────────────────
+# ── GPG  ─────────────────────────────────────────────
 alias gpgchk='gpg --locate-keys ckelley@ghostkellz.sh'
+
+[[ -z "$GPG_AGENT_INFO" ]] && export GPG_AGENT_INFO="$(gpgconf --list-dirs agent-socket)"
 
 # ── Network Aliases ───────────────────────────────────────
 alias pgd='ping google.com'
