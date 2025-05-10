@@ -161,3 +161,8 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # ─── ccache  ────────────────────────────────────────────────
 export PATH="/usr/lib/ccache/bin:$PATH"
+export CC="ccache gcc"
+export CXX="ccache g++"
+
+# ─── ghostty  ────────────────────────────────────────────────
+alias ghostty="ghostty --config ~/.config/ghostty/config.toml"
