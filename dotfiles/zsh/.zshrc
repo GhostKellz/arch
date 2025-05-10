@@ -165,5 +165,4 @@ export CC="ccache gcc"
 export CXX="ccache g++"
 
 # ─── ghostty  ────────────────────────────────────────────────
-chsh -s $(which zsh)
 alias ghostty="ghostty --config ~/.config/ghostty/config.toml"
