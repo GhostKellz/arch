@@ -48,6 +48,15 @@ When encountering new bugs or driver regressions:
 - NVIDIA GSP Firmware toggle confusion (`NVreg_EnableGpuFirmware=0` vs `1`)
 - Wayland + PipeWire + Screenshot bugs (Spectacle)
 - TKG-specific scheduler behavior edge cases?
-
 Feel free to append more issues as they appear or track experimental fixes!
 
+---
+## Fix
+
+- Ensure you're using driver version `575.XX` from the open beta stream
+- Reboot and verify pageflip freezes no longer occur under KDE Wayland
+
+> This branch no longer appears to trigger `pageflip timeout` errors with KWin + Wayland.  
+> Bonus: Improved GSP/PSR handling under recent firmware.
+
+--- 
