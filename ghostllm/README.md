@@ -1,11 +1,23 @@
-# 🧠 ghostllm
+# 👻 GhostLLM: Self-Hosted AI Mesh with Ollama + LiteLLM + OpenWebUI
 
 [![Arch-Based](https://img.shields.io/badge/Arch%20Linux-optimized-blue?logo=arch-linux\&logoColor=white)](https://archlinux.org)
 [![LLM Powered](https://img.shields.io/badge/Ollama-33B-inference-success?logo=openai\&logoColor=white)](https://ollama.com)
 [![VSCode Integrated](https://img.shields.io/badge/VSCode-Continue-blueviolet?logo=visualstudiocode\&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=Continue.continue)
 [![LiteLLM API](https://img.shields.io/badge/LiteLLM-Staging-yellow?logo=fastapi\&logoColor=white)](https://github.com/BerriAI/litellm)
+[![Federated Nodes](https://img.shields.io/badge/GPU%20Pool-4090%2F3070%2F2060-green?logo=nvidia\&logoColor=white)](https://ollama.com)
+[![NVIDIA Enabled](https://img.shields.io/badge/NVIDIA-Accelerated-success?logo=nvidia\&logoColor=white)](https://www.nvidia.com/)
 
-> Self-hosted AI tooling and model integration on Arch Linux and Proxmox.
+> Self-hosted, federated AI mesh using Ollama + LiteLLM + OpenWebUI. Powered by Arch, Proxmox, and RTX-class GPUs.
+
+---
+
+## 📆 System Overview
+
+| Component           | Hostname     | Role                              | GPU      |
+| ------------------- | ------------ | --------------------------------- | -------- |
+| Arch Daily Driver   | `ck-arch`    | Primary Ollama + LiteLLM Gateway  | RTX 4090 |
+| Workstation (Win11) | `reso-dt-01` | Remote Ollama (WSL2 planned)      | RTX 3070 |
+| Proxmox Node        | `pve-host1`  | OpenWebUI + LiteLLM LXC Instances | RTX 2060 |
 
 ---
 
@@ -13,37 +25,41 @@
 
 ### 🧠 LLMs via Ollama (Arch Workstation)
 
-* `deepseek-coder:33b` – for high-performance code completion
-* `deepseek-r1:32b` – general-purpose model
-* `llama3:8b` – fast fallback / light interaction
+* `deepseek-coder:33b` — for high-performance code completion
+* `deepseek-r1:32b` — general-purpose model
+* `llama3:8b` — fallback, interactive local model
+* `dolphin-mixtral` — exploratory / multimodal support
 
-All models are pulled locally via [Ollama](https://ollama.com), with GPU acceleration (RTX 4090) for full-speed inference.
+> All models are accelerated via RTX 4090. Other nodes (3070/2060) can register their Ollama endpoints in future.
 
 ---
 
 ### 👤 OpenWebUI (Proxmox LXC)
 
-* Hosted remotely in a lightweight LXC container
-* Reverse-proxied and accessible over internal VPN
-* Primary chat/interaction UI when not using the terminal
+* Lightweight LXC on `pve-host1`
+* Reverse-proxied via NGINX
+* Internal chat frontend for any Ollama backend (including LiteLLM)
 
 ---
 
-### 🧹 VSCode Integration
+### 🛩️ VSCode Integration (Continue)
 
 * [Continue Extension](https://marketplace.visualstudio.com/items?itemName=Continue.continue)
-* Fully wired to use `deepseek-coder:33b` as the default model
-* Config file managed under `ghostllm/vscode/config.yaml`
+* Default model set to `deepseek-coder:33b`
+* Config lives in `ghostllm/vscode/config.yaml`
 
 ---
 
-### 🧪 LiteLLM (Staging)
+### 🦜 LiteLLM (API Gateway)
 
-* A dedicated LXC is being staged for **LiteLLM** to provide:
+* LXC container hosted on `pve-host1`
+* Provides unified OpenAI-compatible API at [`https://ai.cktechx.io`](https://ai.cktechx.io)
+* Supports:
 
-  * Unified OpenAI-compatible API
-  * Per-user limits, API keys, proxy routing
-  * Integration target for scripts, clients, and dev tools
+  * Centralized routing to multiple Ollama backends
+  * API key auth with `sk-*` tokens
+  * Native support for Azure/OpenAI/Gemini API fallback
+* Access logs and usage routed via NGINX and `.env`
 
 ---
 
@@ -51,27 +67,31 @@ All models are pulled locally via [Ollama](https://ollama.com), with GPU acceler
 
 ```bash
 ghostllm/
-├── vscode/         # Continue config for VSCode
-├── ollama/         # Ollama model notes, pull scripts
-├── open-webui/     # OpenWebUI setup & reverse proxy
-├── nginx/          # (optional) proxy configs
+├── vscode/         # Continue config (VSCode)
+├── ollama/         # Pull scripts, model info
+├── open-webui/     # Setup + reverse proxy
+├── nginx/          # Public proxy configs (SSL)
+├── litellm_config.yaml
+├── .env            # API keys and salt
+├── run.sh          # Local startup wrapper
 ```
 
 ---
 
 ## ⚙️ Platform
 
-* **Host**: Arch Linux (Workstation)
-* **Server**: Proxmox (OpenWebUI + LiteLLM LXCs)
-* **GPU**: NVIDIA RTX 4090 (CUDA enabled for Ollama)
+* **Primary Host**: Arch Linux (CK-arch, RTX 4090)
+* **Work Remote**: Win11 (reso-dt-01, RTX 3070 WSL2 planned)
+* **Proxmox LXC Host**: pve-host1 (5900X / RTX 2060)
 
 ---
 
 ## 🧠 Future Plans
 
-* Add Weaviate or Qdrant for embeddings
-* Automate model selection via `ghostctl`
-* Integrate ghostllm into PhantomBoot + GhostMesh stack
+* Add vector DB for RAG (Weaviate, Chroma, or Qdrant)
+* Expand `ghostctl` to register remote nodes and do health checks
+* Integrate LiteLLM auth + usage logging via Loki/Grafana
+* Merge into `PhantomBoot` as part of recovery+model bootstrap
+* Auto-route models by availability/load (4090/3070/2060 fallback)
 
 ---
-
