@@ -1,0 +1,50 @@
+model_list:
+  - model_name: ollama-llama3
+    litellm_params:
+      model: ollama/llama3
+      api_base: http://10.0.0.21:11434
+      api_key: null
+
+  - model_name: ollama-deepseek-r1
+    litellm_params:
+      model: ollama/deepseek-r1:32b
+      api_base: http://10.0.0.21:11434
+      api_key: null
+
+  - model_name: ollama-deepseek-coder
+    litellm_params:
+      model: ollama/deepseek-coder:33b
+      api_base: http://10.0.0.21:11434
+      api_key: null
+
+  - model_name: ollama-dolphin
+    litellm_params:
+      model: ollama/dolphin-mixtral
+      api_base: http://10.0.0.21:11434
+      api_key: null
+
+  - model_name: ollama-yi
+    litellm_params:
+      model: ollama/yi:34b
+      api_base: http://10.0.0.21:11434
+      api_key: null
+
+  - model_name: openai-gpt4
+    litellm_params:
+      model: gpt-4
+      api_key: os.environ/OPENAI_API_KEY
+
+  - model_name: azure-gpt4
+    litellm_params:
+      model: azure/gpt-4
+      api_key: os.environ/AZURE_API_KEY
+      api_base: os.environ/AZURE_API_BASE
+      api_version: os.environ/AZURE_API_VERSION
+
+  - model_name: gemini-pro
+    litellm_params:
+      model: gemini/gemini-pro
+      api_key: os.environ/GOOGLE_API_KEY
+
+general_settings:
+  allow_any_master_key: true
