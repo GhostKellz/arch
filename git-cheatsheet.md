@@ -86,6 +86,20 @@ git reset <file>                          # Unstage a file
 git commit --amend                        # Edit last commit message
 ```
 
+
+## 📁 Repo setup to Github
+
+```bash
+touch README.md
+touch LICENSE
+git init 
+git add . 
+git commit -m "Initial commit: bootstrap"
+gh repo create ghostkellz/NAMEDREPO --public --source=. --remote=origin --push
+git remote -v
+git push -u origin main
+```
+
 ---
 
 ## 🛠 Helpful Tips
