@@ -56,6 +56,10 @@ alias dotfiles='exa -a --icons --group-directories-first | grep "^\\."'
 alias update='sudo pacman -Syu --noconfirm && yay -Qua --quiet | grep -v "ignoring package upgrade"'
 alias ffx='MOZ_ENABLE_WAYLAND=1 firefox --profile ~/.mozilla/firefox/b2s53f9w.default-release'
 
+# Battle.net
+alias hbnet='WINEPREFIX=~/.wine-bnet64 wine64 ~/.wine-bnet64/drive_c/Program\ Files\ \(x86\)/Battle.net/Battle.net.exe'
+
+
 # ⚙️ Rebuild DKMS and Initramfs (ernel)manually
 alias rebuild='echo "[+] Rebuilding DKMS modules..." && sudo dkms autoinstall && echo "[+] Regenerating initramfs..." && sudo mkinitcpio -P && echo "[+] Done ✅"'
 alias rebuild-test='echo "[TEST] Rebuilding DKMS modules..." && sudo dkms autoinstall && echo "[TEST] Regenerating initramfs..." && sudo mkinitcpio -P && echo "[TEST] Finished ✅"'
@@ -64,7 +68,7 @@ alias rebuild-test='echo "[TEST] Rebuilding DKMS modules..." && sudo dkms autoin
 alias gcm='git commit -m'
 alias gaa='git add .'
 alias gps='git push origin main'
-
+alias ghostinit="~/scripts/bootstrap-repo.zsh"
 # ── GPG  ─────────────────────────────────────────────
 alias gpgchk='gpg --locate-keys ckelley@ghostkellz.sh'
 
