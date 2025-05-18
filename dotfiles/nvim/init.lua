@@ -47,6 +47,63 @@ vim.api.nvim_set_hl(0, "Operator", { fg = "#57c7ff", bg = "none" })       -- Lig
 vim.keymap.set("n", "<leader>f", "<cmd>Telescope find_files<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>g", "<cmd>Telescope live_grep<cr>", { noremap = true })
 
+
+-- Copilot inline suggestions
+vim.keymap.set("i", "<M-l>", function()
+  require("copilot.suggestion").accept()
+end, { desc = "Copilot Accept Suggestion" })
+
+vim.keymap.set("i", "<M-]>", function()
+  require("copilot.suggestion").next()
+end, { desc = "Copilot Next Suggestion" })
+
+vim.keymap.set("i", "<M-[>", function()
+  require("copilot.suggestion").prev()
+end, { desc = "Copilot Previous Suggestion" })
+
+-- Copilot Chat
+vim.keymap.set({ "n", "v" }, "<leader>aa", function()
+  require("CopilotChat").toggle()
+end, { desc = "Toggle Copilot Chat" })
+
+vim.keymap.set({ "n", "v" }, "<leader>ax", function()
+  require("CopilotChat").reset()
+end, { desc = "Clear Copilot Chat" })
+
+vim.keymap.set({ "n", "v" }, "<leader>aq", function()
+  vim.ui.input({ prompt = "Quick Chat: " }, function(input)
+    if input ~= "" then
+      require("CopilotChat").ask(input)
+    end
+  end)
+end, { desc = "Quick Prompt to Copilot Chat" })
+
+vim.keymap.set({ "n", "v" }, "<leader>ap", function()
+  require("CopilotChat").select_prompt()
+end, { desc = "Choose Prompt Template (CopilotChat)" })
+
+-- Gen.nvim (Ollama / LiteLLM prompt tool)
+vim.keymap.set({ "n", "v" }, "<leader>ag", function()
+  require("gen").select_model()
+end, { desc = "Change AI Model (gen.nvim)" })
+
+vim.keymap.set({ "n", "v" }, "<leader>ar", function()
+  require("gen").prompts["Refactor Code"]()
+end, { desc = "AI: Refactor Code" })
+
+vim.keymap.set({ "n", "v" }, "<leader>ad", function()
+  require("gen").prompts["Explain Code"]()
+end, { desc = "AI: Explain Code" })
+
+vim.keymap.set({ "n", "v" }, "<leader>ac", function()
+  require("gen").prompts["Complete Code"]()
+end, { desc = "AI: Complete Code" })
+
+vim.keymap.set({ "n", "v" }, "<leader>aa", function()
+  require("gen").prompts["Add Tests"]()
+end, { desc = "AI: Generate Tests" })
+
+
 -- LSP Defaults
 local lsp = require("lspconfig")
 lsp.lua_ls.setup({})
