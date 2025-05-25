@@ -29,6 +29,12 @@
   # Zsh >= 5.1 is required.
   [[ $ZSH_VERSION == (5.<1->*|<6->.*) ]] || return
 
+  typeset -g POWERLEVEL9K_CUSTOM_USER_CONTENT="GhostKellz"
+  typeset -g POWERLEVEL9K_CUSTOM_USER_BACKGROUND=17
+  typeset -g POWERLEVEL9K_CUSTOM_USER_FOREGROUND=122
+  
+  typeset -g POWERLEVEL9K_USER_BACKGROUND=17  
+  typeset -g POWERLEVEL9K_USER_FOREGROUND=122
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
@@ -108,6 +114,7 @@
     per_directory_history   # Oh My Zsh per-directory-history local/global indicator
     # cpu_arch              # CPU architecture
     user
+    custom_user             # GhostKellz
     time                    # current time
     # =========================[ Line #2 ]=========================
     newline
