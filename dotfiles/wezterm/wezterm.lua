@@ -33,15 +33,15 @@ return {
   webgpu_power_preference = "HighPerformance",
   webgpu_force_fallback_adapter = false,
 
-  -- Font settings
-  font = wezterm.font_with_fallback {
-    { family = "JetBrainsMono Nerd Font", weight = "Regular" },
-    { family = "FiraCode Nerd Font", weight = "Regular" },
-    { family = "Symbols Nerd Font Mono", weight = "Regular" },
-    { family = "Noto Color Emoji" },
-    { family = "Noto Sans", weight = "Regular" },
-  },
-  font_size = 13.0,
+-- Font settings
+font = wezterm.font_with_fallback {
+  { family = "FiraCode Nerd Font", weight = "Bold" },
+  { family = "JetBrainsMono Nerd Font", weight = "Bold" }, -- fallback
+  { family = "Symbols Nerd Font Mono", weight = "Bold" },
+  { family = "Noto Color Emoji" },
+  { family = "Noto Sans", weight = "Bold" },
+},
+font_size = 12.0,
 
   -- Appearance
   window_background_opacity = 0.95,
