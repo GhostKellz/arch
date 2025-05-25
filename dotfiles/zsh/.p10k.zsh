@@ -29,16 +29,26 @@
   # Zsh >= 5.1 is required.
   [[ $ZSH_VERSION == (5.<1->*|<6->.*) ]] || return
 
-  typeset -g POWERLEVEL9K_CUSTOM_USER_CONTENT="GhostKellz"
-  typeset -g POWERLEVEL9K_CUSTOM_USER_BACKGROUND=17
-  typeset -g POWERLEVEL9K_CUSTOM_USER_FOREGROUND=122
-  
+# Arch System OS 
+  typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION=''
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=18
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=33
+
+#user
+  typeset -g POWERLEVEL9K_USER_SHOW_ALWAYS=true 
+  typeset -g POWERLEVEL9K_USER_CONTENT_EXPANSION='👻 GhostKellz.sh'
   typeset -g POWERLEVEL9K_USER_BACKGROUND=17  
   typeset -g POWERLEVEL9K_USER_FOREGROUND=122
+
+function prompt_arch_logo() {
+  p10k segment -f 18 -b 33 -t ''
+}	
+
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
-    os_icon                 # os identifier
+   # os_icon                 # os identifier
+    arch_logo
     dir                     # current directory
     vcs                     # git status
     # =========================[ Line #2 ]=========================
@@ -235,17 +245,17 @@
   # Current directory background color.
   typeset -g POWERLEVEL9K_DIR_BACKGROUND=4
   # Default current directory foreground color.
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND=254
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND=18
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
   # Replace removed segment suffixes with this symbol.
   typeset -g POWERLEVEL9K_SHORTEN_DELIMITER=
   # Color of the shortened directory segments.
-  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=250
+  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=18
   # Color of the anchor directory segments. Anchor segments are never shortened. The first
   # segment is always an anchor.
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=255
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=18
   # Display anchor directory segments in bold.
   typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=true
   # Don't shorten directories that contain any of these files. They are anchors.
