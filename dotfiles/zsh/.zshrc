@@ -102,6 +102,14 @@ alias publicip='dig @resolver4.opendns.com myip.opendns.com +short'
 alias portscan='nmap -Pn -p-'
 alias sniff='sudo tcpdump -i any -n'
 
+# ── Devtool Aliases ───────────────────────────────────────
+alias actl='source $HOME/.venvs/lsp/bin/activate'
+alias ra='rust-analyzer'
+alias zigv='zig version'
+alias godoc='go doc'
+alias pyver='python --version'
+
+
 # ── Completion System ───────────────────────────────────────
 autoload -Uz compinit
 compinit
@@ -171,6 +179,10 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+# Python LSP tools installed via: ~/.venvs/lsp
+export VIRTUAL_ENV="$HOME/.venvs/lsp"
+export PATH="$VIRTUAL_ENV/bin:$PATH"
+
 # ─── Rust Dev Environment  ────────────────────────────────────────────────
 export PATH="$HOME/.cargo/bin:$PATH"
 export RUSTUP_HOME="$HOME/.rustup"
@@ -181,6 +193,9 @@ export RUSTFLAGS="-C target-cpu=native"
 # ─── Zig Dev Environment  ────────────────────────────────────────────────
 export PATH="$HOME/zls/zig-out/bin:$PATH"
 
+# ─── Javascript Dev Environment  ────────────────────────────────────────────────
+export PATH="$HOME/.npm-global/bin:$PATH"
+export NODE_PATH="$HOME/.npm-global/lib/node_modules"
 
 # ─── ccache  ────────────────────────────────────────────────
 export PATH="/usr/lib/ccache/bin:$PATH"
