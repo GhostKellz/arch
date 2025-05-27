@@ -30,6 +30,7 @@ source $ZSH/oh-my-zsh.sh
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+eval "$(direnv hook zsh)"
 
 # ── Terminal Appearance ─────────────────────────────────────
 export CLICOLOR=1
@@ -108,7 +109,8 @@ alias ra='rust-analyzer'
 alias zigv='zig version'
 alias godoc='go doc'
 alias pyver='python --version'
-
+alias activate-lsp='source ~/.venvs/lsp/bin/activate'
+alias lspenvrc='echo "source ~/.venvs/lsp/bin/activate" > .envrc && direnv allow'
 
 # ── Completion System ───────────────────────────────────────
 autoload -Uz compinit
@@ -178,10 +180,7 @@ export PATH="$HOME/go/bin:$PATH"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
-
-# Python LSP tools installed via: ~/.venvs/lsp
-export VIRTUAL_ENV="$HOME/.venvs/lsp"
-export PATH="$VIRTUAL_ENV/bin:$PATH"
+unset VIRTUAL_ENV
 
 # ─── Rust Dev Environment  ────────────────────────────────────────────────
 export PATH="$HOME/.cargo/bin:$PATH"
