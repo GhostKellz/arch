@@ -164,6 +164,7 @@ fi
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
+export PATH="$HOME/go/bin:$PATH"
 
 # ─── Python Dev Environment  ────────────────────────────────────────────────
 export PYENV_ROOT="$HOME/.pyenv"
@@ -176,6 +177,11 @@ export RUSTUP_HOME="$HOME/.rustup"
 export CARGO_HOME="$HOME/.cargo"
 export RUSTFLAGS="-C target-cpu=native"
 [[ -r "${CARGO_HOME:-$HOME/.cargo}/env" ]] && source "${CARGO_HOME:-$HOME/.cargo}/env"
+
+# ─── Zig Dev Environment  ────────────────────────────────────────────────
+export PATH="$HOME/zls/zig-out/bin:$PATH"
+
+
 # ─── ccache  ────────────────────────────────────────────────
 export PATH="/usr/lib/ccache/bin:$PATH"
 export CC="ccache gcc"
