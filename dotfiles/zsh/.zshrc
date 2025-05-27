@@ -172,7 +172,10 @@ eval "$(pyenv init -)"
 
 # ─── Rust Dev Environment  ────────────────────────────────────────────────
 export PATH="$HOME/.cargo/bin:$PATH"
-
+export RUSTUP_HOME="$HOME/.rustup"
+export CARGO_HOME="$HOME/.cargo"
+export RUSTFLAGS="-C target-cpu=native"
+[[ -r "${CARGO_HOME:-$HOME/.cargo}/env" ]] && source "${CARGO_HOME:-$HOME/.cargo}/env"
 # ─── ccache  ────────────────────────────────────────────────
 export PATH="/usr/lib/ccache/bin:$PATH"
 export CC="ccache gcc"
