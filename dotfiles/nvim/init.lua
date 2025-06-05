@@ -13,15 +13,29 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "         -- Spacebar as the leader key
 vim.g.maplocalleader = "\\"   -- Optional: local leader
 
--- Plugins
+-- --- Plugins --- --
 require("lazy").setup({
   { import = "plugins" }, -- Import Plugins Folder
   { "nvim-lua/plenary.nvim" },
-  { "nvim-telescope/telescope.nvim", tag = "0.1.5" },
+
+
+-- Telescope 
+{
+  "nvim-telescope/telescope-fzf-native.nvim",
+  build = "make", -- compile the C module for speed
+  cond = vim.fn.executable("make") == 1, -- only build if `make` is available
+  config = function()
+    require("telescope").load_extension("fzf")
+  end,
+},
+
+-- Treesitter 
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+ 
   { "neovim/nvim-lspconfig" },
+ -- More Plugins 
   { "folke/tokyonight.nvim" },
-  { "catppuccin/nvim", name = "catppuccin" },
+ -- { "catppuccin/nvim", name = "catppuccin" },
   { "nvim-tree/nvim-web-devicons" },
 -- Mason + mason-lspconfig for managing LSP servers
 {
@@ -133,6 +147,12 @@ vim.api.nvim_set_hl(0, "MiniStatuslineLocation",   { fg = "#44ffbb", bg = "#1e1e
     end,
     },
    })
+
+-- Load Config and Theme
+require("config.options")
+require("config.navigation")
+require("config.formatting")
+
 -- Basic UI
 vim.o.termguicolors = true
 vim.cmd.colorscheme("tokyonight")
