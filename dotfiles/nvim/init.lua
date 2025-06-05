@@ -1,4 +1,4 @@
--- Bootstrap Lazy.nvim
+-- Bootstrap Lazy.nvim 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazypath })
@@ -15,8 +15,116 @@ require("lazy").setup({
   { "folke/tokyonight.nvim" },
   { "catppuccin/nvim", name = "catppuccin" },
   { "nvim-tree/nvim-web-devicons" },
-})
+-- Mason + mason-lspconfig for managing LSP servers
+{
+  "williamboman/mason.nvim",
+  build = ":MasonUpdate",
+  config = true,
+},
 
+{
+  "williamboman/mason-lspconfig.nvim",
+  dependencies = { "williamboman/mason.nvim" },
+  opts = {
+    ensure_installed = { "rust_analyzer", "zls" },
+    automatic_installation = false, -- we already have them
+  },
+},
+  -- LSP Support 
+{
+  "neovim/nvim-lspconfig",
+  config = function()
+    local lspconfig = require("lspconfig")
+
+    -- Rust
+    lspconfig.rust_analyzer.setup({
+      settings = {
+        ["rust-analyzer"] = {
+          cargo = { allFeatures = true },
+          checkOnSave = { command = "clippy" },
+        },
+      },
+    })
+
+    -- Zig
+    lspconfig.zls.setup({})
+  end,
+},
+
+-- Optional: LSP progress UI
+{
+  "j-hui/fidget.nvim",
+  tag = "legacy",
+  event = "LspAttach",
+  opts = {},
+},
+
+{
+  "nvim-neo-tree/neo-tree.nvim",
+  branch = "v3.x",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-tree/nvim-web-devicons", 
+    "MunifTanjim/nui.nvim",
+  },
+  config = function()
+    require("neo-tree").setup({
+      window = {
+        position = "left",
+        width = 30,
+      },
+      filesystem = {
+        filtered_items = {
+          hide_dotfiles = false,
+          hide_gitignored = true,
+        },
+      },
+    })
+  end,
+},
+
+{
+  "echasnovski/mini.statusline",
+  version = "*",
+  lazy = false,
+  config = function()
+    local statusline = require("mini.statusline")
+    statusline.setup({
+      use_icons = true,
+      set_vim_settings = false,
+      content = {
+        active = function()
+          local mode = statusline.section_mode({ trunc_width = 120 })
+          local git = statusline.section_git({ trunc_width = 75 })
+          local diagnostics = statusline.section_diagnostics({ trunc_width = 75 })
+          local filename = statusline.section_filename({ trunc_width = 140 })
+          local fileinfo = statusline.section_fileinfo({ trunc_width = 60 })
+          local location = statusline.section_location({ trunc_width = 60 })
+
+          return statusline.combine_groups({
+            { hl = "MiniStatuslineModeNormal", strings = { mode } },
+            { hl = "MiniStatuslineDevinfo", strings = { git, diagnostics } },
+            "%<",
+            { hl = "MiniStatuslineFilename", strings = { filename } },
+            "%=",
+            { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+            { hl = "MiniStatuslineLocation", strings = { location } },
+          })
+        end,
+      },
+    })
+
+    -- GhostKellz™ Color Override 💀
+-- GhostKellz™ Minty Style 🍃
+vim.api.nvim_set_hl(0, "MiniStatuslineModeNormal", { fg = "#003344", bg = "#7fffd4", bold = true })      -- Aqua bg
+vim.api.nvim_set_hl(0, "MiniStatuslineDevinfo",    { fg = "#88ffcc", bg = "#1e1e2e" })                  -- Mint green
+vim.api.nvim_set_hl(0, "MiniStatuslineFilename",   { fg = "#88ffcc", bg = "#1e1e2e", italic = true })  -- Mint, italic
+vim.api.nvim_set_hl(0, "MiniStatuslineFileinfo",   { fg = "#66f0aa", bg = "#1e1e2e" })                  -- Soft mint
+vim.api.nvim_set_hl(0, "MiniStatuslineLocation",   { fg = "#44ffbb", bg = "#1e1e2e" })                  -- Sharper mint
+
+    end,
+    },
+   })
 -- Basic UI
 vim.o.termguicolors = true
 vim.cmd.colorscheme("tokyonight")
@@ -47,7 +155,8 @@ vim.api.nvim_set_hl(0, "Operator", { fg = "#57c7ff", bg = "none" })       -- Lig
 vim.keymap.set("n", "<leader>f", "<cmd>Telescope find_files<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>g", "<cmd>Telescope live_grep<cr>", { noremap = true })
 
-
+-- Neo Tree Keymap
+vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
 -- Copilot inline suggestions
 vim.keymap.set("i", "<M-l>", function()
   require("copilot.suggestion").accept()
