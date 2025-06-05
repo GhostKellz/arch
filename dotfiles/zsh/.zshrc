@@ -134,6 +134,11 @@ export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
 export __GL_YIELD="USLEEP"
 export __GL_SYNC_TO_VBLANK="1"
 
+# ── NVIDIA Digital Vibrance  ────────────────────────────
+echo "alias vibe60='~/.local/bin/vibrance-low.sh'" >> ~/.zshrc
+echo "alias vibe100='~/.local/bin/vibrance-high.sh'" >> ~/.zshrc
+
+
 # ── NVIDIA Vulkan Environment Variables ────────────────────────────
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
 export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json
@@ -182,6 +187,10 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 unset VIRTUAL_ENV
 
+# Silence direnv during prompt preload
+if [[ -n "${POWERLEVEL9K_INSTANT_PROMPT}" ]]; then
+  export DIRENV_LOG_FORMAT=
+fi
 # ─── Rust Dev Environment  ────────────────────────────────────────────────
 export PATH="$HOME/.cargo/bin:$PATH"
 export RUSTUP_HOME="$HOME/.rustup"
@@ -206,3 +215,37 @@ alias ghostty="ghostty --config ~/.config/ghostty/config.toml"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# ─── ghost Tech  ────────────────────────────────────────────────
+alias forge="ghostforge"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
