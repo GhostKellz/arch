@@ -29,6 +29,9 @@
   # Zsh >= 5.1 is required.
   [[ $ZSH_VERSION == (5.<1->*|<6->.*) ]] || return
 
+# Tweaks 
+#typeset -g POWERLEVEL9K_VCS_BRANCH_FOREGROUND='#98ff98'
+
 # Arch System OS 
   typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION=''
   typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=18
@@ -36,7 +39,7 @@
 
 #user
   typeset -g POWERLEVEL9K_USER_SHOW_ALWAYS=true 
-  typeset -g POWERLEVEL9K_USER_CONTENT_EXPANSION='👻 GhostKellz.sh'
+  typeset -g POWERLEVEL9K_USER_CONTENT_EXPANSION='👻 GhostKellz.sh 👽'
   typeset -g POWERLEVEL9K_USER_BACKGROUND=17  
   typeset -g POWERLEVEL9K_USER_FOREGROUND=122
 
@@ -243,19 +246,25 @@ function prompt_arch_logo() {
 
   ##################################[ dir: current directory ]##################################
   # Current directory background color.
-  typeset -g POWERLEVEL9K_DIR_BACKGROUND=4
-  # Default current directory foreground color.
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND=18
+  #typeset -g POWERLEVEL9K_DIR_BACKGROUND=4
+  typeset -g POWERLEVEL9K_DIR_BACKGROUND='#1f354d'
+  
+ # Default current directory foreground color.
+ # typeset -g POWERLEVEL9K_DIR_FOREGROUND=18
+#   typeset -g POWERLEVEL9K_DIR_FOREGROUND=111  
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND='#7080d0'
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND='#7080d0'
+  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND='#7080d0'
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
   # Replace removed segment suffixes with this symbol.
   typeset -g POWERLEVEL9K_SHORTEN_DELIMITER=
   # Color of the shortened directory segments.
-  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=18
+ # typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=18
   # Color of the anchor directory segments. Anchor segments are never shortened. The first
   # segment is always an anchor.
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=18
+  #typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=18
   # Display anchor directory segments in bold.
   typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=true
   # Don't shorten directories that contain any of these files. They are anchors.
@@ -383,15 +392,18 @@ function prompt_arch_logo() {
 
   #####################################[ vcs: git status ]######################################
   # Version control background colors.
-  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=2
+  #typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=2
+  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND='#7fffd4'  
+  typeset -g POWERLEVEL9K_VCS_CLEAN_FOREGROUND='#0044ff'
   typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=3
   typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=2
   typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=3
   typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=8
 
   # Branch icon. Set this parameter to '\UE0A0 ' for the popular Powerline branch icon.
-  typeset -g POWERLEVEL9K_VCS_BRANCH_ICON='\uF126 '
-
+  #typeset -g POWERLEVEL9K_VCS_BRANCH_ICON='\uF126 '
+  typeset -g POWERLEVEL9K_VCS_BRANCH_ICON='🪐🚀'
+  typeset -g POWERLEVEL9K_VCS_BRANCH_NAME_FOREGROUND=33  
   # Untracked files icon. It's really a question mark, your font isn't broken.
   # Change the value of this parameter to show a different icon.
   typeset -g POWERLEVEL9K_VCS_UNTRACKED_ICON='?'
