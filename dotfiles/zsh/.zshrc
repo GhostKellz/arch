@@ -33,9 +33,11 @@ eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
 
 # ── Terminal Appearance ─────────────────────────────────────
-export CLICOLOR=1
-export LSCOLORS="Gxfxcxdxbxegedabagacad"
-export LS_COLORS='di=38;5;33:fi=38;5;39:ln=38;5;37'
+#export CLICOLOR=1
+#export LSCOLORS="Gxfxcxdxbxegedabagacad"
+LS_COLORS='uu=38;5;246:gu=38;5;246:st=38;5;246:tw=38;5;246:ow=38;5;246:or=38;5;131:mi=48;5;52;38;5;231:ex=38;5;77:bd=38;5;246:cd=38;5;246:su=38;5;131:sg=38;5;131:ca=38;5;131:di=38;5;68:ln=38;5;68:pi=38;5;131:so=38;5;131:do=38;5;131:bd=38;5;246:cd=38;5;246:su=38;5;131:sg=38;5;131:ca=38;5;131:*.tar=38;5;208:*.tgz=38;5;208:*.arc=38;5;208:*.arj=38;5;208:*.taz=38;5;208:*.lha=38;5;208:*.lz4=38;5;208:*.lzh=38;5;208:*.lzma=38;5;208:*.tlz=38;5;208:*.txz=38;5;208:*.tzo=38;5;208:*.t7z=38;5;208:*.zip=38;5;208:*.z=38;5;208:*.dz=38;5;208:*.gz=38;5;208:*.lrz=38;5;208:*.lz=38;5;208:*.lzo=38;5;208:*.xz=38;5;208:*.zst=38;5;208:*.tzst=38;5;208:*.bz2=38;5;208:*.bz=38;5;208:*.tbz=38;5;208:*.tbz2=38;5;208:*.tz=38;5;208:*.deb=38;5;208:*.rpm=38;5;208:*.jar=38;5;208:*.war=38;5;208:*.ear=38;5;208:*.sar=38;5;208:*.rar=38;5;208:*.alz=38;5;208:*.ace=38;5;208:*.zoo=38;5;208:*.cpio=38;5;208:*.7z=38;5;208:*.rz=38;5;208:*.cab=38;5;208:*.wim=38;5;208:*.swm=38;5;208:*.dwm=38;5;208:*.esd=38;5;208:*.jpg=38;5;131:*.jpeg=38;5;131:*.mjpg=38;5;131:*.mjpeg=38;5;131:*.gif=38;5;131:*.bmp=38;5;131:*.pbm=38;5;131:*.pgm=38;5;131:*.ppm=38;5;131:*.tga=38;5;131:*.xbm=38;5;131:*.xpm=38;5;131:*.tif=38;5;131:*.tiff=38;5;131:*.png=38;5;131:*.svg=38;5;131:*.svgz=38;5;131:*.mng=38;5;131:*.pcx=38;5;131:*.mov=38;5;131:*.mpg=38;5;131:*.mpeg=38;5;131:*.m2v=38;5;131:*.mkv=38;5;131:*.webm=38;5;131:*.webp=38;5;131:*.ogm=38;5;131:*.mp4=38;5;131:*.m4v=38;5;131:*.vob=38;5;131:*.qt=38;5;131:*.nuv=38;5;131:*.wmv=38;5;131:*.asf=38;5;131:*.rm=38;5;131:*.rmvb=38;5;131:*.flc=38;5;131:*.avi=38;5;131:*.fli=38;5;131:*.flv=38;5;131:*.gl=38;5;131:*.dl=38;5;131:*.xcf=38;5;131:*.xwd=38;5;131:*.yuv=38;5;131:*.cgm=38;5;131:*.emf=38;5;131:*.ogv=38;5;131:*.ogx=38;5;131:*.aac=38;5;131:*.au=38;5;131:*.flac=38;5;131:*.m4a=38;5;131:*.mid=38;5;131:*.midi=38;5;131:*.mka=38;5;131:*.mp3=38;5;131:*.mpc=38;5;131:*.ogg=38;5;131:*.ra=38;5;131:*.wav=38;5;131:*.oga=38;5;131:*.opus=38;5;131:*.spx=38;5;131:*.xspf=38;5;131:*.pdf=38;5;231:*.nix=38;5;142'
+#export LS_COLORS="$(vivid generate tokyonight-moon)"
+export LS_COLORS="$(vivid generate ghost-hacker-blue)"
 export LESS='-R'
 #ZSH_HIGHLIGHT_STYLES[command]='fg=#98ff98'
 ZSH_HIGHLIGHT_STYLES[command]='fg=#7FFFD4'
@@ -228,32 +230,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
 alias vibe60='~/.local/bin/vibrance-low.sh'
 alias vibe100='~/.local/bin/vibrance-high.sh'
 alias vibe60='~/.local/bin/vibrance-low.sh'
