@@ -10,3 +10,10 @@ vim.keymap.set("n", "L", "$", { desc = "End of line" })
 vim.keymap.set("n", "J", "5j", { desc = "Down faster" })
 vim.keymap.set("n", "K", "5k", { desc = "Up faster" })
 
+-- Flash.nvim keymap
+pcall(function()
+  require("flash") -- make sure it's loaded
+  vim.keymap.set({ "n", "x", "o" }, "s", function() require("flash").jump() end, { desc = "Flash Jump" })
+  vim.keymap.set({ "n", "x", "o" }, "S", function() require("flash").treesitter() end, { desc = "Flash Treesitter" })
+  vim.keymap.set("o", "r", function() require("flash").remote() end, { desc = "Remote Flash" })
+end)
