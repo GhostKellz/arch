@@ -23,6 +23,16 @@ Every script here is designed for **speed**, **stability**, and **GhostKellz-lev
 
 ## 🔧 Scripts Included
 
+### `weeklyMain.sh`
+_Weekly Maintenance for Arch Systems_
+
+- Updates system via `pacman` and `paru`
+- Cleans pacman cache, journal logs, and removes orphaned packages
+- Performs Btrfs scrub and balance
+- Rebuilds initramfs and NVIDIA DKMS modules if necessary
+- Can be automated with `systemd` timer (recommended: Sundays @ 3AM)
+
+
 ### `ckel.sh`
 _Post-Install Setup (WIP)_
 - Installs critical packages, NVIDIA drivers, Flatpak, virtualization tools, and applies KDE customizations.
