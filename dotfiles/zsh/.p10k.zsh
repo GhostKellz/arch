@@ -39,7 +39,9 @@
 
 #user
   typeset -g POWERLEVEL9K_USER_SHOW_ALWAYS=true 
-  typeset -g POWERLEVEL9K_USER_CONTENT_EXPANSION='👻 GhostKellz.sh 👽'
+# typeset -g POWERLEVEL9K_USER_CONTENT_EXPANSION='👻 GhostKellz.sh 👽'
+  typeset -g POWERLEVEL9K_USER_CONTENT_EXPANSION=' 󰊠 GhostKellz.sh 󰊠 '
+
   typeset -g POWERLEVEL9K_USER_BACKGROUND=17  
   typeset -g POWERLEVEL9K_USER_FOREGROUND=122
 
@@ -175,6 +177,13 @@ function prompt_arch_logo() {
   typeset -g POWERLEVEL9K_USER_SHOW=true
   typeset -g POWERLEVEL9K_USER_TEMPLATE='%n@%m'
 
+
+typeset -g POWERLEVEL9K_FILE_NAME_COLORS=(
+  85             # Mint green (duller)
+  85             # Mint green (same for .zsh)
+  178            # Orangey-gold for PKGBUILD
+  228            # Yellow for README.md
+)
   # Filler between left and right prompt on the first prompt line. You can set it to ' ', '·' or
   # '─'. The last two make it easier to see the alignment between left and right prompt and to
   # separate prompt from command output. You might want to set POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
@@ -246,15 +255,11 @@ function prompt_arch_logo() {
 
   ##################################[ dir: current directory ]##################################
   # Current directory background color.
-  #typeset -g POWERLEVEL9K_DIR_BACKGROUND=4
   typeset -g POWERLEVEL9K_DIR_BACKGROUND='#1f354d'
-  
- # Default current directory foreground color.
- # typeset -g POWERLEVEL9K_DIR_FOREGROUND=18
-#   typeset -g POWERLEVEL9K_DIR_FOREGROUND=111  
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND='#7080d0'
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND='#7080d0'
-  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND='#7080d0'
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND='#88aff0'
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND='#88aff0'
+  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND='#88aff0'
+
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
