@@ -1,74 +1,98 @@
 # 👻 GhostKellz Neovim Theme
 
-![Neovim](https://img.shields.io/badge/Neovim-0.9+-brightgreen?style=for-the-badge&logo=neovim&logoColor=white)
-![GPU Accelerated (NVIDIA)](https://img.shields.io/badge/GPU_Accelerated-NVIDIA-76b900?style=for-the-badge&logo=nvidia&logoColor=white)
-![Arch Linux](https://img.shields.io/badge/Arch_Linux-Powered-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)
+![Neovim](https://img.shields.io/badge/Neovim-0.9%2B-brightgreen?style=for-the-badge\&logo=neovim\&logoColor=white)
+![GPU Accelerated (NVIDIA)](https://img.shields.io/badge/GPU_Accelerated-NVIDIA-76b900?style=for-the-badge\&logo=nvidia\&logoColor=white)
+![Arch Linux](https://img.shields.io/badge/Arch_Linux-Powered-1793D1?style=for-the-badge\&logo=arch-linux\&logoColor=white)
 
 A clean, GPU-accelerated, Wayland-optimized Neovim setup built for speed, precision, and style.
-Designed around a heavily enhanced **TokyoNight** theme with custom tweaks for an improved developer experience.
-The Termius SSH client "Hacker Blue" Theme with a twist - The fonts pop. 
+Designed around a heavily enhanced **TokyoNight** theme with custom tweaks for an improved developer experience. The Termius SSH "Hacker Blue" palette gets a ghost-themed twist.
 
 ---
 
 ## 🌈 Theme Overview
 
-- **Base Theme**: `tokyonight` (with ghostkellz custom highlights)
-- **Foreground**: Light hacker blue accents (`#57c7ff`)
-- **Background**: Deep dark blue (`#0d1117`)
-- **Custom Highlights**:
-  - Light blues for normal text and operators
-  - Mint green for functions
-  - Hacker-blue for comments
-  - Clean purple for keywords
+* **Base Theme**: `tokyonight` (custom variant: `ghostkellz`)
+* **Foreground**: `#57c7ff` (light hacker blue)
+* **Background**: `#0d1117` (deep navy)
+* **Highlights**:
+
+  * Cyan for functions + cursorline
+  * Hacker blue for comments, diagnostics, and borders
+  * Green/mint accents for UI widgets
+  * Smooth contrast for floating windows and popups
 
 ---
 
 ## 🧪 Features
 
-- ✨ GPU-Accelerated Neovim (Wayland / NVIDIA optimized)
-- 🔑 Fully Lazy.nvim bootstrapped
-- 🔄 Telescope integration
-- 🎨 Smooth custom color overrides
-- 🔮 TypeScript tooling (typescript-tools)
-- 📈 Treesitter language parsing
-- 🌟 LSP ready (built-in with lsconfig)
+* 🚀 Fully GPU-accelerated (Wayland + NVIDIA)
+* 🧠 Lazy.nvim managed plugin system
+* 🌌 Built-in LSP with customized lsconfig support
+* 🧪 Rust and Go support (with Clippy, RustFmt, etc.)
+* 🧲 Telescope + Treesitter enabled
+* 🧭 `tmux-navigator` for seamless tmux/Vim movement
+* ⌨️ Custom keybinds for 60% keyboards (Wooting60HE friendly)
+* ⚖️ Formatting: Prettier, stylua, shfmt, rustfmt, gofmt auto-detect
+* 🌟 Ghost-powered Starship + Powerlevel10k prompt integration
 
 ---
 
 ## 📂 Directory Structure
 
-```
+```bash
 dotfiles/nvim/
-├── lazy-lock.json          # Lazy.nvim lockfile
-├── init.lua                # Main configuration
+├── README.md                # This file
+├── init.lua                 # Bootstrap entry point
+├── lazy-lock.json           # Plugin lockfile
 ├── lua/
-│   ├─ plugins/
-│   │   └─ colorscheme.lua   # Custom colors and highlight tweaks
+│   ├── config/
+│   │   ├── formatting.lua       # Formatter config (stylua, shfmt, etc.)
+│   │   ├── lazy.lua             # Lazy.nvim setup
+│   │   ├── lsp.lua              # LSP definitions + handlers
+│   │   ├── navigation.lua       # Movement + 60% keyboard logic
+│   │   ├── options.lua          # Global vim options
+│   │   ├── ... (other configs)
+│   ├── plugins/
+│   │   ├── ai.lua               # AI helpers
+│   │   ├── copilot.lua          # GitHub Copilot
+│   │   ├── telescope.lua        # Telescope setup
+│   │   ├── treesitter.lua       # Treesitter setup
+│   │   ├── tmux-navigator.lua   # Tmux keybindings
+│   │   ├── ... (other plugin configs)
 ├── assets/
-│   ├─ nvim-preview.png       # Neovim inside wezterm screenshot
-│   └─ Neovim-theme.png        # Theme highlight breakdown
+│   ├── nvim-ghostblue.png       # New theme preview
+│   ├── nvim-preview.png         # Neovim inside WezTerm
+│   └── Neovim-theme.png         # Highlight scheme visual
 ```
 
 ---
 
 ## 📷 Previews
 
-### Neovim Theme
+### Ghostkellz Custom Theme
 
-![Neovim Theme Preview](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/Neovim-theme.png)
+![Ghostkellz Neovim Theme](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/nvim-ghostblue.png)
 
 ### Neovim in WezTerm
 
-![Nvim inside Wezterm Preview](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/nvim-preview.png)
+![Neovim in WezTerm](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/nvim-preview.png)
+
+### Highlight Visuals
+
+![Neovim Highlight Theme](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/Neovim-theme.png)
 
 ---
 
 ## 💬 Notes
 
-GhostKellz Neovim Theme was built to combine performance with a clean hacker blue termius SSH client with a twist.
-Designed with GPU acceleration in mind (especially Wayland/NVIDIA).
-Perfect for high-performance daily driving.
+This setup is fine-tuned for performance, aesthetic cohesion, and speed:
+
+* Built on Lazy.nvim with modular Lua components
+* Tailored for daily driver hardware: NVIDIA, Wayland, and 60% boards
+* Excellent for TypeScript, Go, Rust, Shell, Markdown, YAML
+* Works beautifully with tmux, Starship, and vivid themes
 
 ---
 
-✨ Built with style and speed by [GhostKellz](https://github.com/GhostKellz)
+🌟 Maintained by [GhostKellz](https://github.com/GhostKellz)
+
