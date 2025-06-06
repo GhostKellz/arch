@@ -1,6 +1,6 @@
 -- ~/.config/nvim/lua/config/lsp.lua
 
--- 🔧 Common on_attach for LSP + null-ls autoformatting
+-- 🔧 Common on_attach for all LSPs (used for formatting/autocommands)
 local on_attach = function(client, bufnr)
 	vim.api.nvim_create_autocmd("BufWritePre", {
 		buffer = bufnr,
@@ -10,8 +10,9 @@ local on_attach = function(client, bufnr)
 	})
 end
 
--- 🧰 Mason LSP support
+-- 🧰 Mason & Mason-LSP Setup
 require("mason").setup()
+
 require("mason-lspconfig").setup({
 	ensure_installed = {
 		"lua_ls", -- 🌙 Lua
@@ -26,23 +27,10 @@ require("mason-lspconfig").setup({
 	},
 })
 
--- 🔌 Null-ls setup (formatters only!)
-local null_ls = require("null-ls")
-null_ls.setup({
-	on_attach = on_attach,
-	sources = {
-		null_ls.builtins.formatting.stylua, -- 🌙 Lua
-		null_ls.builtins.formatting.black, -- 🐍 Python
-		null_ls.builtins.formatting.gofmt, -- 🐹 Go
-		null_ls.builtins.formatting.prettier, -- 🟨 JS/TS/HTML/CSS
-		-- ⚠️ NO clippy or rustfmt here (handled by rust-analyzer)
-	},
-})
-
--- ⚙️ Core LSP config
+-- ⚙️ Core LSP Config
 local lspconfig = require("lspconfig")
 
--- 🦀 Rust via rust-tools
+-- 🦀 Rust with rust-tools (best dev experience)
 local rt = require("rust-tools")
 rt.setup({
 	server = {
@@ -93,9 +81,10 @@ lspconfig.lua_ls.setup({
 -- 🐳 Docker
 lspconfig.dockerls.setup({ on_attach = on_attach })
 
--- 🧾 YAML / JSON
+-- 📄 YAML
 lspconfig.yamlls.setup({ on_attach = on_attach })
 
+-- 📄 JSON with schemas
 local schemastore = require("schemastore")
 
 lspconfig.jsonls.setup({
@@ -108,10 +97,13 @@ lspconfig.jsonls.setup({
 	},
 })
 
--- 🐚 Shell
+-- 🐚 Bash
 lspconfig.bashls.setup({ on_attach = on_attach })
 
 -- 🟨 TypeScript / JavaScript
 require("typescript-tools").setup({
 	on_attach = on_attach,
 })
+
+-- 📦 External null-ls formatter support
+require("config.formatting")

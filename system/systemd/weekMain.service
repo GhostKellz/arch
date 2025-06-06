@@ -1,0 +1,9 @@
+[Unit]
+Description=Weekly System Maintenance
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/weekly_maintenance.sh
+
