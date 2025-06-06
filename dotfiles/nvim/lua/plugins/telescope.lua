@@ -21,11 +21,18 @@ return {
   config = function()
     require("telescope").setup({
       defaults = {
-        layout_strategy = "vertical",
-        layout_config = { height = 0.9 },
+        theme = "ivy",
+        winblend = 10, -- subtle transparency
+        layout_config = {
+          height = 0.3,
+          prompt_position = "bottom",
+        },
         sorting_strategy = "ascending",
-        file_sorter = require("telescope.sorters").get_fzf_sorter,
-        generic_sorter = require("telescope.sorters").get_generic_fzf_sorter,
+      },
+      pickers = {
+        find_files = { theme = "ivy" },
+        buffers = { theme = "dropdown" },
+        live_grep = { theme = "ivy" },
       },
     })
   end,
