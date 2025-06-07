@@ -1,0 +1,5 @@
+vim.keymap.set("n", "<F5>", "<cmd>lua require'dap'.continue()<CR>", { desc = "Start Debug" })
+vim.keymap.set("n", "<F10>", "<cmd>lua require'dap'.step_over()<CR>", { desc = "Step Over" })
+vim.keymap.set("n", "<F11>", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Step Into" })
+vim.keymap.set("n", "<F12>", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Step Out" })
+vim.keymap.set("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle Breakpoint" })
