@@ -1,5 +1,9 @@
--- GhostKellz Lazy.vim
+-- GhostKellz neovim configuration
+--
 -- A Neovim config using Lazy.nvim for Plugin Management
+-- author : GhostKellz
+-- ~/.config/nvim/init.lua
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 vim.g.tmux_navigator_no_mappings = 0
@@ -200,6 +204,8 @@ require("config.navigation")
 require("config.formatting")
 require("config.lsp")
 require("config.autocmds")
+require("config.dap")
+require("config.patch")
 
 -- Basic UI
 vim.o.termguicolors = true
@@ -236,16 +242,18 @@ vim.api.nvim_set_hl(0, "Operator", { fg = "#57c7ff", bg = "none" }) -- Light Blu
 
 -- Neo Tree Keymap
 vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
--- Copilot inline suggestions
-vim.keymap.set("i", "<M-l>", function()
+
+-- Copilot Inline Suggestions
+-- This section sets up keybindings for Copilot suggestions in insert mode.
+vim.keymap.set("i", "<C-g>", function()
 	require("copilot.suggestion").accept()
 end, { desc = "Copilot Accept Suggestion" })
 
-vim.keymap.set("i", "<M-]>", function()
+vim.keymap.set("i", "<C-l>", function()
 	require("copilot.suggestion").next()
 end, { desc = "Copilot Next Suggestion" })
 
-vim.keymap.set("i", "<M-[>", function()
+vim.keymap.set("i", "<C-k>", function()
 	require("copilot.suggestion").prev()
 end, { desc = "Copilot Previous Suggestion" })
 
@@ -253,11 +261,9 @@ end, { desc = "Copilot Previous Suggestion" })
 vim.keymap.set({ "n", "v" }, "<leader>aa", function()
 	require("CopilotChat").toggle()
 end, { desc = "Toggle Copilot Chat" })
-
 vim.keymap.set({ "n", "v" }, "<leader>ax", function()
 	require("CopilotChat").reset()
 end, { desc = "Clear Copilot Chat" })
-
 vim.keymap.set({ "n", "v" }, "<leader>aq", function()
 	vim.ui.input({ prompt = "Quick Chat: " }, function(input)
 		if input ~= "" then
@@ -265,7 +271,6 @@ vim.keymap.set({ "n", "v" }, "<leader>aq", function()
 		end
 	end)
 end, { desc = "Quick Prompt to Copilot Chat" })
-
 vim.keymap.set({ "n", "v" }, "<leader>ap", function()
 	require("CopilotChat").select_prompt()
 end, { desc = "Choose Prompt Template (CopilotChat)" })
@@ -274,19 +279,21 @@ end, { desc = "Choose Prompt Template (CopilotChat)" })
 vim.keymap.set({ "n", "v" }, "<leader>ag", function()
 	require("gen").select_model()
 end, { desc = "Change AI Model (gen.nvim)" })
-
 vim.keymap.set({ "n", "v" }, "<leader>ar", function()
 	require("gen").prompts["Refactor Code"]()
 end, { desc = "AI: Refactor Code" })
-
 vim.keymap.set({ "n", "v" }, "<leader>ad", function()
 	require("gen").prompts["Explain Code"]()
 end, { desc = "AI: Explain Code" })
-
 vim.keymap.set({ "n", "v" }, "<leader>ac", function()
 	require("gen").prompts["Complete Code"]()
 end, { desc = "AI: Complete Code" })
-
 vim.keymap.set({ "n", "v" }, "<leader>aa", function()
 	require("gen").prompts["Add Tests"]()
 end, { desc = "AI: Generate Tests" })
+
+-- Monkeypatch deprecated function to suppress warning
+vim.lsp.buf_get_clients = function(bufnr)
+	vim.notify_once("[GhostKellz] Suppressed deprecated buf_get_clients call", vim.log.levels.DEBUG)
+	return vim.lsp.get_clients({ bufnr = bufnr or 0 })
+end
