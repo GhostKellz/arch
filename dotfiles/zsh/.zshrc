@@ -53,6 +53,19 @@ HISTFILE=~/.zsh_history
 # ── Editor ──────────────────────────────────────────────────
 export EDITOR="nvim"
 
+# ── Terminal  ──────────────────────────────────────────────────
+# 🧠 Detect terminal and set TERM properly
+if [ "$TERM" = "xterm-ghostty" ] && infocmp xterm-ghostty &>/dev/null; then
+  export TERM="xterm-ghostty"
+  export TERMINAL_PROFILE="ghostty"
+elif [ "$TERM_PROGRAM" = "WezTerm" ]; then
+  export TERM="xterm-256color"
+  export TERMINAL_PROFILE="wezterm"
+else
+  export TERM="xterm-256color"
+  export TERMINAL_PROFILE="fallback"
+fi
+
 # ── Aliases ─────────────────────────────────────────────────
 alias vi='nvim'
 alias vim='nvim'
@@ -78,6 +91,13 @@ alias bnet='WINEPREFIX=~/.wine-bnet64 wine64 ~/.wine-bnet64/drive_c/Program\ Fil
 # ⚙️ Rebuild DKMS and Initramfs (ernel)manually
 alias rebuild='echo "[+] Rebuilding DKMS modules..." && sudo dkms autoinstall && echo "[+] Regenerating initramfs..." && sudo mkinitcpio -P && echo "[+] Done ✅"'
 alias rebuild-test='echo "[TEST] Rebuilding DKMS modules..." && sudo dkms autoinstall && echo "[TEST] Regenerating initramfs..." && sudo mkinitcpio -P && echo "[TEST] Finished ✅"'
+
+# Fast restart of KWin (Wayland-safe)
+krestart() {
+  echo "[KWin] Reloading config and restarting Wayland compositor..."
+  qdbus org.kde.KWin /KWin org.kde.KWin.reloadConfig
+  kwin_wayland --replace & disown
+}
 
 # ── Git Aliases ─────────────────────────────────────────────
 alias gcm='git commit -m'
@@ -230,6 +250,114 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
 alias vibe60='~/.local/bin/vibrance-low.sh'
 alias vibe100='~/.local/bin/vibrance-high.sh'
 alias vibe60='~/.local/bin/vibrance-low.sh'
