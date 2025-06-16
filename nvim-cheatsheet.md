@@ -124,7 +124,22 @@
 > **Note:** You can remap Copilot inline accept to whatever is easiest (e.g., `<Tab>` or `<C-Space>`) if not already used!
 
 ---
+---
 
+### 🧠 Claude Code (AI Agent)
+
+| Action                      | Command / Keybinding     |
+|----------------------------|---------------------------|
+| Toggle Claude Code panel   | `<leader>ac` or `<C-,>`   |
+| Resume last session        | `<leader>cC`              |
+| Show verbose output        | `<leader>cV`              |
+| Open Claude terminal       | `:ClaudeCode`             |
+| Resume interactive convo   | `:ClaudeCodeResume`       |
+| Verbose turn-by-turn log   | `:ClaudeCodeVerbose`      |
+
+> **Note:** Claude Code auto-detects git roots, syncs with external changes, and updates buffers live.
+
+---
 ### ⌨️ Custom & Useful Keybinds
 
 | Keybind     | What it Does              |
@@ -182,11 +197,4 @@ vim.cmd([[\n  autocmd BufWritePost ~/.config/nvim/init.lua source %\n]])
 * `:Telescope help_tags` — fuzzy search help topics
 
 ---
-
-**Paste this into your monitor or nvim-CHEATSHEET.md for one-glance mastery. Update your custom Copilot/AI keys here if you change them.**
-Want more? Drop me a list of custom mappings/plugins to add.
-
----
-
-Let me know if you want this with a *visual diagram* or *print-friendly table format* for your wall!
 
