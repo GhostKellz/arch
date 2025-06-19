@@ -32,6 +32,10 @@ eval "$(zoxide init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(direnv hook zsh)"
 
+# -- Claude 
+export PATH="$HOME/.nvm/versions/node/v20.19.2/bin:$PATH"
+
+
 # ── Terminal Appearance ─────────────────────────────────────
 #export CLICOLOR=1
 #export LSCOLORS="Gxfxcxdxbxegedabagacad"
@@ -250,6 +254,28 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
+alias vibe60='~/.local/bin/vibrance-low.sh'
+alias vibe100='~/.local/bin/vibrance-high.sh'
 alias vibe60='~/.local/bin/vibrance-low.sh'
 alias vibe100='~/.local/bin/vibrance-high.sh'
 alias vibe60='~/.local/bin/vibrance-low.sh'
