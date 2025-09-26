@@ -1,6 +1,6 @@
-# Zig Cheatsheet
+# ⚡ Zig Cheatsheet
 
-A compact reference for working with the Zig programming language. Great for new users and cross-platform systems development.
+A compact reference for working with the Zig programming language (v0.16.0). Great for new users and cross-platform systems development.
 
 ---
 
@@ -53,14 +53,25 @@ zig test test.zig             # Run tests in a Zig source file
 ## 📦 Dependency Management
 
 - Zig uses `build.zig.zon` for dependency resolution
-- You can also fetch packages via `zig fetch` or manually using `git`.
+- Use `zig fetch` to add dependencies automatically
+- Dependencies are cached in the global cache
+
+```bash
+zig fetch --save https://github.com/user/repo/archive/main.tar.gz
+```
 
 ```zig
+// build.zig.zon
 .{
-    .name = "example",
-    .url = "https://github.com/user/example/archive/commit.tar.gz",
-    .hash = "sha256:...",
-},
+    .name = "my-project",
+    .version = "0.1.0",
+    .dependencies = .{
+        .example = .{
+            .url = "https://github.com/user/example/archive/commit.tar.gz",
+            .hash = "sha256:...",
+        },
+    },
+}
 ```
 
 ---
@@ -94,6 +105,7 @@ zig build-exe -O ReleaseFast main.zig  # Fastest optimized build
 
 ```bash
 rm -rf zig-out/                 # Remove build outputs manually
+zion clean                      # zion dev tool - cleansup zig cache
 ```
 
 ---
@@ -103,6 +115,41 @@ rm -rf zig-out/                 # Remove build outputs manually
 - Use `@import("std")` for standard utilities
 - Prefer `.zig.zon` for managing package metadata
 - Check `build.zig` for custom build steps
+- Use `std.ArrayList(T)` instead of `std.ArrayList(T, allocator)` (0.16.0+)
+- Memory management is explicit - always handle allocations/deallocations
+
+---
+
+---
+
+## ⚡ Zig 0.16.0 Breaking Changes
+
+### ArrayList Changes
+```zig
+// Old (pre-0.16.0)
+var list = std.ArrayList(i32).init(allocator);
+
+// New (0.16.0+)
+var list = std.ArrayList(i32).init(allocator);
+// ArrayList API remains similar but some methods have changed
+```
+
+### Async/Await Removed
+- **Async/await has been removed** from Zig 0.16.0
+- Use explicit threading with `std.Thread`
+- Consider event loops or cooperative multitasking patterns
+
+```zig
+// Use std.Thread for concurrency
+const thread = try std.Thread.spawn(.{}, myFunction, .{});
+thread.join();
+```
+
+### Other Notable Changes
+- Improved error handling and diagnostics
+- Better compile-time evaluation
+- Enhanced cross-compilation support
+- Updated standard library APIs
 
 ---
 
