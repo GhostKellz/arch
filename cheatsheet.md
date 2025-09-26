@@ -198,6 +198,13 @@ sha256sum keystone3.bin
 # dccbb843b33f26cdb11093e9c5a38d32cedc05b95593a4ada2eb82c4a08db0eb
 ```
 ---
+
+##  📦 Update AUR Package/repo Checksums
+```bash
+# Update checksums of repo 
+updpkgsums
+```
+---
 ### 💻 Give Termius Flatpak access to /home/chris/termius
 - Give Termius Flatpak access to home dir folder for SFTP 
 ```bash
