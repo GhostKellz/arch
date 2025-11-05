@@ -1,7 +1,6 @@
--- ~/.config/nvim/lua/config/lsp.lua
 -- 💡 Modernized for Neovim 0.11+ (uses vim.lsp.start)
 -- 🧠 No require('lspconfig') — avoids the deprecation warning
--- 🛡️ Falls back nicely if optional plugins aren't installed
+-- 🛡️ Pure modern setup, optional rust-tools / ts-tools
 
 -- 🔧 Common on_attach for all LSPs (format on save + keymaps)
 local function on_attach(client, bufnr)
@@ -14,6 +13,7 @@ local function on_attach(client, bufnr)
       end
     end,
   })
+
   -- 🔍 Keymaps
   local map = function(mode, lhs, rhs, desc)
     vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
@@ -28,9 +28,16 @@ local function on_attach(client, bufnr)
     vim.diagnostic.open_float(nil, { focusable = false })
   end, "Show diagnostics")
 
-  -- 🟨 Enable inlay hints if supported
+  -- ✅ Inlay hints (works on both older and newer NVIM APIs)
   if client.server_capabilities.inlayHintProvider then
-    vim.lsp.inlay_hint.enable(bufnr, true)
+    local ih = vim.lsp.inlay_hint
+    if type(ih) == "function" then
+      -- Neovim 0.10 style
+      ih(bufnr, true)
+    elseif type(ih) == "table" and ih.enable then
+      -- Neovim 0.11+ style
+      ih.enable(true, { bufnr = bufnr })
+    end
   end
 end
 
@@ -63,18 +70,36 @@ end)
 
 -- 🗂️ Root dir helper (modern Neovim API)
 local function detect_root()
-  return vim.fs.root(0, { ".git", "Cargo.toml", "go.mod", "package.json", "pyproject.toml", "build.zig" })
-      or vim.loop.cwd()
+  return vim.fs.root(0, {
+    ".git",
+    "Cargo.toml",
+    "go.mod",
+    "package.json",
+    "pyproject.toml",
+    "build.zig",
+  }) or vim.loop.cwd()
 end
 
 -- 🧠 Define servers (new API; no lspconfig)
 local SERVERS = {
-  bashls = { filetypes = { "sh", "bash" }, cmd = { "bash-language-server", "start" } },
-  dockerls = { filetypes = { "dockerfile" }, cmd = { "docker-langserver", "--stdio" } },
+  bashls = {
+    filetypes = { "sh", "bash" },
+    cmd = { "bash-language-server", "start" },
+  },
+  dockerls = {
+    filetypes = { "dockerfile" },
+    cmd = { "docker-langserver", "--stdio" },
+  },
   gopls = {
     filetypes = { "go", "gomod", "gowork", "gotmpl" },
     cmd = { "gopls" },
-    settings = { gopls = { gofumpt = true, staticcheck = true, usePlaceholders = true } },
+    settings = {
+      gopls = {
+        gofumpt = true,
+        staticcheck = true,
+        usePlaceholders = true,
+      },
+    },
   },
   jsonls = {
     filetypes = { "json", "jsonc" },
@@ -97,7 +122,10 @@ local SERVERS = {
       },
     },
   },
-  pyright = { filetypes = { "python" }, cmd = { "pyright-langserver", "--stdio" } },
+  pyright = {
+    filetypes = { "python" },
+    cmd = { "pyright-langserver", "--stdio" },
+  },
   rust_analyzer = {
     filetypes = { "rust" },
     cmd = { "rust-analyzer" },
@@ -110,11 +138,22 @@ local SERVERS = {
     },
   },
   yamlls = {
-    filetypes = { "yaml", "yaml.docker-compose", "yaml.gitlab", "yaml.helm-values" },
+    filetypes = {
+      "yaml",
+      "yaml.docker-compose",
+      "yaml.gitlab",
+      "yaml.helm-values",
+    },
     cmd = { "yaml-language-server", "--stdio" },
-    settings = { redhat = { telemetry = { enabled = false } }, yaml = { format = { enable = true } } },
+    settings = {
+      redhat = { telemetry = { enabled = false } },
+      yaml = { format = { enable = true } },
+    },
   },
-  zls = { filetypes = { "zig", "zir" }, cmd = { "zls" } },
+  zls = {
+    filetypes = { "zig", "zir" },
+    cmd = { "zls" },
+  },
 }
 
 -- 🚀 Start helper (pure new API)
@@ -147,9 +186,10 @@ for name, cfg in pairs(SERVERS) do
     pattern = cfg.filetypes or "*",
     group = vim.api.nvim_create_augroup("gk_lsp_" .. name, { clear = true }),
     callback = function(args)
+      -- let rust-tools handle rust if it's loaded
       if name == "rust_analyzer" and package.loaded["rust-tools"] then
         return
-      end -- 🦀 rust-tools handles Rust
+      end
       start_server_for_buf(name, cfg, args.buf)
     end,
   })
@@ -157,23 +197,19 @@ end
 
 -- 🦀 Rust (optional rust-tools; skips if missing)
 do
-  local ok, rt = pcall(require, "rust-tools")
-  if ok then
+  local ok_rt, rt = pcall(require, "rust-tools")
+  if ok_rt then
     rt.setup({
       server = {
         on_attach = function(_, bufnr)
-          vim.keymap.set(
-            "n",
-            "<leader>rr",
-            rt.runnables.runnables,
-            { buffer = bufnr, desc = "Rust Runnables" }
-          )
-          vim.keymap.set(
-            "n",
-            "<leader>rd",
-            rt.debuggables.debuggables,
-            { buffer = bufnr, desc = "Rust Debuggables" }
-          )
+          vim.keymap.set("n", "<leader>rr", rt.runnables.runnables, {
+            buffer = bufnr,
+            desc = "Rust Runnables",
+          })
+          vim.keymap.set("n", "<leader>rd", rt.debuggables.debuggables, {
+            buffer = bufnr,
+            desc = "Rust Debuggables",
+          })
         end,
         capabilities = capabilities,
         settings = SERVERS.rust_analyzer.settings,
@@ -186,7 +222,10 @@ end
 do
   local ok, ts_tools = pcall(require, "typescript-tools")
   if ok then
-    ts_tools.setup({ on_attach = on_attach, capabilities = capabilities })
+    ts_tools.setup({
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
   end
 end
 
