@@ -8,6 +8,22 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 vim.g.tmux_navigator_no_mappings = 0
 
+-- put this at the VERY top of init.lua, before lazy setup
+do
+	local orig = vim.notify
+	vim.notify = function(msg, level, opts)
+		if type(msg) == "string" and msg:match("The `require%('lspconfig'%).*deprecated") then
+			return
+		end
+		return orig(msg, level, opts)
+	end
+end
+
+-- 🔌 Point Neovim at your host providers to kill provider warnings
+vim.g.python3_host_prog = vim.fn.expand("~/.venvs/lsp/bin/python3")
+vim.g.node_host_prog = vim.fn.exepath("node")
+-- vim.g.ruby_host_prog = vim.fn.exepath("neovim-ruby-host")  -- uncomment if you actually use Ruby provider
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazypath })
@@ -19,7 +35,7 @@ vim.g.mapleader = " " -- Spacebar as the leader key
 vim.g.maplocalleader = "\\" -- Optional: local leader
 
 -- --- Plugins --- --
-require("lazy").setup({
+local plugins = {
 	{ import = "plugins" }, -- Import Plugins Folder
 	{ "nvim-lua/plenary.nvim" },
 
@@ -45,12 +61,21 @@ require("lazy").setup({
 	-- Treesitter
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 
+	-- LSP base (configured in lua/config/lsp.lua)
 	{ "neovim/nvim-lspconfig" },
+
+	-- TypeScript tools (used by config/lsp.lua)
+	{
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+	},
+
 	-- More Plugins
 	{ "folke/tokyonight.nvim" },
 	-- { "catppuccin/nvim", name = "catppuccin" },
 	{ "nvim-tree/nvim-web-devicons" },
 
+	-- null-ls (none-ls)
 	{
 		"nvimtools/none-ls.nvim", -- formerly null-ls.nvim
 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -68,67 +93,12 @@ require("lazy").setup({
 		end,
 	},
 
-	{
-		"neovim/nvim-lspconfig",
-		config = function()
-			local lspconfig = require("lspconfig")
-
-			-- Rust
-			lspconfig.rust_analyzer.setup({
-				settings = {
-					["rust-analyzer"] = {
-						cargo = { allFeatures = true },
-						checkOnSave = { command = "clippy" },
-					},
-				},
-			})
-
-			-- Zig
-			lspconfig.zls.setup({})
-		end,
-	},
-
 	-- Optional: LSP progress UI
 	{
 		"j-hui/fidget.nvim",
 		tag = "legacy",
 		event = "LspAttach",
 		opts = {},
-	},
-
-	-- Rust Dev Tools
-	{
-		"simrat39/rust-tools.nvim",
-		ft = { "rust" },
-		dependencies = { "neovim/nvim-lspconfig" },
-		config = function()
-			local rt = require("rust-tools")
-
-			rt.setup({
-				server = {
-					on_attach = function(_, bufnr)
-						vim.keymap.set(
-							"n",
-							"<leader>rr",
-							rt.runnables.runnables,
-							{ buffer = bufnr, desc = "Rust Runnables" }
-						)
-						vim.keymap.set(
-							"n",
-							"<leader>rd",
-							rt.debuggables.debuggables,
-							{ buffer = bufnr, desc = "Rust Debuggables" }
-						)
-					end,
-					settings = {
-						["rust-analyzer"] = {
-							cargo = { allFeatures = true },
-							checkOnSave = { command = "clippy" },
-						},
-					},
-				},
-			})
-		end,
 	},
 
 	-- Neo tree
@@ -196,25 +166,40 @@ require("lazy").setup({
 			vim.api.nvim_set_hl(0, "MiniStatuslineLocation", { fg = "#44ffbb", bg = "#1e1e2e" }) -- Sharper mint
 		end,
 	},
+}
+
+-- Disable LuaRocks/Hererocks noise from Lazy (you can re-enable later)
+require("lazy").setup(plugins, {
+	rocks = { enabled = false, hererocks = false },
 })
 
--- Load Config and Theme
-require("config.options")
-require("config.navigation")
-require("config.formatting")
-require("config.lsp")
-require("config.autocmds")
-require("config.dap")
-require("config.patch")
+-- -------- Safe module loading --------
+local function tryreq(m)
+	local ok, err = pcall(require, m)
+	if not ok then
+		vim.notify("Skipped " .. m .. ": " .. tostring(err), vim.log.levels.WARN)
+	end
+end
+
+-- Load Config (use safe loader so a missing file never hard-crashes startup)
+tryreq("config.options")
+tryreq("config.navigation")
+tryreq("config.formatting")
+tryreq("config.lsp") -- 👈 all LSP setup lives here now
+tryreq("config.autocmds")
+tryreq("config.dap")
+tryreq("config.patch")
 
 -- Basic UI
 vim.o.termguicolors = true
-vim.cmd.colorscheme("tokyonight")
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.mouse = "a"
 vim.opt.background = "dark"
+
+-- 🎨 Theme
 vim.cmd.colorscheme("tokyonight")
+
 -- Tmux
 vim.api.nvim_set_hl(0, "StatusLine", {
 	fg = "#1a1b26", -- dark text
@@ -236,23 +221,20 @@ vim.api.nvim_set_hl(0, "Identifier", { fg = "#7aa2f7", bg = "none" }) -- Light B
 vim.api.nvim_set_hl(0, "Keyword", { fg = "#9a0ade", bold = true }) -- Purple for keywords
 vim.api.nvim_set_hl(0, "Operator", { fg = "#7aa2f7", bg = "none" }) -- Light Blue Operators
 
--- Keywords and keywords functions
-vim.api.nvim_set_hl(0, "Keyword", { fg = "#9a0ade", bold = true }) -- Purple for keywords
-vim.api.nvim_set_hl(0, "Operator", { fg = "#57c7ff", bg = "none" }) -- Light Blue Operators
+-- Keywords and keywords functions (dupe-safe)
+vim.api.nvim_set_hl(0, "Keyword", { fg = "#9a0ade", bold = true })
+vim.api.nvim_set_hl(0, "Operator", { fg = "#57c7ff", bg = "none" })
 
 -- Neo Tree Keymap
 vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { desc = "Toggle Neo-tree" })
 
 -- Copilot Inline Suggestions
--- This section sets up keybindings for Copilot suggestions in insert mode.
 vim.keymap.set("i", "<C-g>", function()
 	require("copilot.suggestion").accept()
 end, { desc = "Copilot Accept Suggestion" })
-
 vim.keymap.set("i", "<C-l>", function()
 	require("copilot.suggestion").next()
 end, { desc = "Copilot Next Suggestion" })
-
 vim.keymap.set("i", "<C-k>", function()
 	require("copilot.suggestion").prev()
 end, { desc = "Copilot Previous Suggestion" })
@@ -292,7 +274,7 @@ vim.keymap.set({ "n", "v" }, "<leader>aa", function()
 	require("gen").prompts["Add Tests"]()
 end, { desc = "AI: Generate Tests" })
 
--- Monkeypatch deprecated function to suppress warning
+-- Monkeypatch deprecated function to suppress warning (compat shim)
 vim.lsp.buf_get_clients = function(bufnr)
 	vim.notify_once("[GhostKellz] Suppressed deprecated buf_get_clients call", vim.log.levels.DEBUG)
 	return vim.lsp.get_clients({ bufnr = bufnr or 0 })
