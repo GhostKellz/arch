@@ -270,7 +270,7 @@ end, { desc = "AI: Explain Code" })
 vim.keymap.set({ "n", "v" }, "<leader>ac", function()
 	require("gen").prompts["Complete Code"]()
 end, { desc = "AI: Complete Code" })
-vim.keymap.set({ "n", "v" }, "<leader>aa", function()
+vim.keymap.set({ "n", "v" }, "<leader>at", function()
 	require("gen").prompts["Add Tests"]()
 end, { desc = "AI: Generate Tests" })
 

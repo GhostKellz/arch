@@ -21,7 +21,7 @@
 
 ## 🎮 Current NVIDIA RTX 5090 Config
 
-![NVIDIA Config](../nvidia/nvidia.conf)
+[![NVIDIA RTX 5090](https://img.shields.io/badge/NVIDIA-RTX_5090_Config-76B900?logo=nvidia&logoColor=white)](../nvidia/nvidia.conf)
 
 ## 🛠️ Workarounds (historical)
 - Previously tested with TKG kernel (reduced occurrence)

@@ -56,7 +56,7 @@ pcall(function()
   require("mason-lspconfig").setup({
     ensure_installed = {
       "lua_ls",     -- 🌙 Lua
-      "rust_analyzer", -- 🦀 Rust
+      -- "rust_analyzer", -- 🦀 Rust (using rustup version instead for toolchain compatibility)
       "zls",        -- 🦎 Zig
       "pyright",    -- 🐍 Python
       "gopls",      -- 🐹 Go
@@ -128,7 +128,8 @@ local SERVERS = {
   },
   rust_analyzer = {
     filetypes = { "rust" },
-    cmd = { "rust-analyzer" },
+    -- Use rustup's rust-analyzer (version-matched to toolchain) instead of mason's outdated version
+    cmd = { vim.fn.expand("~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rust-analyzer") },
     settings = {
       ["rust-analyzer"] = {
         cargo = { allFeatures = true },
