@@ -1,65 +1,78 @@
-# 🧬 Custom Kernel Configurations
+# Custom Kernel Configurations
 
-This directory contains custom kernel builds, tuning configs, and boot parameter documentation for my Arch Linux setup. I'm experimenting with a hybrid kernel concept that blends:
-
-- **linux-tkg** (flexible build system + performance tuning)
-- **CachyOS**-level responsiveness (Bore scheduler, tick tweaks, etc.)
-- Full **NVIDIA DKMS/Open** support with custom modprobe, hooks, and install scripts
-
-This isn’t a full fork (yet), but `linux-ghost` is an evolving kernel project aimed at optimizing performance on high-end desktops — especially for AMD + NVIDIA hybrid setups.
+Kernel build configs, boot parameters, and documentation for my Arch Linux setup.
 
 ---
 
-## Included Kernels
+## Current Kernel Setup
 
-| Kernel        | Version  | Scheduler | Notes                                                         |
-| ------------- | -------- | --------- | ------------------------------------------------------------- |
-| `linux-ghost` | 6.15-rc2 | BORE      | Custom-built with NVIDIA DKMS compatibility and snapper-ready |
-
-> `linux-tkg` and `linux-zen` are archived for now as we consolidate around a more stable base.
-
----
-
-## 🧠 Folder Structure
-
-- `linux-ghost/` — Main custom kernel directory
-  - `bootloader/` — systemd-boot entry
-  - `customization.cfg` — TKG config
-  - `README.md` — Kernel explanation
-- `nvidia/` — NVIDIA DKMS build setup + system configs
-- `kernel-params.md` — Centralized breakdown of kernel boot flags
+| Priority | Kernel | Scheduler | Build Location |
+|----------|--------|-----------|----------------|
+| **Primary** | `linux-cachyos-lto` | EEVDF + BORE | `/data/repo/linux-cachyos/linux-cachyos/` |
+| **Fallback** | `linux-ghost` (TKG) | BORE | `/data/repo/linux-tkg/` |
+| **Backup** | `linux-zen` | EEVDF | Arch repos |
 
 ---
 
-## ⚙️ Why Custom Kernels?
+## Directory Structure
 
-- Better control over responsiveness (BORE, EEVDF, PDS)
-- Remove bloat from stock kernel configs
-- NVIDIA Open DKMS compatibility & boot flag enforcement
-- Tweak swap/compression layers (zram vs zswap)
-- Snapper-safe recovery support baked in
-
----
-
-## 🚀 Installation
-
-To install this kernel easily, use the companion script in:
-
-```bash
-~/arch/scripts/linux-ghost-installer.sh
+```
+kernel/
+├── linux-cachyos/           # CachyOS-LTO config (primary)
+│   ├── config-overrides.cfg
+│   ├── ghostkellz.myfrag
+│   ├── linux-cachyos-lto.conf
+│   └── README.md
+├── linux-tkg/               # TKG config (fallback)
+│   ├── customization.cfg
+│   ├── ghostkellz.myfrag
+│   ├── linux-ghost.conf
+│   └── README.md
+├── linux-ghost/             # Experimental kernel project (WIP)
+│   ├── bootloader/
+│   ├── customization.cfg
+│   └── README.md
+├── nvidia/                  # NVIDIA DKMS configs
+├── kernel-params.md         # Boot parameter documentation
+└── README.md
 ```
 
-It handles:
+---
 
-- Pre-install Snapper snapshot (optional)
-- Kernel + NVIDIA DKMS build
-- Bootloader entry generation
-- Automatic backup to `/data/recovery/`
+## Common Boot Parameters
+
+All kernels use these flags (see `/boot/loader/entries/`):
+
+```bash
+zswap.enabled=0                                # Using zram instead
+nvidia_drm.modeset=1                           # Required for Wayland
+nvidia.NVreg_PreserveVideoMemoryAllocations=1  # Suspend/resume
+usbcore.autosuspend=-1                         # Disable USB autosuspend
+```
 
 ---
 
-> This section is actively evolving — expect more schedulers, patches, and NVIDIA enhancements soon.
+## Hardware
 
-*Stay tuned. The ghost moves fast.* 👻
+- **CPU**: AMD Ryzen 9 9950X3D (Zen 5)
+- **GPU**: NVIDIA RTX 5090 (nvidia-open 570.x+)
+- **RAM**: 64GB DDR5
+- **Storage**: NVMe
 
+---
 
+## Quick Commands
+
+```bash
+# Current kernel
+uname -r
+
+# Build CachyOS
+cd /data/repo/linux-cachyos/linux-cachyos && makepkg -si
+
+# Build TKG
+cd /data/repo/linux-tkg && ./install.sh
+
+# Boot menu
+# Hold Space during boot for systemd-boot menu
+```
