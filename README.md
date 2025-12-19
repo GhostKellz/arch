@@ -2,12 +2,12 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Arch_Linux-1793D1?logo=arch-linux&logoColor=white"/> &nbsp;&nbsp;
-  <img src="https://img.shields.io/badge/NVIDIA-RTX_4090-76B900?logo=nvidia&logoColor=white"/> &nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/NVIDIA-RTX_5090-76B900?logo=nvidia&logoColor=white"/> &nbsp;&nbsp;
   <img src="https://img.shields.io/badge/Wayland-1793D1?logo=wayland&logoColor=white"/> &nbsp;&nbsp;
   <img src="https://img.shields.io/badge/GPG%20Signed-Verified-brightgreen"/> &nbsp;&nbsp;
   <img src="https://img.shields.io/badge/GhostKellz-👻-blueviolet"/> &nbsp;&nbsp;
   <img src="https://img.shields.io/badge/Optimized-⚡🚀🔒-00bcd4"/>
-  <img src="https://img.shields.io/badge/CPU-Ryzen_9_7950X3D-d24c1a?logo=amd&logoColor=white"/>
+  <img src="https://img.shields.io/badge/CPU-Ryzen_9_9950X3D-d24c1a?logo=amd&logoColor=white"/>
   <img src="https://img.shields.io/badge/Public_Key-ghostkellz.sh-blue" /> &nbsp;&nbsp;
 </p>
 
