@@ -19,9 +19,9 @@
 
 ![System Info](../assets/CK-Arch-System.png)
 
-## 🎮 Current NVIDIA RTX 4090 Config
+## 🎮 Current NVIDIA RTX 5090 Config
 
-![NVIDIA Config](../assets/NVIDIA_RTX-4090-config.png)
+![NVIDIA Config](../nvidia/nvidia.conf)
 
 ## 🛠️ Workarounds (historical)
 - Previously tested with TKG kernel (reduced occurrence)
