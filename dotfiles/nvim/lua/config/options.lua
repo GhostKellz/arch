@@ -7,3 +7,10 @@ vim.opt.signcolumn = "yes"
 vim.opt.wrap = false
 vim.opt.scrolloff = 10
 vim.cmd.colorscheme("tokyonight")
+
+vim.opt.list = true
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+
+vim.schedule(function()
+	vim.o.clipboard = "unnamedplus"
+end)

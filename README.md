@@ -191,6 +191,7 @@ A look at the setup powering this repository:
   <img src="assets/CK-Arch-System.png" alt="CK Arch System" width="700"/>
 </p>
 
+[![NVIDIA RTX 5090](https://img.shields.io/badge/NVIDIA-RTX_5090_Config-76B900?logo=nvidia&logoColor=white)](nvidia/nvidia.conf)
 
 ---
 
