@@ -191,9 +191,6 @@ A look at the setup powering this repository:
   <img src="assets/CK-Arch-System.png" alt="CK Arch System" width="700"/>
 </p>
 
-<p align="center">
-  <img src="assets/NVIDIA_RTX-4090-config.png" alt="NVIDIA RTX 4090 Config" width="700"/>
-</p>
 
 ---
 
