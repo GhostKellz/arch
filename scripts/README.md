@@ -73,6 +73,26 @@ _Example usage (manual):_
 ```bash
 sudo /usr/local/bin/update-root-hints.zsh
 ```
+
+### `autozig.zsh`
+_Automated Zig Dev Build Updater_
+
+Keeps your Zig 0.16.0-dev installation up-to-date with the latest master builds from [ziglang.org](https://ziglang.org/download/).
+
+- Fetches build info from Zig's official JSON API
+- Downloads the latest `x86_64-linux` tarball
+- Verifies SHA256 checksum before installing
+- Installs to `/opt/zig-0.16.0-dev` with clean overwrites
+- Tracks installed version to skip redundant downloads
+- Cron-ready: runs daily at 4am via root crontab
+
+_Example usage (manual):_
+```bash
+~/arch/scripts/autozig.zsh
+```
+
+_Cron log location:_ `/var/log/autozig.log`
+
 ---
 
 ## 🔍 Example Usage
