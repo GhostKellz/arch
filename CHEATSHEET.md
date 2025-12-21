@@ -117,6 +117,25 @@ sudo tail -f /var/log/restic.log
 sudo mkinitcpio -P
 ```
 ---
+## 🐳 Fix Docker NVIDIA Container After Driver Upgrade
+
+After upgrading NVIDIA drivers (e.g. 580 -> 590), Docker containers using `runtime: nvidia` will fail with errors like:
+```
+OCI runtime create failed: open /usr/lib/libEGL_nvidia.so.580.x.x: no such file or directory
+```
+
+Fix by regenerating the nvidia-container-toolkit CDI spec and restarting Docker:
+```bash
+# Regenerate nvidia container config with new driver paths
+sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
+
+# Restart Docker to pick up new config
+sudo systemctl restart docker
+
+# Recreate your container
+docker compose up -d
+```
+---
 ## KDE / Wayland Frozen Monitor Workaround Nvidia
 
 - Switch to TTY with `Ctrl + Alt + F3` (or F2/F4/etc.)
