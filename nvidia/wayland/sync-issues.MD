@@ -79,7 +79,7 @@ __GL_GSYNC_ALLOWED=1 __GL_VRR_ALLOWED=1 __GL_YIELD="USLEEP"
 
 - Monitor freezing may be due to one display being set to a mismatched refresh rate. Try aligning them.
 - Explicit sync and DRM modesetting are both required for Wayland + NVIDIA to function well.
-- Currently using NVIDIA open drivers (v570+) with KDE Plasma as primary DE.
+- Currently using NVIDIA open drivers (v590+) with KDE Plasma as primary DE.
 - Hyprland will be tested and used more extensively in future workflows.
  may be due to one display being set to a mismatched refresh rate. Try aligning them.
 - Explicit sync and DRM modesetting are both required for Wayland + NVIDIA to function well.
