@@ -61,11 +61,18 @@ For Wayland environment variables, you can source them via your session launcher
 ---
 
 ## 🚧 Warnings
-- **Built for modern RTX cards (40-series).**
-- **Assumes kernel 6.14+ and open-source NVIDIA drivers.**
+- **Built for modern RTX cards (40/50 series).**
+- **Assumes kernel 6.15+ and NVIDIA Open drivers.**
 - **Wayland performance may vary based on compositor (KDE/Hyprland/Gamescope).**
 
-> Use at your own risk — but tested extensively on CKTech/GhostKellz setups.
+> Use at your own risk — but works well on daily driver. 20/30 series cards require a bit more. I've virtualized so kvm + vfio gpu passtrhrough + looking glass and I can get a 2060 and a 3070 to work well on wayland but in my experience 40/50 series cards are less work and less finicky overall.
+
+Daily Driver: 9950x3d RTX 5090 - Arch KDE Nvidia Open 590 branch and Cachyos Kernel 6.18
+
+## Proxmox Hosts
+PVE1 VMhost1 - 14900k/RTX 4090 - Arch GPU passthrough via vfio + looking glass. Hosts ollama and openwebUI mostly server and AI stuff. 
+PVE2 VMhost2 - 5900x / RTX 3070 - Arch KDE, vfio passthrough and zen kernel. Mostly a testbed for arch + nvidia 
+PVE3 Vmhost3 - 12900kf / RTX 2060 - VM running popOS cosmic and previously fedora. Mostly just testing other distros out with older nvidia hardware. 
 
 ---
 
