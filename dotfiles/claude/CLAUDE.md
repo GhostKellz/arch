@@ -84,6 +84,10 @@ with the pattern
 4. **Explain Changes**: High-level summary at each step
 5. **Document Results**: Add review section to 'tasks/todo.md"
 6. **Capture Lessons**: Update 'tasks/lessons.md' after corrections
+7. Do Not fill codebase comments and docs/ section with version numbers all over the place. Clean organized docs are under docs/ and CHANGELOG.md in project root for versioning
+8. When documenting we place documentation organized in docs/ directory in projects. 
+9. DO Not be a marketing or sales documentation, accuracy and organization is key.
+
 ## Core Principles
 - **Simplicity First**: Make every change as simple as possible. Impact minimal code.
 - **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
