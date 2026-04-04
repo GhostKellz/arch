@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Tokyonight-Night-Blue
+Comment=Light and dark colorful Gtk3.20+ theme
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Tokyonight-Night-Blue
+MetacityTheme=Tokyonight-Night-Blue
+IconTheme=candy-icons
+ButtonLayout=:minimize,maximize,close
