@@ -1,14 +1,14 @@
 # 👻 GhostKellz Arch Linux Repository 👻
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Arch_Linux-1793D1?logo=arch-linux&logoColor=white"/> &nbsp;&nbsp;
-  <img src="https://img.shields.io/badge/NVIDIA-RTX_5090-76B900?logo=nvidia&logoColor=white"/> &nbsp;&nbsp;
-  <img src="https://img.shields.io/badge/Wayland-1793D1?logo=wayland&logoColor=white"/> &nbsp;&nbsp;
-  <img src="https://img.shields.io/badge/GPG%20Signed-Verified-brightgreen"/> &nbsp;&nbsp;
-  <img src="https://img.shields.io/badge/GhostKellz-👻-blueviolet"/> &nbsp;&nbsp;
-  <img src="https://img.shields.io/badge/Optimized-⚡🚀🔒-00bcd4"/>
-  <img src="https://img.shields.io/badge/CPU-Ryzen_9_9950X3D-d24c1a?logo=amd&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Public_Key-ghostkellz.sh-blue" /> &nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white" alt="Arch Linux">
+  <img src="https://img.shields.io/badge/NVIDIA-RTX_5090-76B900?style=for-the-badge&logo=nvidia&logoColor=white" alt="NVIDIA">
+  <img src="https://img.shields.io/badge/Wayland-FFBC00?style=for-the-badge&logo=wayland&logoColor=black" alt="Wayland">
+  <img src="https://img.shields.io/badge/AMD-Ryzen_9950X3D-ED1C24?style=for-the-badge&logo=amd&logoColor=white" alt="AMD">
+  <img src="https://img.shields.io/badge/Btrfs-8A2BE2?style=for-the-badge&logo=linux&logoColor=white" alt="Btrfs">
+  <img src="https://img.shields.io/badge/KDE_Plasma-1D99F3?style=for-the-badge&logo=kde&logoColor=white" alt="KDE">
+  <img src="https://img.shields.io/badge/GPG_Signed-Verified-00C853?style=for-the-badge&logo=gnu-privacy-guard&logoColor=white" alt="GPG Signed">
+  <img src="https://img.shields.io/badge/GhostKellz-👻-9B59B6?style=for-the-badge" alt="GhostKellz">
 </p>
 
 ---
@@ -191,7 +191,7 @@ A look at the setup powering this repository:
   <img src="assets/CK-Arch-System.png" alt="CK Arch System" width="700"/>
 </p>
 
-[![NVIDIA RTX 5090](https://img.shields.io/badge/NVIDIA-RTX_5090_Config-76B900?logo=nvidia&logoColor=white)](nvidia/nvidia.conf)
+[![NVIDIA RTX 5090](https://img.shields.io/badge/NVIDIA-RTX_5090_Config-76B900?style=for-the-badge&logo=nvidia&logoColor=white)](nvidia/nvidia.conf)
 
 ---
 
