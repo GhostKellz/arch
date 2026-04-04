@@ -95,7 +95,7 @@ Comment[zh_CN]=管理虚拟系统
 Comment[zh_TW]=管理虛擬系統
 Comment=Manage virtual machines
 Icon=virt-manager
-Exec=env GTK_THEME=Tokyonight-Night-Blue /usr/bin/python3 /usr/bin/virt-manager
+Exec=env GTK_THEME=Tokyonight-Night-Blue MANGOHUD=0 /usr/bin/python3 /usr/bin/virt-manager
 Type=Application
 Terminal=false
 Categories=System;Emulator;GTK;
