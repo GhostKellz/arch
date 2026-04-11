@@ -8,14 +8,16 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 vim.g.tmux_navigator_no_mappings = 0
 
--- put this at the VERY top of init.lua, before lazy setup
+-- Suppress known deprecation warnings from plugins not yet updated for 0.12.1
 do
-	local orig = vim.notify
+	local orig_notify = vim.notify
 	vim.notify = function(msg, level, opts)
-		if type(msg) == "string" and msg:match("The `require%('lspconfig'%).*deprecated") then
-			return
+		if type(msg) == "string" then
+			-- Skip known plugin deprecation warnings until upstream fixes
+			if msg:match("The `require%('lspconfig'%).*deprecated") then return end
+			if msg:match("client%.is_stopped.*deprecated") then return end
 		end
-		return orig(msg, level, opts)
+		return orig_notify(msg, level, opts)
 	end
 end
 
@@ -25,7 +27,7 @@ vim.g.node_host_prog = vim.fn.exepath("node")
 -- vim.g.ruby_host_prog = vim.fn.exepath("neovim-ruby-host")  -- uncomment if you actually use Ruby provider
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazypath })
 end
 vim.opt.rtp:prepend(lazypath)
@@ -57,9 +59,6 @@ local plugins = {
 		"b0o/schemastore.nvim",
 		lazy = true,
 	},
-
-	-- Treesitter
-	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 
 	-- LSP base (configured in lua/config/lsp.lua)
 	{ "neovim/nvim-lspconfig" },
@@ -96,7 +95,6 @@ local plugins = {
 	-- Optional: LSP progress UI
 	{
 		"j-hui/fidget.nvim",
-		tag = "legacy",
 		event = "LspAttach",
 		opts = {},
 	},
