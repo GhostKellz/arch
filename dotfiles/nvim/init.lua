@@ -10,12 +10,22 @@ vim.g.tmux_navigator_no_mappings = 0
 
 -- Suppress known deprecation warnings from plugins not yet updated for 0.12.1
 do
+	-- Intercept vim.deprecate to suppress specific plugin deprecations
+	local orig_deprecate = vim.deprecate
+	vim.deprecate = function(name, alternative, version, plugin, backtrace)
+		-- Suppress is_stopped deprecation (copilot-cmp, lspconfig, etc.)
+		if name and name:match("is_stopped") then return end
+		-- Suppress lspconfig require deprecation
+		if name and name:match("lspconfig") then return end
+		return orig_deprecate(name, alternative, version, plugin, backtrace)
+	end
+
+	-- Also intercept vim.notify for any stray deprecation messages
 	local orig_notify = vim.notify
 	vim.notify = function(msg, level, opts)
 		if type(msg) == "string" then
-			-- Skip known plugin deprecation warnings until upstream fixes
-			if msg:match("The `require%('lspconfig'%).*deprecated") then return end
 			if msg:match("client%.is_stopped.*deprecated") then return end
+			if msg:match("The `require%('lspconfig'%).*deprecated") then return end
 		end
 		return orig_notify(msg, level, opts)
 	end
