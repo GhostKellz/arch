@@ -1,0 +1,42 @@
+# ghostzen5.patch - AMD Zen 5 (znver5) CPU optimization support
+# Author: ghostkellz
+# For kernel 6.18+ with GCC 14.1+ or Clang 19.1+
+#
+# Adds CONFIG_MZEN5 for AMD Ryzen 9000 series and 9000X3D processors
+# Enables -march=znver5 compiler optimization
+
+diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
+--- a/arch/x86/Kconfig.cpu
++++ b/arch/x86/Kconfig.cpu
+@@ -308,6 +308,16 @@
+
+ 	  Enables -march=znver4
+
++config MZEN5
++	bool "AMD Zen 5"
++	depends on (CC_IS_GCC && GCC_VERSION > 140000) || (CC_IS_CLANG && CLANG_VERSION >= 190100)
++	help
++	  Select this for AMD Family 1Ah Zen 5 processors.
++
++	  Includes AMD Ryzen 9000 series and Ryzen 9000X3D (e.g., 9950X3D).
++
++	  Enables -march=znver5
++
+ endchoice
+
+ config X86_64_VERSION
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -182,6 +182,11 @@
+ 	KBUILD_RUSTFLAGS += -Ctarget-cpu=znver4
+ endif
+
++ifdef CONFIG_MZEN5
++	KBUILD_CFLAGS += -march=znver5
++	KBUILD_RUSTFLAGS += -Ctarget-cpu=znver5
++endif
++
+ ifdef CONFIG_X86_NATIVE_CPU
+ 	KBUILD_CFLAGS += -march=native
+ 	KBUILD_RUSTFLAGS_KERNEL += -Ctarget-cpu=native
