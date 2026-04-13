@@ -1,5 +1,5 @@
 ## Worktlow Orchestration
-### 1. PLan Node Default
+### 1. Plan Node Default
 - Enter plan mode for ANY non-trivial task (3+ steps or architectural decisions)
 - If something goes sideways, STOP and re-plan immediately - don't keep pushing
 - Use plan mode for verification steps, not just building
@@ -9,12 +9,13 @@
 - Offload research, exploration, and parallel analysis to subagents
 - For complex problems, throw more compute at it via subagents
 - One tack per subagent for focused execution
-## 3. Self-Improvement Loop
+### 3. Self-Improvement Loop
 - After ANY correction from the user: update 'tasks/lessons.md*
 with the pattern
 - Write rules for yourself that prevent the same mistake
 - Ruthlessly iterate on these lessons until mistake rate drops
 - Review lessons at session start for relevant project
+- Never use sed incorrectly and corrupt files 
 ### 4. Verification Before Done
 - Never mark a task complete without proving it works
 - Diff behavior between main and your changes when relevant
@@ -25,6 +26,26 @@ with the pattern
 - If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
 - Skip this for simple, obvious fixes - don't over-engineer
 - Challenge your own work before presenting it
+
+### 6. Docker & Container Workflow
+- When a project needs an isolated test environment, default to a `docker-compose.yml` + `docker/Dockerfile` + `docker/scripts/` layout
+- Always prefer `network_mode: host` for our local dev/test containers unless explicitly told otherwise
+- Never create custom Docker bridge networks for our workstation testing by default
+- Host networking is required to avoid the DNS resolution and connectivity issues we repeatedly hit with normal Docker networking
+- When using Compose build config, prefer:
+  - `dockerfile: docker/Dockerfile`
+  - `network: host`
+- When using runtime config, prefer:
+  - `network_mode: host`
+- Keep docker-related helper scripts in `docker/scripts/` instead of scattering them around the repo
+- Prefer Alpine Linux for smaller/faster containers whenever the workload supports it cleanly
+- Use Arch Linux containers for Arch-native tools, package workflows, or when the runtime needs to match the host Arch environment
+- Use `debian:slim` only when Alpine is not practical for the workload or dependency stack
+- Container setups should stay simple, reproducible, and easy to tear down and rebuild
+- If a tool fails under non-host networking, do not waste time troubleshooting bridge networking first - move to host networking
+- For Zig projects in containers, include Valgrind-based memory leak auditing when applicable
+- Docker test environments are for development and verification first, not production orchestration
+
 ### 6. Autonomous Bug Fizing
 - When given a bug report: just fix it. Don't ask for hand-holding
 - Point at logs, errors, failing tests - then resolve them
@@ -75,7 +96,16 @@ with the pattern
 - Also our Dev system has several VM's staged - Windows, etc. You have permitted permisions to do a reverse shell into these systems when specified to test on different Operating systems - Mainly Windows, popOS, fedora, and also arch.
 - Arch Linux is our main system. 
 - Proxmox Cluster is our main secondary testing environment outside of this host. 
-
+- For local Docker and Docker Compose testing on this workstation, default to host networking
+- Expected defaults for local container testing:
+  - `dockerfile: docker/Dockerfile`
+  - `network: host`
+  - `network_mode: host`
+- Test 1: verify the container can resolve DNS correctly under host networking
+- Test 2: verify the app can reach all expected local services under host networking
+- Do not assume custom Docker networks will work correctly on this workstation
+- If a project needs Linux-environment testing and Alpine is sufficient, prefer Alpine first
+- If the project is Arch-specific, use an Arch container instead of Alpine
 
 ## Task Management
 1. **Plan First**: Write plan to "tasks/todo.md" with checkable items
@@ -92,4 +122,8 @@ with the pattern
 - **Simplicity First**: Make every change as simple as possible. Impact minimal code.
 - **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
 - **Minimat Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
+- **Don't create terrible file naming conventions like file_v2 or v2 or v1 in the file names when it doesnt make sense. Stick to naming convention best practices
+- ** Professional Documentation**: Clear, concise, and accurate documentation is a must. No marketing fluff. Accuracy matters. 
+- ** Good Commenting Hygiene**: Comments should explain "why", not "what". Avoid redudant comments. Keep them up to date. Do not put static version numbers in code comments. 
+- **Test Everything**: If it can be tested, it should be. Don't mark a task complete without proving it works.
 
