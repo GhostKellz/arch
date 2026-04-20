@@ -1,11 +1,11 @@
 #!/bin/bash
-# Update Zig 0.16.0-dev to the latest master build
+# Update Zig dev to the latest master build
 # For GitHub Actions self-hosted runners on Ubuntu
 # Fetches from https://ziglang.org/download/index.json
 
 set -euo pipefail
 
-INSTALL_DIR="/opt/zig-0.16.0-dev"
+INSTALL_DIR="/opt/zig-dev"
 SYMLINK_PATH="/usr/local/bin/zig"
 JSON_URL="https://ziglang.org/download/index.json"
 TMP_DIR="/tmp/zig-update-$$"
