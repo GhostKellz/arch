@@ -8,6 +8,10 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 vim.g.tmux_navigator_no_mappings = 0
 
+-- CVE-2026-34982 mitigation: disable modelines to prevent RCE via malicious files
+vim.opt.modeline = false
+vim.opt.modelines = 0
+
 -- Suppress known deprecation warnings from plugins not yet updated for 0.12.1
 do
 	-- Intercept vim.deprecate to suppress specific plugin deprecations
