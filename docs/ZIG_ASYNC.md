@@ -1,4 +1,4 @@
-# 🔄 Zig Async (0.16+): A Short, Practical Guide
+# Zig Async (0.17+): A Short, Practical Guide
 
 **TL;DR:** Keep your public APIs sync-shaped, pass capability objects in (allocator and an Io), and treat suspension as an implementation detail. Zig is actively landing a new Io interface and std.io changes to support "colorless" async; design so you won't need to churn later.
 
@@ -65,18 +65,18 @@ Core packages: no OS/runtime flags. Put OS/event-loop flags in transport/adapter
 ### 🎯 Minimal Defaults
 Ship with async features off unless explicitly requested; document presets (minimal/web/enterprise).
 
-## 7️⃣ Migration Notes (What's Changing in Zig 0.16.0-dev)
+## Migration Notes (What's Changing in Zig 0.17.0-dev)
 
-### 🔄 New Io Interface Coming
-Zig 0.16.0-dev is introducing a new Io interface (passed like Allocator) and making breaking changes to std.io to support "colorless" async & better I/O composition. Target that shape now to minimize churn.
+### New Io Interface
+Zig 0.17.0-dev continues the Io interface work (passed like Allocator) with breaking changes to std.io to support "colorless" async & better I/O composition. Target that shape now to minimize churn.
 
-### 🔮 Async/Await Returns
-There's active work around bringing back async/await ergonomics atop the new I/O model. Keep your APIs sync-shaped so you can adopt keywords/features later without breaking users.
+### Async/Await Evolution
+Active work continues on async/await ergonomics atop the new I/O model. Keep your APIs sync-shaped so you can adopt keywords/features later without breaking users.
 
-### ⚠️ Key 0.16.0-dev Changes
-- `std.io.Reader`/`Writer` interfaces are being redesigned
-- New capability-based Io parameter pattern
-- Potential return of async/await syntax
+### Key 0.17.0-dev Changes
+- Continued `std.io.Reader`/`Writer` interface redesign
+- Capability-based Io parameter pattern maturing
+- Async/await syntax evolution
 - Better integration with event loops
 - Improved support for "colorless" async functions
 
@@ -93,4 +93,4 @@ There's active work around bringing back async/await ergonomics atop the new I/O
 
 ---
 
-*This guide targets Zig 0.16.0-dev and the upcoming std.io redesign. As the async story evolves, these patterns will keep your code forward-compatible.*
+*This guide targets Zig 0.17.0-dev. As the async story evolves, these patterns will keep your code forward-compatible.*

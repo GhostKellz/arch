@@ -1,6 +1,6 @@
-# ⚡ Zig Cheatsheet
+# Zig Cheatsheet
 
-A compact reference for working with the Zig programming language (v0.16.0). Great for new users and cross-platform systems development.
+A compact reference for working with the Zig programming language (0.17.0-dev). Great for new users and cross-platform systems development.
 
 ---
 
@@ -116,13 +116,14 @@ zion clean                      # zion dev tool - cleansup zig cache
 - Prefer `.zig.zon` for managing package metadata
 - Check `build.zig` for custom build steps
 - Use `std.ArrayList(T)` instead of `std.ArrayList(T, allocator)` (0.16.0+)
+- Zig 0.17.0-dev includes continued std.io redesign and Io capability pattern
 - Memory management is explicit - always handle allocations/deallocations
 
 ---
 
 ---
 
-## ⚡ Zig 0.16.0 Breaking Changes
+## Zig 0.16.0+ Breaking Changes
 
 ### ArrayList Changes
 ```zig

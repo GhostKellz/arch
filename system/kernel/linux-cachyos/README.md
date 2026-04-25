@@ -2,6 +2,7 @@
 
 Primary kernel - [CachyOS kernel](https://github.com/CachyOS/linux-cachyos) with full LTO.
 
+**Version**: 7.0.x
 **Build location**: `/data/repo/linux-cachyos/linux-cachyos/`
 
 ---
@@ -10,42 +11,51 @@ Primary kernel - [CachyOS kernel](https://github.com/CachyOS/linux-cachyos) with
 
 | File | Description |
 |------|-------------|
-| `config-overrides.cfg` | CachyOS PKGBUILD variable overrides |
+| `PKGBUILD` | Modified PKGBUILD with ZEN5 support |
+| `ghostzen5.patch` | Adds CONFIG_MZEN5 for Ryzen 9000 series |
 | `ghostkellz.myfrag` | Custom kernel config fragment |
+| `config-overrides.cfg` | CachyOS PKGBUILD variable overrides |
 
 ---
 
 ## Key Settings
 
-From CachyOS PKGBUILD defaults + overrides:
-
 ```bash
 _cpusched="cachyos"           # EEVDF + BORE patches
 _use_llvm_lto="full"          # Full LTO with Clang
-_processor_opt="zen4"         # Zen 4 optimizations
+_processor_opt="zen5"         # Zen 5 optimizations (Ryzen 9000/9950X3D)
 _HZ_ticks="1000"              # 1000Hz tick
 _tickrate="full"              # Full tickless
 _preempt="full"               # Low-latency preemption
 _hugepage="always"            # THP always enabled
-_tcp_bbr3="yes"               # BBR3 TCP
 _cc_harder="yes"              # -O3 optimizations
-_per_gov="yes"                # Performance governor default
 ```
 
-Override settings (`config-overrides.cfg`):
-```bash
-_compress_modules="zstd"
-_compiler="llvm"
-_use_mold="true"              # Mold linker
-_use_kcfi="true"              # Kernel CFI
-_lto_mode="full"
-```
+---
+
+## ZEN5 Support
+
+The PKGBUILD includes explicit ZEN5 support via:
+
+1. **ghostzen5.patch** - Adds `CONFIG_MZEN5` to kernel Kconfig
+2. **PKGBUILD modification** - `ZEN5` case in CPU optimization switch
+3. **Default** - `_processor_opt=zen5`
+
+This matches CachyOS pre-built znver5 repository binaries.
 
 ---
 
 ## Config Fragment (ghostkellz.myfrag)
 
-Same as TKG - enables webcam, CIFS, containers, nftables, etc.
+Enables:
+- Elgato/UVC webcam support
+- CIFS/SMB, FUSE3
+- Docker/container support (namespaces, cgroups, overlayfs)
+- nftables + iptables compat
+- KVM/QEMU, VFIO passthrough
+- WireGuard, Tailscale
+- NVIDIA container toolkit support
+- AMD Zen5 optimizations
 
 ---
 

@@ -28,11 +28,8 @@ kernel/
 │   ├── ghostkellz.myfrag
 │   ├── linux-ghost.conf
 │   └── README.md
-├── linux-ghost/             # Experimental kernel project (WIP)
-│   ├── bootloader/
-│   ├── customization.cfg
-│   └── README.md
 ├── nvidia/                  # NVIDIA DKMS configs
+├── config-spec.md           # CONFIG_* options reference
 ├── kernel-params.md         # Boot parameter documentation
 └── README.md
 ```
@@ -55,7 +52,7 @@ usbcore.autosuspend=-1                         # Disable USB autosuspend
 ## Hardware
 
 - **CPU**: AMD Ryzen 9 9950X3D (Zen 5)
-- **GPU**: NVIDIA RTX 5090 (nvidia-open 570.x+)
+- **GPU**: NVIDIA RTX 5090 (nvidia-open 595.x)
 - **RAM**: 64GB DDR5
 - **Storage**: NVMe
 

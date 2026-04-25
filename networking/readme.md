@@ -36,8 +36,8 @@ All optimized for:
 | Folder/File            | Purpose |
 |-------------------------|---------|
 | `tailscale.md`           | Tailscale/Headscale setup, tweaks, and peer configuration |
+| `nftables.md`            | nftables performance tuning and security baseline |
 | `unbound/`               | Local Unbound configuration for secure DNS resolution |
-| `update-root-hints.zsh`  | Automated script to refresh root DNS hints and reload Unbound |
 | `readme.md`              | (This file) Networking structure and overview |
 
 ---

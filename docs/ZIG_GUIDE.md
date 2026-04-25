@@ -1,6 +1,6 @@
-# 🚀 Zig 0.16 "Understand & Build Well" Guide
+# Zig 0.17 "Understand & Build Well" Guide
 
-This is a practical, paste-ready guide for designing rock-solid Zig libraries and apps—with special focus on allocators, API design best-practices (0.16), and when to use modular build flags vs. a flat build.
+This is a practical, paste-ready guide for designing rock-solid Zig libraries and apps—with special focus on allocators, API design best-practices, and when to use modular build flags vs. a flat build.
 
 ## 🧠 Core Mental Model (What Zig Wants From You)
 
@@ -61,7 +61,7 @@ const a = arena.allocator();
 
 📝 **Rule of thumb:** Arena for bursts, GPA for correctness & tests, FixedBuffer when you know the ceiling.
 
-## 🎯 Public API Design (0.16-friendly)
+## Public API Design
 
 ### 🏗️ Shape Your Types
 ```zig
@@ -315,7 +315,7 @@ Before enabling a new build flag
 
  Default remains OFF (unless truly harmless)
 
-## 🚨 Common Gotchas in Zig 0.16.0-dev
+## Common Gotchas in Zig 0.17.0-dev
 
 ### 📋 ArrayList API Changes
 Always construct with `init(alloc)` and `deinit()` it. Prefer `ArrayListUnmanaged` when you manage lifetime elsewhere.
@@ -339,5 +339,5 @@ At your public boundary, narrow errors to a named set.
 
 ---
 
-*This guide targets Zig 0.16.0-dev. Keep APIs small, memory explicit, and features modular for maintainable Zig code.*
+*This guide targets Zig 0.17.0-dev. Keep APIs small, memory explicit, and features modular for maintainable Zig code.*
 
