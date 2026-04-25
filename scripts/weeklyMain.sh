@@ -21,13 +21,12 @@ elif command -v yay &>/dev/null; then
 fi
 
 # 3. Remove Orphans
-echo "🧹 Removing orphaned packages..."
-pacman -Qtdq | xargs -r sudo pacman -Rns --
+echo "Removing orphaned packages..."
+pacman -Qtdq | xargs -r pacman -Rns --noconfirm || true
 
-# 4. Pacman Cache Cleanup
-echo "🧽 Cleaning pacman cache..."
+# 4. Pacman Cache Cleanup (keep last 2 versions)
+echo "Cleaning pacman cache..."
 paccache -rk2
-pacman -Sc --noconfirm
 
 # 5. Journal Cleanup
 echo "🧾 Cleaning journal logs..."
@@ -48,9 +47,8 @@ dkms autoinstall
 echo "🔤 Rebuilding font cache..."
 fc-cache -rv
 
-# 9. Optional: Trim SSD (if not using autotrim)
-echo "✂️ Running fstrim..."
-fstrim -av
+# 9. SSD Trim (skipped - using discard=async in fstab)
+# fstrim -av
 
 # 10. Check Failed Services
 echo "🚨 Checking failed services..."
@@ -91,8 +89,8 @@ else
   echo "⚠️ nvm not found; skipping Node update."
 fi
  
-14.  ── Neovim plugins / parsers / tools ────────────────────────
-echo "🧠 Neovim: plugin + tool upkeep…"
+# 14. Neovim plugins / parsers / tools
+echo "Neovim: plugin + tool upkeep..."
 
 # If rust-tools.nvim has local edits, remove it so Lazy can update cleanly
 RT_DIR="$HOME/.local/share/nvim/lazy/rust-tools.nvim"

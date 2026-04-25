@@ -753,8 +753,8 @@ database = ["sqlx", "uuid"]
 [package]
 name = "myapp"
 version = "0.1.0"
-edition = "2021"
-rust-version = "1.70"  # Minimum supported Rust version
+edition = "2024"
+rust-version = "1.95"  # Minimum supported Rust version
 license = "MIT OR Apache-2.0"
 description = "A sample Rust application"
 repository = "https://github.com/user/myapp"
@@ -2098,8 +2098,8 @@ pub fn create_pool(database_url: &str) -> Result<PgPool, sqlx::Error> {
 [package]
 name = "production-app"
 version = "1.0.0"
-edition = "2021"
-rust-version = "1.70.0"
+edition = "2024"
+rust-version = "1.95.0"
 description = "A production-ready Rust application"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/company/production-app"
@@ -2349,7 +2349,7 @@ rr = "run --release"
 
 ```dockerfile
 # Multi-stage Docker build
-FROM rust:1.70-alpine AS builder
+FROM rust:1.95-alpine AS builder
 
 # Install build dependencies
 RUN apk add --no-cache musl-dev openssl-dev
