@@ -286,8 +286,3 @@ vim.keymap.set({ "n", "v" }, "<leader>at", function()
 	require("gen").prompts["Add Tests"]()
 end, { desc = "AI: Generate Tests" })
 
--- Monkeypatch deprecated function to suppress warning (compat shim)
-vim.lsp.buf_get_clients = function(bufnr)
-	vim.notify_once("[GhostKellz] Suppressed deprecated buf_get_clients call", vim.log.levels.DEBUG)
-	return vim.lsp.get_clients({ bufnr = bufnr or 0 })
-end

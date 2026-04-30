@@ -233,12 +233,6 @@ end
 -- 📦 External formatters (null-ls / conform)
 pcall(require, "config.formatting")
 
--- 🐒 Monkeypatch deprecated buf_get_clients to keep noisy plugins quiet
-vim.lsp.buf_get_clients = function(bufnr)
-  vim.notify_once("[GhostKellz] Suppressed deprecated buf_get_clients call", vim.log.levels.DEBUG)
-  return vim.lsp.get_clients({ bufnr = bufnr or 0 })
-end
-
 -- ✅ Diagnostics UI
 vim.diagnostic.config({
   virtual_text = false,

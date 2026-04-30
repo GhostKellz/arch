@@ -31,20 +31,6 @@ return {
 		end,
 	},
 
-	-- 🔹 Symbols Outline (Tree-style code structure)
-	{
-		"simrat39/symbols-outline.nvim",
-		cmd = "SymbolsOutline",
-		keys = {
-			{ "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" },
-		},
-		opts = {
-			auto_close = true,
-			highlight_hovered_item = true,
-			show_guides = true,
-		},
-	},
-
 	-- 🪄 Noice UI (Fancy messages + popups)
 	{
 		"folke/noice.nvim",
@@ -53,20 +39,9 @@ return {
 			"MunifTanjim/nui.nvim",
 			"rcarriga/nvim-notify",
 		},
-		config = true,
-	},
-
-	-- 🗂️ Project.nvim – fix requires a config() block
-	{
-		"ahmedkhalf/project.nvim",
-		event = "VeryLazy",
-		config = function()
-			require("project_nvim").setup({
-				manual_mode = false,
-				detection_methods = { "lsp", "pattern" },
-				patterns = { ".git", "Makefile", "package.json", "go.mod", ".nvimroot" },
-			})
-		end,
+		opts = {
+			notify = { enabled = false }, -- using custom vim.notify wrapper for deprecation suppression
+		},
 	},
 
 	-- 🌈 Inline hex/css color preview

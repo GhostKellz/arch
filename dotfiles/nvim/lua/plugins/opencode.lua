@@ -4,7 +4,25 @@ return {
     { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
   },
   init = function()
-    vim.g.opencode_opts = {}
+    vim.g.opencode_opts = {
+      server = {
+        toggle = function()
+          require("opencode.terminal").toggle("opencode --port", {
+            split = "below",
+            height = math.floor(vim.o.lines * 0.3),
+          })
+        end,
+        start = function()
+          require("opencode.terminal").open("opencode --port", {
+            split = "below",
+            height = math.floor(vim.o.lines * 0.3),
+          })
+        end,
+        stop = function()
+          require("opencode.terminal").close()
+        end,
+      },
+    }
     vim.o.autoread = true
     vim.api.nvim_create_user_command("OpenCode", function()
       require("opencode").toggle()
