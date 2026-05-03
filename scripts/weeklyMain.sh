@@ -24,7 +24,11 @@ fi
 echo "Removing orphaned packages..."
 pacman -Qtdq | xargs -r pacman -Rns --noconfirm || true
 
-# 4. Pacman Cache Cleanup (keep last 2 versions)
+# 4. Flatpak Cleanup
+echo "Removing unused Flatpak runtimes..."
+flatpak uninstall --unused -y || true
+
+# 5. Pacman Cache Cleanup (keep last 2 versions)
 echo "Cleaning pacman cache..."
 paccache -rk2
 
