@@ -1,0 +1,9 @@
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = *
+
+[Action]
+Description = Updating Flatpak packages...
+When = PostTransaction
+Exec = /usr/bin/flatpak update -y --noninteractive
