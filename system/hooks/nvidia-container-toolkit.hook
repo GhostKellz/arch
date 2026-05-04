@@ -1,0 +1,12 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = nvidia-utils
+Target = nvidia-open-dkms
+
+[Action]
+Description = Regenerating NVIDIA CDI spec for container toolkit...
+When = PostTransaction
+Exec = /usr/bin/nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
+NeedsTargets
