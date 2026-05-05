@@ -197,13 +197,13 @@ A look at the setup powering this repository:
 
 ## 🌐 Join the GhostForge Community
 
-[![GhostKellz.gg Community](https://github.com/GhostKellz/arch/blob/main/assets/Discord.png)](https://ghostkellz.gg)
+[![GhostKellz Discord](https://github.com/GhostKellz/arch/blob/main/assets/Discord.png)](https://discord.ghostkellz.sh)
 
 > **GhostForge** is our growing community for Linux users, gamers, IT professionals, and programmers.
 >  
 > Connect, collaborate, share projects, and vibe with others who believe in the future of open source + tech freedom.
 >  
-> **🌎 Join us today at [GhostKellz.gg](https://ghostkellz.gg) → Discord invite awaits!**
+> **🌎 Join us today at [discord.ghostkellz.sh](https://discord.ghostkellz.sh) → Discord invite awaits!**
 
 ---
 
