@@ -139,7 +139,9 @@ Operation = Install
 Operation = Upgrade
 Type = Package
 Target = nvidia-utils
+Target = nvidia-utils-beta
 Target = nvidia-open-dkms
+Target = nvidia-open-beta-dkms
 
 [Action]
 Description = Regenerating NVIDIA CDI spec for container toolkit...
@@ -194,10 +196,14 @@ docker run --rm --runtime=runc hello-world
 cat /etc/containerd/conf.d/99-nvidia.toml
 ```
 
+## Upgrade Checklist (Driver Version Bump)
+
+When upgrading the NVIDIA driver (e.g. 595.71.05 → 610.43.02), the CDI spec and runtime configs must be regenerated or GPU containers will fail with `.so` path mismatches. If the pacman hook is installed, CDI regeneration happens automatically. Otherwise run the full recovery workflow above after the upgrade and before starting any GPU containers.
+
 ## Affected Versions (Verified)
 
 - **Kernel:** 7.0.x (CachyOS LTO)
-- **NVIDIA Driver:** 595.71.05 (nvidia-open)
-- **containerd:** 2.3.0
-- **Docker:** 29.4.1
+- **NVIDIA Driver:** 595.71.05 / 610.43.02 (nvidia-open-beta)
+- **containerd:** 2.3.1
+- **Docker:** 29.5.1
 - **nvidia-container-toolkit:** 1.19.0
