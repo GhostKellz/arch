@@ -1,0 +1,44 @@
+groups:
+  - name: infra-availability
+    rules:
+      - alert: TargetDown
+        expr: up == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          summary: "Target down: {{ $labels.job }} / {{ $labels.instance }}"
+          description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for >2m."
+
+      - alert: NodeHighCpu
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+        for: 10m
+        labels: { severity: warning }
+        annotations:
+          summary: "High CPU on {{ $labels.instance }}"
+          description: "CPU >90% for 10m on {{ $labels.instance }}."
+
+      - alert: NodeHighMemory
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        for: 10m
+        labels: { severity: warning }
+        annotations:
+          summary: "High memory on {{ $labels.instance }}"
+          description: "Memory >90% for 10m on {{ $labels.instance }}."
+
+      - alert: NodeDiskFillingUp
+        expr: (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) * 100 > 85
+        for: 15m
+        labels: { severity: warning }
+        annotations:
+          summary: "Disk >85% on {{ $labels.instance }} ({{ $labels.mountpoint }})"
+          description: "Filesystem {{ $labels.mountpoint }} on {{ $labels.instance }} is above 85%."
+
+  - name: crowdsec
+    rules:
+      - alert: CrowdsecScraperDown
+        expr: up{job="crowdsec"} == 0
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "CrowdSec metrics endpoint unreachable"
+          description: "Prometheus cannot scrape CrowdSec on heimdall."

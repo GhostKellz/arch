@@ -1,0 +1,14 @@
+# Proxmox PVE node_exporter targets. Install node_exporter on each PVE host
+# (port 9100) and add it here. Prometheus hot-reloads this file (no restart).
+# Reload after edit:  curl -X POST http://127.0.0.1:9090/-/reload
+- targets:
+    # - "10.0.0.x:9100"   # PVE1 (Ryzen 5900X)
+    # - "10.0.0.x:9100"   # PVE2 (7950X3D)
+    # - "10.0.0.x:9100"   # PVE3 (14900K / RTX4090)
+    # - "10.0.0.x:9100"   # PVE4 (12900KF / RTX3070)
+    # - "10.0.0.x:9100"   # PVE5 (XPS i7-9th)
+    # - "10.0.0.x:9100"   # PVE6 (XPS i7-9th)
+    # - "10.0.0.x:9100"   # PVE7 (EPYC, public)
+  labels:
+    role: hypervisor
+    cluster: proxmox

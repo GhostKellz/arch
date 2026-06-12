@@ -1,0 +1,50 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    uid: prometheus
+    type: prometheus
+    access: proxy
+    url: http://127.0.0.1:9090
+    isDefault: true
+    jsonData:
+      timeInterval: 15s
+
+  - name: Loki
+    uid: loki
+    type: loki
+    access: proxy
+    url: http://127.0.0.1:3100
+    jsonData:
+      maxLines: 2000
+      # Link Loki -> Prometheus for metrics-from-logs drilldowns
+      derivedFields: []
+
+  - name: Alertmanager
+    uid: alertmanager
+    type: alertmanager
+    access: proxy
+    url: http://127.0.0.1:9093
+    jsonData:
+      implementation: prometheus
+
+  # Wazuh indexer (OpenSearch). Populated only if WAZUH_INDEXER_URL is set.
+  # Plugin grafana-opensearch-datasource is installed at container start.
+  - name: Wazuh
+    uid: wazuh
+    type: grafana-opensearch-datasource
+    access: proxy
+    url: ${WAZUH_INDEXER_URL}
+    basicAuth: true
+    basicAuthUser: ${WAZUH_INDEXER_USER}
+    secureJsonData:
+      basicAuthPassword: ${WAZUH_INDEXER_PASSWORD}
+    jsonData:
+      # OpenSearch plugin needs a date-math index pattern + interval, not a literal "*".
+      # Wazuh writes daily indices: wazuh-alerts-4.x-YYYY.MM.DD
+      database: "[wazuh-alerts-4.x-]YYYY.MM.DD"
+      interval: Daily
+      flavor: opensearch
+      version: "2.0.0"
+      timeField: "timestamp"
+      tlsSkipVerify: true

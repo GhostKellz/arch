@@ -1,0 +1,82 @@
+{
+  "uid": "heimdall-crowdsec",
+  "title": "CrowdSec Overview",
+  "description": "CrowdSec LAPI @ 192.0.2.23:6060 (scraped). Active decisions, alerts, LAPI/bouncer traffic.",
+  "tags": ["heimdall", "security", "crowdsec"],
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "graphTooltip": 0,
+  "time": { "from": "now-6h", "to": "now" },
+  "annotations": { "list": [] },
+  "templating": { "list": [] },
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "Active decisions",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 0 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "area" },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "sum(cs_active_decisions)" } ]
+    },
+    {
+      "id": 2, "type": "stat", "title": "Alert scenarios firing",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 0 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "none" },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "count(count by (reason) (cs_alerts))" } ]
+    },
+    {
+      "id": 3, "type": "stat", "title": "Registered bouncers",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 0 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "none" },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "count(count by (bouncer) (cs_lapi_bouncer_requests_total))" } ]
+    },
+    {
+      "id": 4, "type": "stat", "title": "Last PAPI pull (age)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 0 },
+      "fieldConfig": { "defaults": { "unit": "s", "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 600 }, { "color": "red", "value": 3600 } ] } }, "overrides": [] },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "none" },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "time() - (max(cs_papi_last_pull_timestamp) > 0)" } ]
+    },
+    {
+      "id": 5, "type": "piechart", "title": "Active decisions by reason (top 10)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 8, "x": 0, "y": 4 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "legend": { "displayMode": "table", "placement": "right", "values": ["value"] }, "pieType": "donut" },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "topk(10, sum by (reason) (cs_active_decisions))", "legendFormat": "{{reason}}", "instant": true } ]
+    },
+    {
+      "id": 6, "type": "bargauge", "title": "Active decisions by origin",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 8, "x": 8, "y": 4 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "orientation": "horizontal", "displayMode": "gradient" },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "sum by (origin) (cs_active_decisions)", "legendFormat": "{{origin}}", "instant": true } ]
+    },
+    {
+      "id": 7, "type": "table", "title": "Top alert scenarios",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 8, "x": 16, "y": 4 },
+      "options": { "showHeader": true },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "topk(15, sum by (reason) (cs_alerts))", "legendFormat": "{{reason}}", "instant": true, "format": "table" } ],
+      "transformations": [ { "id": "organize", "options": { "excludeByName": { "Time": true, "job": true, "instance": true, "host": true }, "renameByName": { "reason": "Scenario", "Value": "Alerts" } } } ]
+    },
+    {
+      "id": 8, "type": "timeseries", "title": "LAPI request rate by route",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 13 },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "drawStyle": "line", "fillOpacity": 10 } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi" } },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "sum by (route) (rate(cs_lapi_route_requests_total[$__rate_interval]))", "legendFormat": "{{route}}" } ]
+    },
+    {
+      "id": 9, "type": "timeseries", "title": "Bouncer request rate",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 13 },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "drawStyle": "line", "fillOpacity": 10 } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi" } },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "sum by (bouncer) (rate(cs_lapi_bouncer_requests_total[$__rate_interval]))", "legendFormat": "{{bouncer}}" } ]
+    }
+  ]
+}

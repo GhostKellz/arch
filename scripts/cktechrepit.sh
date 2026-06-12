@@ -27,7 +27,7 @@ echo "# $repo" > README.md
 cat <<EOF > LICENSE
 MIT License
 
-Copyright (c) 2025 CK Technology LLC
+Copyright (c) 2026 CK Technology LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -50,16 +50,19 @@ case "$lang" in
   rust)
     cat <<EOF > .gitignore
 /target
-Cargo.lock
 **/*.rs.bk
 EOF
     ;;
   zig)
     cat <<EOF > .gitignore
-/zig-cache/
-/zig-out/
+.zig-cache/
+zig-out/
+zig-pkg/
+tasks/
 *.o
 *.exe
+CLAUDE.md
+archive/ 
 EOF
     ;;
   python)
