@@ -1,0 +1,22 @@
+# Alertmanager - default null route for the lab. Wire a real receiver
+# (email/Slack/ntfy/webhook) when ready by editing the receivers below.
+global:
+  resolve_timeout: 5m
+
+route:
+  group_by: ["alertname", "job"]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  receiver: default
+
+receivers:
+  - name: default
+    # Example webhook (e.g. ntfy/gotify). Uncomment + set url to enable.
+    # webhook_configs:
+    #   - url: "http://127.0.0.1:8088/alert"
+
+inhibit_rules:
+  - source_matchers: [severity="critical"]
+    target_matchers: [severity="warning"]
+    equal: ["alertname", "instance"]

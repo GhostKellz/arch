@@ -1,0 +1,76 @@
+{
+  "uid": "heimdall-fortigate",
+  "title": "FortiGate Firewall",
+  "description": "FortiGate syslog via syslog-ng -> Loki (source_type=fortigate). Key=value parsed with logfmt at query time.",
+  "tags": ["heimdall", "firewall", "fortigate", "logs"],
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "graphTooltip": 0,
+  "time": { "from": "now-6h", "to": "now" },
+  "annotations": { "list": [] },
+  "templating": {
+    "list": [
+      {
+        "name": "fwhost", "label": "Firewall host", "type": "query",
+        "datasource": { "type": "loki", "uid": "loki" },
+        "definition": "label_values({source_type=\"fortigate\"}, host)",
+        "query": { "label": "host", "stream": "{source_type=\"fortigate\"}", "type": 1 },
+        "includeAll": true, "multi": true, "allValue": ".+", "refresh": 2, "sort": 1,
+        "current": { "text": "All", "value": "$__all" }
+      },
+      {
+        "name": "search", "label": "Line filter", "type": "textbox", "query": "",
+        "current": { "text": "", "value": "" }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "Events / sec",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 4, "w": 5, "x": 0, "y": 0 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "area" },
+      "targets": [ { "refId": "A", "datasource": { "type": "loki", "uid": "loki" }, "expr": "sum(rate({source_type=\"fortigate\", host=~\"$fwhost\"} |~ \"$search\" [$__rate_interval]))" } ]
+    },
+    {
+      "id": 2, "type": "timeseries", "title": "Events by action",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 19, "x": 5, "y": 0 },
+      "fieldConfig": { "defaults": { "custom": { "drawStyle": "bars", "fillOpacity": 70, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum"] }, "tooltip": { "mode": "multi" } },
+      "targets": [ { "refId": "A", "datasource": { "type": "loki", "uid": "loki" }, "expr": "sum by (action) (count_over_time({source_type=\"fortigate\", host=~\"$fwhost\"} |~ \"$search\" | logfmt [$__interval]))", "legendFormat": "{{action}}" } ]
+    },
+    {
+      "id": 3, "type": "table", "title": "Top source IPs",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 9, "w": 8, "x": 0, "y": 8 },
+      "options": { "showHeader": true },
+      "targets": [ { "refId": "A", "datasource": { "type": "loki", "uid": "loki" }, "expr": "topk(10, sum by (srcip) (count_over_time({source_type=\"fortigate\", host=~\"$fwhost\"} |~ \"$search\" | logfmt [$__range])))", "instant": true, "format": "table" } ],
+      "transformations": [ { "id": "organize", "options": { "excludeByName": { "Time": true }, "renameByName": { "srcip": "Source IP", "Value": "Events" } } } ]
+    },
+    {
+      "id": 4, "type": "table", "title": "Top destinations (ip:port)",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 9, "w": 8, "x": 8, "y": 8 },
+      "options": { "showHeader": true },
+      "targets": [ { "refId": "A", "datasource": { "type": "loki", "uid": "loki" }, "expr": "topk(10, sum by (dstip, dstport) (count_over_time({source_type=\"fortigate\", host=~\"$fwhost\"} |~ \"$search\" | logfmt [$__range])))", "instant": true, "format": "table" } ],
+      "transformations": [ { "id": "organize", "options": { "excludeByName": { "Time": true }, "renameByName": { "dstip": "Dest IP", "dstport": "Port", "Value": "Events" } } } ]
+    },
+    {
+      "id": 5, "type": "table", "title": "Top services",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 9, "w": 8, "x": 16, "y": 8 },
+      "options": { "showHeader": true },
+      "targets": [ { "refId": "A", "datasource": { "type": "loki", "uid": "loki" }, "expr": "topk(10, sum by (service) (count_over_time({source_type=\"fortigate\", host=~\"$fwhost\"} |~ \"$search\" | logfmt [$__range])))", "instant": true, "format": "table" } ],
+      "transformations": [ { "id": "organize", "options": { "excludeByName": { "Time": true }, "renameByName": { "service": "Service", "Value": "Events" } } } ]
+    },
+    {
+      "id": 6, "type": "logs", "title": "FortiGate log stream",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 14, "w": 24, "x": 0, "y": 17 },
+      "options": { "showTime": true, "wrapLogMessage": true, "enableLogDetails": true, "dedupStrategy": "none", "sortOrder": "Descending" },
+      "targets": [ { "refId": "A", "datasource": { "type": "loki", "uid": "loki" }, "expr": "{source_type=\"fortigate\", host=~\"$fwhost\"} |~ \"$search\"" } ]
+    }
+  ]
+}

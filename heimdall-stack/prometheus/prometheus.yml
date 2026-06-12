@@ -1,0 +1,51 @@
+# Heimdall Prometheus - scrape config
+# Edit the file-based SD targets under prometheus/targets/ to add Proxmox nodes,
+# FortiGate snmp_exporter, edge hosts, etc. without restarting Prometheus.
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: heimdall
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["127.0.0.1:9093"]
+
+rule_files:
+  - /etc/prometheus/alerts/*.yml
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["127.0.0.1:9090"]
+        labels: { host: heimdall }
+
+  - job_name: node
+    file_sd_configs:
+      - files: ["/etc/prometheus/targets/node-*.yml"]
+    static_configs:
+      - targets: ["127.0.0.1:9100"]
+        labels: { host: heimdall }
+
+  - job_name: cadvisor
+    static_configs:
+      - targets: ["127.0.0.1:8085"]
+        labels: { host: heimdall }
+
+  - job_name: loki
+    static_configs:
+      - targets: ["127.0.0.1:3100"]
+        labels: { host: heimdall }
+
+  # CrowdSec central LAPI lives on 192.0.2.23 (observe-only from Heimdall).
+  # Requires prometheus endpoint enabled in /etc/crowdsec/config.yaml on that host.
+  - job_name: crowdsec
+    static_configs:
+      - targets: ["192.0.2.23:6060"]
+        labels: { host: crowdsec-lapi, instance: "192.0.2.23" }
+
+  # Proxmox PVE node exporters (edit prometheus/targets/node-proxmox.yml)
+  - job_name: proxmox-node
+    file_sd_configs:
+      - files: ["/etc/prometheus/targets/proxmox-*.yml"]

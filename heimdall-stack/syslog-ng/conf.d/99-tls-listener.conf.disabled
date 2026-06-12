@@ -1,0 +1,24 @@
+# TLS syslog listener scaffold (RFC5425, port 6514). DISABLED by default.
+# To enable: generate certs into /etc/syslog-ng/certs, rename this file to
+# end in .conf, add `source(s_net_tls);` to a log path, then restart syslog-ng.
+#
+# Quick self-signed CA + server cert (run on Heimdall):
+#   sudo mkdir -p /etc/syslog-ng/certs && cd /etc/syslog-ng/certs
+#   sudo openssl req -x509 -newkey rsa:4096 -nodes -days 3650 \
+#       -keyout heimdall.key -out heimdall.crt \
+#       -subj "/CN=heimdall.192.0.2.10"
+#   sudo chmod 640 heimdall.key && sudo chown root:syslog heimdall.key
+# Distribute heimdall.crt (the CA) to senders that will use TLS.
+
+# source s_net_tls {
+#     syslog(
+#         transport("tls")
+#         ip("0.0.0.0")
+#         port(6514)
+#         tls(
+#             key-file("/etc/syslog-ng/certs/heimdall.key")
+#             cert-file("/etc/syslog-ng/certs/heimdall.crt")
+#             peer-verify(optional-untrusted)   # tighten to required-trusted for mTLS
+#         )
+#     );
+# };

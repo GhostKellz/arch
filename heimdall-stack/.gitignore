@@ -1,0 +1,6 @@
+# Secrets / local state — never commit
+.env
+secrets/
+*.key
+*.pem
+certs/

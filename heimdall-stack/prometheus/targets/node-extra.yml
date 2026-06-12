@@ -1,0 +1,6 @@
+# Extra node_exporter targets (Arch workstation, reverse-proxy, edge hosts, etc.)
+# Prometheus hot-reloads this file. Reload: curl -X POST http://127.0.0.1:9090/-/reload
+- targets:
+    # - "192.0.2.30:9100"   # reverse-proxy (nginx + crowdsec agent)
+  labels:
+    role: host

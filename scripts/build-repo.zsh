@@ -8,6 +8,10 @@ read repo
 echo -n "Project language (rust/zig/python/js/none): "
 read lang
 
+# Prompt for license choice
+echo -n "License (mit/apache): "
+read license
+
 # Set working path
 cd /data/projects || exit
 mkdir "$repo"
@@ -15,10 +19,17 @@ cd "$repo" || exit
 
 # Create base files
 echo "# $repo" > README.md
-cat <<EOF > LICENSE
+
+# Create LICENSE based on user choice
+case "$license" in
+  apache)
+    cp /data/scripts/APACHE2.0-LICENSE LICENSE
+    ;;
+  *)
+    cat <<EOF > LICENSE
 MIT License
 
-Copyright (c) 2025 CK Technology LLC
+Copyright (c) 2026 CK Technology LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -38,22 +49,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 EOF
+    ;;
+esac
 
 # Create .gitignore by language
 case "$lang" in
   rust)
     cat <<EOF > .gitignore
 /target
-Cargo.lock
 **/*.rs.bk
+tasks/
+CLAUDE.md
 EOF
     ;;
   zig)
     cat <<EOF > .gitignore
-/zig-cache/
-/zig-out/
+.zig-cache/
+zig-out/
+zig-pkg/
+tasks
 *.o
 *.exe
+CLAUDE.md
 EOF
     ;;
   python)
@@ -65,6 +82,8 @@ __pycache__/
 .venv/
 env/
 venv/
+tasks/
+archive/
 EOF
     ;;
   js)
@@ -73,6 +92,8 @@ node_modules/
 dist/
 npm-debug.log
 yarn-error.log
+tasks/
+archive/
 EOF
     ;;
   *)

@@ -1,0 +1,109 @@
+{
+  "uid": "heimdall-wazuh",
+  "title": "Wazuh SIEM",
+  "description": "Wazuh indexer (OpenSearch) @ 192.0.2.25:9200. Daily indices wazuh-alerts-4.x-*. Time field: timestamp.",
+  "tags": ["heimdall", "security", "wazuh", "siem"],
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "graphTooltip": 0,
+  "time": { "from": "now-24h", "to": "now" },
+  "annotations": { "list": [] },
+  "templating": {
+    "list": [
+      {
+        "name": "agent", "label": "Agent", "type": "query",
+        "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+        "definition": "{\"find\": \"terms\", \"field\": \"agent.name\"}",
+        "query": "{\"find\": \"terms\", \"field\": \"agent.name\"}",
+        "includeAll": true, "multi": true, "allValue": "*", "refresh": 2, "sort": 1,
+        "current": { "text": "All", "value": "$__all" }
+      },
+      {
+        "name": "query", "label": "Lucene filter", "type": "textbox", "query": "",
+        "current": { "text": "", "value": "" }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "Total alerts",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "options": { "reduceOptions": { "calcs": ["sum"] }, "colorMode": "value", "graphMode": "area" },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "count" } ], "bucketAggs": [ { "id": "2", "type": "date_histogram", "field": "timestamp", "settings": { "interval": "auto" } } ] } ]
+    },
+    {
+      "id": 2, "type": "stat", "title": "High severity (level >= 8)",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "fieldConfig": { "defaults": { "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 1 } ] } }, "overrides": [] },
+      "options": { "reduceOptions": { "calcs": ["sum"] }, "colorMode": "background", "graphMode": "area" },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "rule.level:>=8 AND agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "count" } ], "bucketAggs": [ { "id": "2", "type": "date_histogram", "field": "timestamp", "settings": { "interval": "auto" } } ] } ]
+    },
+    {
+      "id": 3, "type": "stat", "title": "Auth failures",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "options": { "reduceOptions": { "calcs": ["sum"] }, "colorMode": "value", "graphMode": "area" },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "rule.groups:authentication_failed AND agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "count" } ], "bucketAggs": [ { "id": "2", "type": "date_histogram", "field": "timestamp", "settings": { "interval": "auto" } } ] } ]
+    },
+    {
+      "id": 4, "type": "stat", "title": "Active agents",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "none" },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "cardinality", "field": "agent.id" } ], "bucketAggs": [ { "id": "2", "type": "date_histogram", "field": "timestamp", "settings": { "interval": "auto" } } ] } ]
+    },
+    {
+      "id": 5, "type": "timeseries", "title": "Alerts over time by severity level",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 9, "w": 16, "x": 0, "y": 4 },
+      "fieldConfig": { "defaults": { "custom": { "drawStyle": "bars", "fillOpacity": 70, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum"] }, "tooltip": { "mode": "multi" } },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "count" } ], "bucketAggs": [ { "id": "3", "type": "terms", "field": "rule.level", "settings": { "order": "desc", "orderBy": "_count", "size": "10" } }, { "id": "2", "type": "date_histogram", "field": "timestamp", "settings": { "interval": "auto" } } ] } ]
+    },
+    {
+      "id": 6, "type": "piechart", "title": "Alerts by rule group",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 9, "w": 8, "x": 16, "y": 4 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "legend": { "displayMode": "table", "placement": "right", "values": ["value"] }, "pieType": "donut" },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "count" } ], "bucketAggs": [ { "id": "2", "type": "terms", "field": "rule.groups", "settings": { "order": "desc", "orderBy": "_count", "size": "10" } } ] } ]
+    },
+    {
+      "id": 7, "type": "table", "title": "Top rules",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 13 },
+      "options": { "showHeader": true },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "count" } ], "bucketAggs": [ { "id": "2", "type": "terms", "field": "rule.description", "settings": { "order": "desc", "orderBy": "_count", "size": "15" } } ] } ]
+    },
+    {
+      "id": 8, "type": "table", "title": "Top agents",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 13 },
+      "options": { "showHeader": true },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "count" } ], "bucketAggs": [ { "id": "2", "type": "terms", "field": "agent.name", "settings": { "order": "desc", "orderBy": "_count", "size": "15" } } ] } ]
+    },
+    {
+      "id": 9, "type": "table", "title": "Top MITRE ATT&CK techniques",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 22 },
+      "options": { "showHeader": true },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "count" } ], "bucketAggs": [ { "id": "2", "type": "terms", "field": "rule.mitre.technique", "settings": { "order": "desc", "orderBy": "_count", "size": "15" } } ] } ]
+    },
+    {
+      "id": 10, "type": "table", "title": "Top source IPs",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 22 },
+      "options": { "showHeader": true },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "count" } ], "bucketAggs": [ { "id": "2", "type": "terms", "field": "data.srcip", "settings": { "order": "desc", "orderBy": "_count", "size": "15" } } ] } ]
+    },
+    {
+      "id": 11, "type": "logs", "title": "Recent high-severity alerts (level >= 8)",
+      "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" },
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 31 },
+      "options": { "showTime": true, "wrapLogMessage": true, "enableLogDetails": true, "dedupStrategy": "none", "sortOrder": "Descending" },
+      "targets": [ { "refId": "A", "datasource": { "type": "grafana-opensearch-datasource", "uid": "wazuh" }, "query": "rule.level:>=8 AND agent.name:$agent $query", "timeField": "timestamp", "metrics": [ { "id": "1", "type": "logs" } ], "bucketAggs": [] } ]
+    }
+  ]
+}

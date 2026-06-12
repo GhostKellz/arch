@@ -1,0 +1,157 @@
+{
+  "uid": "heimdall-loki-logs",
+  "title": "Loki Logs Explorer",
+  "description": "Syslog-ng -> Loki ingest. Stream labels: host, facility, severity, source_type, app.",
+  "tags": ["heimdall", "logs", "loki", "syslog"],
+  "timezone": "",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "graphTooltip": 0,
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "annotations": { "list": [] },
+  "templating": {
+    "list": [
+      {
+        "name": "source_type",
+        "label": "Source type",
+        "type": "query",
+        "datasource": { "type": "loki", "uid": "loki" },
+        "definition": "label_values(source_type)",
+        "query": { "label": "source_type", "stream": "", "type": 1 },
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".+",
+        "refresh": 2,
+        "sort": 1,
+        "current": { "text": "All", "value": "$__all" }
+      },
+      {
+        "name": "host",
+        "label": "Host",
+        "type": "query",
+        "datasource": { "type": "loki", "uid": "loki" },
+        "definition": "label_values({source_type=~\"$source_type\"}, host)",
+        "query": { "label": "host", "stream": "{source_type=~\"$source_type\"}", "type": 1 },
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".+",
+        "refresh": 2,
+        "sort": 1,
+        "current": { "text": "All", "value": "$__all" }
+      },
+      {
+        "name": "app",
+        "label": "App",
+        "type": "query",
+        "datasource": { "type": "loki", "uid": "loki" },
+        "definition": "label_values({source_type=~\"$source_type\", host=~\"$host\"}, app)",
+        "query": { "label": "app", "stream": "{source_type=~\"$source_type\", host=~\"$host\"}", "type": 1 },
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".+",
+        "refresh": 2,
+        "sort": 1,
+        "current": { "text": "All", "value": "$__all" }
+      },
+      {
+        "name": "search",
+        "label": "Line filter",
+        "type": "textbox",
+        "query": "",
+        "current": { "text": "", "value": "" }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Lines / sec (selection)",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "area" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "loki", "uid": "loki" },
+          "expr": "sum(rate({source_type=~\"$source_type\", host=~\"$host\", app=~\"$app\"} |~ \"$search\" [$__rate_interval]))"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Log volume by source_type",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 9, "x": 6, "y": 0 },
+      "fieldConfig": { "defaults": { "custom": { "drawStyle": "bars", "fillOpacity": 60, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum"] }, "tooltip": { "mode": "multi" } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "loki", "uid": "loki" },
+          "expr": "sum by (source_type) (count_over_time({source_type=~\"$source_type\", host=~\"$host\", app=~\"$app\"} |~ \"$search\" [$__interval]))",
+          "legendFormat": "{{source_type}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Log volume by severity",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 9, "x": 15, "y": 0 },
+      "fieldConfig": { "defaults": { "custom": { "drawStyle": "bars", "fillOpacity": 60, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum"] }, "tooltip": { "mode": "multi" } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "loki", "uid": "loki" },
+          "expr": "sum by (severity) (count_over_time({source_type=~\"$source_type\", host=~\"$host\", app=~\"$app\"} |~ \"$search\" [$__interval]))",
+          "legendFormat": "{{severity}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Active hosts",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 4 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "" }, "colorMode": "value", "graphMode": "none" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "loki", "uid": "loki" },
+          "expr": "count(sum by (host) (count_over_time({source_type=~\"$source_type\", host=~\"$host\", app=~\"$app\"} |~ \"$search\" [$__interval])))"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "logs",
+      "title": "Logs",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 16, "w": 24, "x": 0, "y": 8 },
+      "options": {
+        "showTime": true,
+        "showLabels": false,
+        "showCommonLabels": false,
+        "wrapLogMessage": true,
+        "prettifyLogMessage": false,
+        "enableLogDetails": true,
+        "dedupStrategy": "none",
+        "sortOrder": "Descending"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "loki", "uid": "loki" },
+          "expr": "{source_type=~\"$source_type\", host=~\"$host\", app=~\"$app\"} |~ \"$search\""
+        }
+      ]
+    }
+  ]
+}
