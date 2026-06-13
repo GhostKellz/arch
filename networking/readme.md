@@ -15,8 +15,8 @@
 This section covers advanced **networking scripts**, **notes**, and **tuning configurations** for GhostKellz' home and cloud infrastructure.
 
 Built on top of:
-- 🛸️ **Tailscale** Zero-Trust mesh VPN
-- 🚱️ **Headscale** (self-hosted identity server)
+- 🛸️ **Tailscale** Zero-Trust mesh VPN — coordination plane for work infra + lab
+- 🚱️ **Headscale + Tailscale client** (self-hosted control server) — **lab setting only**
 - ⚡ **WireGuard** for blazing-fast peer-to-peer connections
 - 🏰 **Fortigate 90G** firewall securing WAN and LAN edges
 - 🌐 **SD-WAN** failover (Fiber + Cable) for redundant, always-on connectivity
@@ -27,7 +27,65 @@ All optimized for:
 - 🌎 Global Mesh Networking
 - 🚀 Fast failover and route optimization
 - 🧹 Self-healing and automatic refresh systems
-- Handling network sevice interruptions 
+- Handling network sevice interruptions
+
+---
+
+# 🗺️ Global Topology
+
+Two WAN links into a FortiGate edge, a local Proxmox cluster, a cloud node, a public
+DMZ, and a second homelab — stitched together by a Tailscale control plane so
+management never crosses the public internet.
+
+```mermaid
+flowchart TD
+    subgraph WAN["WAN uplinks"]
+        W1["Fiber 2.5 GbE<br/>primary · static block"]
+        W2["Cable ~1 GbE<br/>backup"]
+    end
+    W1 --> FG["FortiGate 90G SD-WAN<br/>failover · SLA steering · IPS/UTM · threat feeds"]
+    W2 --> FG
+    FG --> CORE["Resolution & core<br/>Technitium/Unbound DNS · core switch (VLAN trunk · LACP)"]
+    CORE --> S1["Local PVE cluster<br/>10.0.0.0/24"]
+    CORE --> S2["DMZ<br/>nginx + Docker · public"]
+    CORE --> S3["Cloud PVE<br/>public web · CrowdSec"]
+    CORE --> S4["Second homelab<br/>Hyper-V · Veeam"]
+    subgraph BDR["Backup & DR (3-2-1)"]
+        B1["Synology NAS<br/>active backup"] --> B2["Proxmox Backup Server<br/>dedup · encrypted"]
+        B2 --> B3["Wasabi S3<br/>offsite"]
+    end
+    S1 --> BDR
+    TS["🔗 Tailscale control plane<br/>spans every site · strict ACLs · per-session SSH"] -.-> S1
+    TS -.-> S2
+    TS -.-> S3
+    TS -.-> S4
+```
+
+> All infra comms (SSH, APIs, dashboards) ride the **Tailscale tailnet** with strict
+> ACLs — management traffic never crosses the public internet. A self-hosted
+> **Headscale + Tailscale client** runs alongside in a **lab setting only**. See
+> [`tailscale.md`](tailscale.md) for the mesh, DERP relays, and OIDC details.
+
+---
+
+# 🛰️ SD-WAN Failover & SLA Steering
+
+The FortiGate runs both WAN members and steers per-application traffic by live SLA
+probes (latency / jitter / loss), failing over to cable if the fiber degrades.
+
+```mermaid
+flowchart TD
+    LAN["LAN + VLANs<br/>10.0.0.0/24 · VLAN 10–80"] --> RULES["SD-WAN rules<br/>SLA steering · app-aware · source/dest"]
+    SLA["Performance SLA<br/>probes: latency / jitter / loss"] -.->|feeds decision| RULES
+    RULES --> WAN1["WAN1 — Fiber<br/>2.5 GbE · primary"]
+    RULES --> WAN2["WAN2 — Cable<br/>~1 GbE · backup"]
+    WAN1 --> NET["Internet"]
+    WAN2 --> NET
+```
+
+> Dotted = the Performance SLA feeding the steering decision. Both members can carry
+> traffic at once (load-balance by bandwidth ratio) or act as strict primary/backup,
+> depending on the rule.
 
 ---
 

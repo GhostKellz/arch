@@ -16,6 +16,28 @@ Designed for resilience, rollback capability, and automation.
 
 ---
 
+# 🗺️ Backup Tiers
+
+A layered 3-2-1 strategy: instant local rollback up front, encrypted file-level
+backups to second media, and an encrypted offsite copy in the cloud.
+
+```mermaid
+flowchart TD
+    ROOT["Arch root · btrfs<br/>@ · @home · @log · @pkg · @snapshots"]
+    ROOT -->|snapshot| SNAP["snapper<br/>timeline + cleanup timers · ~30-day local"]
+    ROOT -->|daily · encrypted| RESTIC["restic<br/>/home + /data file-level · daily · keep 7d·4w·6m"]
+    SNAP --> ROLLBACK["Instant rollback<br/>boot into snapshot · pre/post pacman"]
+    RESTIC --> NAS["Synology NAS<br/>restic repo target · 2nd media · on-site"]
+    NAS --> HYPER["HyperBackup<br/>NAS → cloud sync"]
+    HYPER -->|offsite| S3["Wasabi S3<br/>offsite · encrypted"]
+```
+
+> **snapper** = instant local rollback · **restic** = encrypted file-level offsite.
+> The two layers are independent: a bad upgrade is a snapshot boot away, while a
+> drive/host loss is covered by restic → NAS → cloud.
+
+---
+
 # 📸 Step 1: Take Snapshots with Snapper
 Use Snapper to automate snapshot creation.
 

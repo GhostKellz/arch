@@ -13,9 +13,14 @@
 
 ---
 
-> 🛠️ **About this repository:**  
-> This is a personal, modular, and actively maintained Arch Linux configuration.  
+> 🛠️ **About this repository:**
+> This is a personal, modular, and actively maintained Arch Linux configuration.
 > Tuned for performance, security, and professional daily driver use.
+
+> 📓 **Note:** Treat this as a living **knowledge base** — notes, configs, and diagrams
+> from my own time running this setup, not authoritative documentation. Hardware,
+> drivers, kernels, and tooling change constantly, so details (version numbers,
+> commands, diagram labels) reflect a point in time and may drift.
 
 🌐 This repository uses GPG commit signing with a private WKD-compliant public key.
 You can verify signed commits or manually import the GPG public key by visiting ghostkellz.sh.
