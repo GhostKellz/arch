@@ -27,14 +27,25 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # ── CLI Tools ────────────────────────────────────────────────
-eval "$(starship init zsh)"
+# Prompt is Powerlevel10k (sourced via ~/.p10k.zsh). Starship is kept but
+# disabled to avoid two prompt engines fighting over PROMPT.
+# eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(direnv hook zsh)"
 
 # -- Claude 
-export PATH="$HOME/.nvm/versions/node/v20.19.2/bin:$PATH"
+# export PATH="$HOME/.nvm/versions/node/v20.19.2/bin:$PATH"
+# --- Claude BashTool: run bash as NON-login shell (skip .bash_profile) ---
+export CLAUDE_BASH_NO_LOGIN=1    # or "true"
 
+# --- Bedrock / Vertex toggles: must be real booleans, not any string ---
+# Use your tool’s actual var names; common patterns shown below.
+# Set to exactly "true"/"false" (or 1/0). Anything else will be treated as false now.
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # ── Terminal Appearance ─────────────────────────────────────
 #export CLICOLOR=1
@@ -212,7 +223,6 @@ if [[ -r /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
 fi
 
 # ─── Go Dev Environment  ────────────────────────────────────────────────
-# Go environment Variables
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
@@ -239,8 +249,8 @@ export RUSTFLAGS="-C target-cpu=native"
 export PATH="$HOME/zls/zig-out/bin:$PATH"
 
 # ─── Javascript Dev Environment  ────────────────────────────────────────────────
-export PATH="$HOME/.npm-global/bin:$PATH"
-export NODE_PATH="$HOME/.npm-global/lib/node_modules"
+#export PATH="$HOME/.npm-global/bin:$PATH"
+#export NODE_PATH="$HOME/.npm-global/lib/node_modules"
 
 # --- Cuda Dev Environment -----------------------------------
 export CUDA_HOME=/opt/cuda
@@ -254,7 +264,7 @@ export CPATH="$CUDA_HOME/include:$CPATH"
 #export CXX="ccache g++"
 
 # ─── ghostty  ────────────────────────────────────────────────
-alias ghostty="ghostty --config ~/.config/ghostty/config.toml"
+# alias removed - Ghostty auto-reads from ~/.config/ghostty/config
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -262,8 +272,25 @@ alias ghostty="ghostty --config ~/.config/ghostty/config.toml"
 # ─── ghost Tech  ────────────────────────────────────────────────
 alias forge="ghostforge"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# ---- b.net chromium fix ----
+# Battle.net
+alias bnet='WINEPREFIX=~/.wine-bnet64 wine64 ~/.wine-bnet64/drive_c/Program\ Files\ \(x86\)/Battle.net/Battle.net.exe'
+
+# Fix stuck Battle.net / Proton-GE sessions (Wayland-safe)
+bnet-fix() {
+  echo "🔧 Fixing stuck Battle.net / Proton processes..."
+
+  pkill -9 -f 'Battle.net.exe'      2>/dev/null
+  pkill -9 -f 'Agent.exe'           2>/dev/null
+  pkill -9 -f 'BlizzardBrowser'     2>/dev/null
+  pkill -9 -f 'WoWClassic.exe'      2>/dev/null
+  pkill -9 -f 'xalia.exe'           2>/dev/null
+  pkill -9 -f 'wineserver'          2>/dev/null
+  pkill -9 -f 'wine-preloader'      2>/dev/null
+
+  echo "✅ Proton/Wine cleanup complete."
+  echo "👉 Relaunch Battle.net from Steam."
+}
+
 
 

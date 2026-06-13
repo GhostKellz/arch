@@ -62,6 +62,14 @@ Optimized for:
 
 ---
 
+# 📷 Previews
+
+### Powerlevel10k Prompt
+
+![Powerlevel10k Prompt](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/powerlevel10k.png)
+
+---
+
 # 🎯 Purpose
 
 * Centralize dotfiles for shells, editors, terminals.

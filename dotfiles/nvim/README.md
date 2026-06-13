@@ -69,6 +69,10 @@ dotfiles/nvim/
 
 ## 📷 Previews
 
+### Live Session (2026)
+
+![Neovim Session 2026](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/nvim-session-2026.png)
+
 ### Ghostkellz Custom Theme
 
 ![Ghostkellz Neovim Theme](https://raw.githubusercontent.com/GhostKellz/arch/main/assets/nvim-ghostblue.png)
