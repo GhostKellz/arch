@@ -43,7 +43,7 @@
 | C2 / exfil | `olrh4mibs62l6kkuvvjyc5lrercqg5tz543r4lsw3o6mh5qb7g7sneid.onion` (`POST /api/agent`, TCP/80, TCP/8080); `temp.sh POST /upload` |
 | Attacker accounts | AUR: `krisztinavarga`, `custodiatovar`, `veramagalhaes`; Git: `PLYSHKA`; NPM: `herbsobering`; GH: `fardewoak` |
 
-## Results — This System (CachyOS, 2026-06-12)
+## Results — This System (Arch Linux, 2026-06-12)
 
 | # | Check | Method | Result |
 |---|-------|--------|--------|
