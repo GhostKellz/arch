@@ -12,11 +12,17 @@
 
 # 📖 Overview
 
-This section highlights the GhostKellz networking setup using **Tailscale**, **Headscale**, and a fleet of additional technologies to form a **zero-trust, resilient mesh** across cloud and home infrastructure.
+This section highlights the GhostKellz networking setup using **Tailscale** plus a
+fleet of additional technologies to form a **zero-trust, resilient mesh** across cloud
+and home infrastructure.
+
+> **Tailscale** is the day-to-day coordination plane for work infra and the lab. A
+> self-hosted **Headscale + Tailscale client** setup runs alongside it in a **lab
+> setting only** — for experimentation, not production.
 
 Built around:
 - 🛡️ Tailscale client for encrypted device-to-device communication.
-- 🧠 Headscale (self-hosted identity server) running in a lightweight Debian LXC.
+- 🧠 Headscale (self-hosted control server) in a lightweight Debian LXC — **lab use only**.
 - 🛰️ Two custom DERP relays (Docker-based) across cloud and home for the **lowest possible latency**.
 - 🧵 WireGuard tunnels acting as fallback links if Tailscale fails.
 - 🌐 Vanilla NGINX servers: one public-facing, another internal for cloud service SSL termination (e.g., Hudu, UniFi).
@@ -60,6 +66,34 @@ Otherwise, Trayscale will fail to connect to the local Tailscale daemon.
 | **NGINX**           | SSL termination, proxying cloud services |
 | **Technitium DNS**  | Local authoritative + Tailscale resolver |
 | **Headplane**       | OIDC-enabled Headscale web UI (Docker) |
+
+---
+
+# 🧬 Mesh Control Plane
+
+The control server hands every node its keys and ACLs, then nodes build **direct
+WireGuard tunnels** peer-to-peer; DERP relays only carry traffic when a direct path
+can't be established, so most flows never touch a relay. Work infra runs on
+**Tailscale**; the **Headscale** path below is the **lab-only** self-hosted equivalent.
+
+```mermaid
+flowchart TD
+    OIDC["Microsoft Entra ID<br/>OIDC auth"] --> HS["Headscale<br/>identity + ACLs (Debian LXC) · lab only"]
+    HP["Headplane<br/>web UI (Docker)"] --> HS
+    HS -->|keys + ACLs| N1["Arch workstation"]
+    HS -->|keys + ACLs| N2["Local PVE cluster"]
+    HS -->|keys + ACLs| N3["Cloud node"]
+    HS -->|keys + ACLs| N4["Second homelab"]
+    N1 <-->|direct WireGuard| N2
+    N1 <-->|direct WireGuard| N3
+    N2 <-->|direct WireGuard| N4
+    DERP["DERP relays<br/>home + 2× cloud (derper)"] -.->|fallback path| N1
+    DERP -.->|fallback path| N3
+    DNS["Technitium DNS<br/>tailnet resolver (NS3 slave)"] --- N1
+```
+
+> Direct WireGuard is the fast path; **DERP** is the fallback when NAT/firewalls block a
+> direct route. Headscale config is snapshotted hourly to Proxmox Backup Server.
 
 ---
 

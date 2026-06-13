@@ -15,6 +15,25 @@ itself. Because the harness carries the value, you can swap the underlying model
 (frontier API, local, or whatever's next) without rebuilding your setup. This is
 why `hermes model` can repoint at a new provider with no code changes.
 
+```mermaid
+flowchart TD
+    subgraph CHAIN["Ordered fallback chain"]
+        P1["① Anthropic<br/>primary frontier brain"] --> P2["② OpenAI<br/>second cloud model"]
+        P2 --> P3["③ Ollama (local)<br/>qwen3-coder:30b · zero-cost last resort"]
+    end
+    subgraph HARNESS["Durable harness — survives provider swaps"]
+        MEM["Bounded memory<br/>working set + FTS5 session archive"]
+        SKILLS["Skills<br/>reusable procedures → compound"]
+    end
+    CHAIN --> HARNESS
+    HARNESS -.->|"swap provider, keep state"| CHAIN
+```
+
+> Memory + skills live **outside** the model — switch providers without losing state.
+> The local Ollama tier (the native `ollama-cuda` on the 5090, see
+> [`../ollama/README.md`](../ollama/README.md)) is a zero-cost last resort when cloud
+> providers are unavailable.
+
 ## The learning loop
 
 This is the differentiator. After a task completes (or roughly every ~5 tool
@@ -27,6 +46,16 @@ calls) the agent introspects:
 When the answer is yes, it writes a markdown **skill** file to `~/.hermes/skills/`.
 Later, similar requests prioritize that skill, so execution gets faster and more
 reliable the more you use it. Capability compounds over weeks of use.
+
+```mermaid
+flowchart LR
+    TASK["Task runs<br/>~every 5 tool calls"] --> INTRO{"Introspect:<br/>success? efficient? repeatable?"}
+    INTRO -->|"no"| DONE["Continue / discard"]
+    INTRO -->|"yes"| WRITE["Write skill<br/>~/.hermes/skills/*.md"]
+    WRITE --> CURATE["Autonomous Curator<br/>consolidate · archive stale"]
+    CURATE --> REUSE["Next similar request<br/>prioritizes the skill"]
+    REUSE --> TASK
+```
 
 ## Memory architecture
 

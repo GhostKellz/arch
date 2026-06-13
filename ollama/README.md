@@ -4,6 +4,31 @@ Native install of Ollama on this Arch/CachyOS workstation, replacing the previou
 Docker container. Native was chosen for direct Blackwell GPU access (no
 `nvidia-container-toolkit` layer), simpler driver alignment, and lower latency.
 
+## Topology
+
+Local-first inference on the daily driver: native `ollama-cuda` talks straight to the
+Blackwell card with flash attention + a q8_0 KV cache, keeping a large model resident.
+When a model is too big for one card, vLLM tensor-parallel shards it across hosts —
+same OpenAI-compatible API, so client code never changes.
+
+```mermaid
+flowchart LR
+    subgraph LOCAL["Daily driver — Arch / CachyOS"]
+        GPU["RTX 5090 · Blackwell · 32 GB<br/>native driver + CUDA"] --> OLL["ollama-cuda<br/>flash attn · q8_0 KV cache"]
+        OLL --> API1["OpenAI-compatible /v1<br/>127.0.0.1:11434"]
+    end
+    subgraph SCALE["Scale-out — too big for one card"]
+        VLLM["vLLM · tensor parallel<br/>weights split across hosts"] --> API2["OpenAI-compatible /v1"]
+    end
+    API1 --> CLIENTS["Clients<br/>Claude Code · OpenCode · n8n · Hermes"]
+    API2 --> CLIENTS
+```
+
+> The 5090 is the burst/daily node. For models no single card holds, weights shard
+> across the 5090 and a VFIO-passthrough 4090 on a separate host (model parallelism
+> over the LAN — not pooled NVLink memory). Cluster details live in the lab docs;
+> this README stays workstation-focused.
+
 ## System
 
 | Component | Value |
