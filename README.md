@@ -32,12 +32,24 @@ You can verify signed commits or manually import the GPG public key by visiting 
 
 ```
 arch/
-├── cheatsheet.md              # General-purpose command and fix reference
-├── git-cheatsheet.md          # Basic Git usage tips
-├── nvim-cheatsheet.md         # Neovim configuration and plugin commands
-├── zsh-cheatsheet.md          # Zsh basics, plugins, and shortcuts
+├── CHEATSHEET.md              # General-purpose command and fix reference
+├── KROHNKITE.md               # KWin tiling (Krohnkite) workflow notes
+├── TMUX.md                    # TMUX configuration reference
 
-├── scripts/                   # Modular post-install script for configuring system packages
+├── docs/                      # Centralized guides and cheatsheets
+│   ├── GIT-CHEATSHEET.md      # Git basics and daily-use shortcuts
+│   ├── NVIM-CHEATSHEET.md     # Neovim keybindings and LSP tips
+│   ├── KWIN-CHEATSHEET.md     # KWin window manager shortcuts
+│   ├── RUST-CHEATSHEET.md     # Rust quick reference
+│   ├── RUST_GUIDE.md          # In-depth Rust guide
+│   ├── ZIG-CHEATSHEET.md      # Zig quick reference
+│   ├── ZIG_GUIDE.md           # In-depth Zig guide
+│   ├── ZIG_ASYNC.md           # Zig async patterns
+│   ├── ZIG_DEPENDENCY_GUIDE.md# Zig dependency management
+│   └── CI_IMPROVEMENT.md      # CI/CD notes
+
+├── scripts/                   # Modular post-install scripts and automation
+├── kb/                        # Troubleshooting knowledge base (Docker, NVIDIA, Zig, kernel)
 
 ├── btrfs/                     # Snapper and backup strategies using BTRFS
 │   └── snapper/               # Root snapper config and layout
@@ -45,54 +57,43 @@ arch/
 ├── dotfiles/                  # Shell and app config files
 │   ├── nvim/                  # LazyVim setup with Lua config
 │   ├── wezterm/               # WezTerm themes, colors, and config
-│   ├── zsh/                   # Modular Zsh configuration
-│   │   ├── .zshrc             # Main Zsh config (Starship + NVIDIA + loader)
-│   │   ├── starship.toml      # Starship prompt theming
-│   │   ├── bootstrap.sh       # Zsh bootstrap script (symlinks, plugin setup, etc.)
-│   │   ├── .zshrc.d/          # Modular aliases and functions
-│   │   │   ├── docker.zsh
-│   │   │   ├── git-aliases.zsh
-│   │   │   ├── restic.zsh
-│   │   │   ├── snapper.zsh
-│   │   │   ├── system.zsh
-│   │   │   └── wezterm.zsh
-│   └── oh-my-zsh/             # Custom plugins/themes (not full Oh My Zsh install)
-│       └── custom/
-│           ├── plugins/
-│           │   ├── zsh-autosuggestions/
-│           │   └── zsh-syntax-highlighting/
-│           └── themes/
-│               └── your-theme.zsh-theme
-├── .bashrc                    # Bash configuration (fallback)
+│   ├── ghostty/               # Ghostty terminal config
+│   ├── tmux/                  # TMUX config
+│   ├── claude/ · opencode/    # AI assistant configs
+│   └── zsh/                   # Modular Zsh configuration (.zshrc.d/, Starship, p10k)
 
 ├── restic/                    # Restic systemd service/timer and env vars
-├── nvidia/                    # NVIDIA-specific tweaks and fixes
-├── networking/                # Network configs (Headscale, Tailnet, NGINX, etc.)
+├── nvidia/                    # NVIDIA driver tweaks, fixes, NVENC, gaming/Gamescope
+├── networking/                # Network configs (Tailscale, nftables, Unbound DNS)
+├── security/                  # Defense-in-depth (FortiGate, DNS, DMZ, CrowdSec)
+├── advisories/                # Security advisories: CVE writeups, incidents, IOC scanners
+│   ├── cve/                   # CVE writeups and local mitigations
+│   ├── incidents/             # Supply-chain / breach reviews
+│   └── checks/                # Re-runnable detection scripts
+
 ├── system/                    # System-wide tuning (ZRAM, systemd, memory, kernel)
-│   ├── kernel/                # Kernel tweaks and boot configuration
-│   │   ├── tkg/               # Custom bootloader entry and customization.cfg
-│   │   └── kernel-params.md   # Boot parameter summary
-│   ├── io.md                  # I/O scheduler tweaks and disk settings
-│   ├── memory.md              # ZRAM, swappiness, and caching behavior
-│   ├── power.md               # Power profiles, suspend tuning
-│   └── systemd.md             # Systemd timers, journal, and overrides
+│   ├── kernel/                # Kernel build configs (CachyOS, TKG, NVIDIA)
+│   ├── sysctl/ · hooks/       # sysctl tuning and mkinitcpio hooks
+│   ├── io.md · memory.md      # I/O scheduler and memory/ZRAM tuning
+│   └── power.md · systemd.md  # Power profiles and systemd overrides
 
-├── virtualization/            # QEMU, passthrough, and Libvirt tuning
-│   ├── kvm.md
-│   ├── libvirt.md
-│   ├── passthrough.md
-│   ├── tweaks.md
-│   └── docker/                # Docker Compose stacks that live on this workstation
-├── kde/                       # KDE-specific quirks, bugs, and tuning (Wayland-specific)
-│   ├── README.md              # KDE + Wayland + NVIDIA freeze fix (pageflip)
-│   └── known_issues.md        # Known issues tracking (Wayland pageflip bug, etc.)
+├── virtualization/            # QEMU/KVM, Libvirt, PCIe passthrough, Docker
+│   └── docker/                # Docker Compose stacks for this workstation
 
-├── wayland/                   # Wayland (non-DE specific) tweaks and guides
-│   ├── tweaks.md              # Global Wayland environment variables
-│   ├── compatibility.md       # App compatibility: Discord, OBS, Firefox, etc.
-│   ├── input.md               # libinput, gestures, touchpads
-│   ├── fractional-scaling.md  # Multi-monitor DPI, scaling fixes
-│   └── nvidia.md              # NVIDIA + Wayland driver and rendering tweaks
+├── kde/                       # KDE Plasma Wayland quirks, bugs, and tuning
+├── wayland/                   # Wayland (non-DE) tweaks: env, input, scaling, NVIDIA
+
+│
+│   # ── AI / ML stack ──────────────────────────────────────────────
+├── ollama/                    # Native Ollama on RTX 5090 (Blackwell, CUDA)
+├── hermes/                    # Hermes Agent knowledgebase (install, skills, deploy)
+├── openshell/                 # NVIDIA OpenShell sandboxed agent runtimes
+│
+│   # ── Observability ──────────────────────────────────────────────
+├── heimdall-stack/            # Loki + Prometheus + Grafana + Alertmanager + syslog-ng
+
+├── archive/                   # Retired/legacy setups kept for reference
+│   └── ghostllm/              # Federated AI mesh (Ollama + LiteLLM + OpenWebUI)
 
 └── assets/                    # Shared images and screenshots for documentation
 ```
@@ -100,57 +101,61 @@ arch/
 ---
 ## ✅ Key Components
 
-- **`cheatsheet.md`** – Common commands, tips, and troubleshooting notes for Arch Linux systems
+### 🖥️ System & Desktop
 
-- **`git-cheatsheet.md`** – Git basics, branch management, and daily use shortcuts
+- **`docs/`** – Centralized cheatsheets and in-depth guides (Git, Neovim, KWin, Rust, Zig)
 
-- **`nvim-cheatsheet.md`** – Neovim keybindings, plugin manager (LazyVim), and LSP tips
+- **`scripts/`** – Modular provisioning, setup, and automation scripts
 
-- **`zsh-cheatsheet.md`** – Zsh shell shortcuts, plugin usage, and shell script tips
-
-- **`scripts/`** – Modular `ckel.sh` script for provisioning, setup, and automation
-
-  - Automates: package installs, system services, dotfile linking, Tailnet setup, Restic backup prep, and networking tweaks
-
-- **`dotfiles/`** – Shell and application configs (Zsh, WezTerm, Neovim)
+- **`dotfiles/`** – Shell and application configs (Zsh, WezTerm, Ghostty, tmux, Neovim)
 
   - LazyVim Lua config for Neovim
-  - Modular Zsh setup using `.zshrc.d/`
-  - Starship prompt and custom Oh My Zsh plugin + theme framework
+  - Modular Zsh setup using `.zshrc.d/` with Starship + Powerlevel10k
+  - Terminal and AI-assistant (Claude / opencode) configs
 
-- **`restic/`** – S3-compatible encrypted backup system (MinIO / Synology NAS)
+- **`btrfs/`** – BTRFS subvolume layouts, Snapper snapshot automation, restore procedures
 
-  - Includes: systemd timer, service, environment config, automated pruning
+- **`restic/`** – S3-compatible encrypted backups (MinIO / NAS) with systemd timer and pruning
 
-- **`btrfs/`** – BTRFS subvolume layouts, Snapper snapshot automation, systemd-boot integration
+- **`nvidia/`** – NVIDIA driver fixes, performance tuning, NVENC, Gamescope, and gaming tweaks
 
-- **`nvidia/`** – NVIDIA OpenDKMS fixes and performance tuning
+- **`system/`** – Core tuning (ZRAM, disk IO, memory, suspend) and kernel builds (CachyOS / TKG)
 
-  - Gamescope tweaks, modprobe parameters, GSP firmware handling
+- **`wayland/`** – Wayland env vars, app compatibility, input, fractional scaling, NVIDIA fixes
 
-- **`system/`** – Core system tuning (ZRAM, disk IO, memory, suspend behavior)
+- **`kde/`** – KDE Plasma Wayland tweaks and bug workarounds (multi-monitor pageflip, etc.)
 
-  - Kernel customizations (Cachy/BORE/EEVDF)
-  - ZRAM with zstd, I/O scheduler tuning, swap management
+- **`kb/`** – Troubleshooting knowledge base (Docker storage, NVIDIA runtime, kernel compat, Zig)
 
-- **`wayland/`** – Wayland-specific tweaks (global env vars, app compatibility, NVIDIA fixes)
+### 🌐 Networking & Security
 
-  - Covers KDE, GNOME, Hyprland environments
+- **`networking/`** – Tailscale, nftables firewalling, and Unbound recursive DNS
 
-- **`kde/`** – KDE Plasma Wayland tweaks and bug workarounds
+- **`security/`** – Defense-in-depth architecture (FortiGate, DNS, DMZ, CrowdSec threat feeds)
 
-  - Solves multi-monitor pageflip timeout bugs
+- **`advisories/`** – Security advisories: CVE writeups, supply-chain incident reviews, and re-runnable IOC detection scripts
 
-- **`networking/`** – Advanced home + cloud networking (Headscale, WireGuard SD-WAN, NGINX proxying)
+- **`virtualization/`** – KVM, Libvirt, PCIe passthrough, and Docker Compose stacks
 
-  - Split DNS setups, secure remote access, multi-WAN routing
+### 🤖 AI / ML Stack
 
-- **`virtualization/`** – KVM, Libvirt, PCIe passthrough optimizations for workstation VMs
+- **`ollama/`** – Native, GPU-accelerated Ollama on the RTX 5090 (Blackwell, CUDA 13.x)
 
-- **`docker/`** – LXC/Docker AI Services and Automation Hub
+- **`hermes/`** – Hermes Agent knowledgebase: install, skills/memory, MCP, deployment (incl. Proxmox VFIO)
 
-  - Includes: OpenWebUI frontend, Ollama backend, NGINX proxy stacks
-  - Additional Compose files at [GhostKellz Docker Repo](https://github.com/ghostkellz/docker)
+- **`openshell/`** – NVIDIA OpenShell sandboxed, policy-governed runtimes for autonomous agents
+
+### 📊 Observability
+
+- **`heimdall-stack/`** – Logs/metrics/alerts stack: Loki, Prometheus, Grafana, Alertmanager, syslog-ng
+
+  - Ingests FortiGate, Proxmox nodes, CrowdSec, and Wazuh into unified dashboards
+
+### 🗄️ Archive
+
+- **`archive/`** – Retired/legacy setups kept for reference
+
+  - **`ghostllm/`** – Former federated AI mesh (Ollama + LiteLLM + OpenWebUI), superseded by the native Ollama + Hermes setup
 
 - **`assets/`** – Screenshots and visual resources for all documentation
 
@@ -166,11 +171,19 @@ This repository supports verified commits using GPG.
 All signed commits from this repository are made using a trusted GPG key and should appear as **Verified** on GitHub.
 
 #### 🔑 Verifying & Importing the Public Key
+The public key can be viewed and downloaded at **[ghostkellz.sh](https://ghostkellz.sh)**.
+
 If you want to verify commits or clone the trust for your own use:
 
 ```bash
+# Import via WKD
 gpg --locate-keys ckelley@ghostkellz.sh
+
+# Or import directly from ghostkellz.sh
+curl -sL https://ghostkellz.sh/ghostkellz_pubkey.asc | gpg --import
 ```
+
+**Fingerprint:** `478D3EFD1D9694F6BAD0AC1F777538754BA2B57D`
 
 #### 🔧 Enabling GPG Signing in Git
 If you'd like to sign your own commits with GPG:
@@ -197,8 +210,6 @@ A look at the setup powering this repository:
 
 ## 🌐 Join the GhostForge Community
 
-[![GhostKellz Discord](https://github.com/GhostKellz/arch/blob/main/assets/Discord.png)](https://discord.ghostkellz.sh)
-
 > **GhostForge** is our growing community for Linux users, gamers, IT professionals, and programmers.
 >  
 > Connect, collaborate, share projects, and vibe with others who believe in the future of open source + tech freedom.
@@ -211,10 +222,16 @@ A look at the setup powering this repository:
 ---
 ### 🔐 GPG Key Visual
 
-Here is a visual confirmation of the GPG key used to sign commits for this repository:
+The trusted GPG key used to sign commits for this repository (covering both `ckelley@ghostkellz.sh` and `chris@cktechx.com`):
 
 <p align="center">
-  <img src="assets/ckelley-GPG.png" alt="GPG Key Screenshot" width="800"/>
+  <img src="assets/ckelley-GPG.png" alt="GPG Key Listing" width="800"/>
+</p>
+
+It can also be viewed and downloaded directly at [ghostkellz.sh](https://ghostkellz.sh):
+
+<p align="center">
+  <img src="assets/ghostkellz-sh-GPG.png" alt="GhostKellz GPG Key on ghostkellz.sh" width="800"/>
 </p>
 
 ---
