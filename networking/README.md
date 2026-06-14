@@ -1,12 +1,12 @@
 # 🌐 CKTech Networking Stack 👻🔥 — GhostKellz Edition
 
-[![Tailscale](https://img.shields.io/badge/Tailscale-ZeroTrust-007ACC?logo=tailscale&logoColor=white)](https://tailscale.com) 
-[![Headscale](https://img.shields.io/badge/Headscale-SelfHosted-00BFFF)](https://github.com/juanfont/headscale) 
-[![WireGuard VPN](https://img.shields.io/badge/WireGuard-ModernVPN-88171A?logo=wireguard&logoColor=white)](https://www.wireguard.com) 
-[![Fortinet Secured](https://img.shields.io/badge/Fortinet-Secured-red?logo=fortinet&logoColor=white&style=flat)](https://www.fortinet.com/)		
-[![SD-WAN Powered](https://img.shields.io/badge/SD--WAN-Enabled-00B386)](https://en.wikipedia.org/wiki/SD-WAN) 
-[![Unbound Powered](https://img.shields.io/badge/Powered%20by-Unbound-blue)](https://nlnetlabs.nl/projects/unbound/)
-[![Next-Gen Networking](https://img.shields.io/badge/Networking-CuttingEdge-0078D7)]()
+[![Tailscale](https://img.shields.io/badge/Tailscale-ZeroTrust-007ACC?style=for-the-badge&logo=tailscale&logoColor=white)](https://tailscale.com)
+[![Headscale](https://img.shields.io/badge/Headscale-SelfHosted-00BFFF?style=for-the-badge)](https://github.com/juanfont/headscale)
+[![WireGuard VPN](https://img.shields.io/badge/WireGuard-ModernVPN-88171A?style=for-the-badge&logo=wireguard&logoColor=white)](https://www.wireguard.com)
+[![Fortinet Secured](https://img.shields.io/badge/Fortinet-Secured-red?style=for-the-badge&logo=fortinet&logoColor=white)](https://www.fortinet.com/)
+[![SD-WAN Powered](https://img.shields.io/badge/SD--WAN-Enabled-00B386?style=for-the-badge)](https://en.wikipedia.org/wiki/SD-WAN)
+[![Unbound Powered](https://img.shields.io/badge/Powered%20by-Unbound-blue?style=for-the-badge)](https://nlnetlabs.nl/projects/unbound/)
+[![Next-Gen Networking](https://img.shields.io/badge/Networking-CuttingEdge-0078D7?style=for-the-badge)]()
 
 ---
 

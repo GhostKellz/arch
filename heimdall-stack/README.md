@@ -1,5 +1,16 @@
 # Heimdall — Observability & Log Aggregation Stack
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white" alt="Grafana">
+  <img src="https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white" alt="Prometheus">
+  <img src="https://img.shields.io/badge/Loki-F5A800?style=for-the-badge&logo=grafana&logoColor=white" alt="Loki">
+  <img src="https://img.shields.io/badge/Alertmanager-E6522C?style=for-the-badge&logo=prometheus&logoColor=white" alt="Alertmanager">
+  <img src="https://img.shields.io/badge/syslog--ng-005571?style=for-the-badge&logo=linux&logoColor=white" alt="syslog-ng">
+  <img src="https://img.shields.io/badge/CrowdSec-FF6B00?style=for-the-badge" alt="CrowdSec">
+  <img src="https://img.shields.io/badge/Wazuh-3268C4?style=for-the-badge" alt="Wazuh">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+</p>
+
 Heimdall is a dedicated observability/SIEM-adjacent server that aggregates **logs**
 (syslog-ng → Loki), **metrics** (Prometheus + exporters), **alerts** (Alertmanager),
 and presents everything through **Grafana** — including read-only views into the

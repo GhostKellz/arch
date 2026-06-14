@@ -1,15 +1,15 @@
 # 👻 Dotfiles
 
-[![Zsh](https://img.shields.io/badge/Zsh-Shell-689E6E)](https://www.zsh.org/) 
-[![Neovim](https://img.shields.io/badge/Neovim-Config-57A143)](https://neovim.io/) 
-[![Starship](https://img.shields.io/badge/Starship-Prompt-DD00FF)](https://starship.rs/) 
-[![Oh My Zsh](https://img.shields.io/badge/Oh_My_Zsh-Framework-3C3C3C)](https://ohmyz.sh/) 
-[![WezTerm](https://img.shields.io/badge/WezTerm-Terminal-5E81AC)](https://wezfurlong.org/wezterm/) 
-[![Ghostty](https://img.shields.io/badge/Ghostty-Terminal-7B68EE)](https://github.com/ghostty-org/ghostty) 
-[![vivid](https://img.shields.io/badge/Vivid-Colors-F2B134)](https://github.com/sharkdp/vivid) 
-[![tmux](https://img.shields.io/badge/tmux-Terminal_Muxer-33CC99)](https://github.com/tmux/tmux) 
-[![GPG](https://img.shields.io/badge/GPG-Keys-4E5D94)](https://gnupg.org/) 
-[![Termius](https://img.shields.io/badge/Termius-SSH_Manager-00BFFF)](https://termius.com)
+[![Zsh](https://img.shields.io/badge/Zsh-Shell-689E6E?style=for-the-badge)](https://www.zsh.org/)
+[![Neovim](https://img.shields.io/badge/Neovim-Config-57A143?style=for-the-badge)](https://neovim.io/)
+[![Starship](https://img.shields.io/badge/Starship-Prompt-DD00FF?style=for-the-badge)](https://starship.rs/)
+[![Oh My Zsh](https://img.shields.io/badge/Oh_My_Zsh-Framework-3C3C3C?style=for-the-badge)](https://ohmyz.sh/)
+[![WezTerm](https://img.shields.io/badge/WezTerm-Terminal-5E81AC?style=for-the-badge)](https://wezfurlong.org/wezterm/)
+[![Ghostty](https://img.shields.io/badge/Ghostty-Terminal-7B68EE?style=for-the-badge)](https://github.com/ghostty-org/ghostty)
+[![vivid](https://img.shields.io/badge/Vivid-Colors-F2B134?style=for-the-badge)](https://github.com/sharkdp/vivid)
+[![tmux](https://img.shields.io/badge/tmux-Terminal_Muxer-33CC99?style=for-the-badge)](https://github.com/tmux/tmux)
+[![GPG](https://img.shields.io/badge/GPG-Keys-4E5D94?style=for-the-badge)](https://gnupg.org/)
+[![Termius](https://img.shields.io/badge/Termius-SSH_Manager-00BFFF?style=for-the-badge)](https://termius.com)
 
 ---
 

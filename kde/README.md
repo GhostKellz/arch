@@ -1,6 +1,6 @@
 # 👻  KDE + Wayland GhostKellz Setup
 
-[![KDE Plasma](https://img.shields.io/badge/KDE-Plasma-1D99F3)](https://kde.org/plasma-desktop/) [![Wayland](https://img.shields.io/badge/Wayland-Protocol-5C6BC0)](https://wayland.freedesktop.org/) [![NVIDIA Open Kernel](https://img.shields.io/badge/NVIDIA-Open_575_DKMS-76B900)](https://github.com/NVIDIA/open-gpu-kernel-modules) [![AMD Ryzen](https://img.shields.io/badge/Ryzen-7950X3D-ED1C24)](https://www.amd.com/en/processors/ryzen)
+[![KDE Plasma](https://img.shields.io/badge/KDE-Plasma-1D99F3?style=for-the-badge&logo=kde&logoColor=white)](https://kde.org/plasma-desktop/) [![Wayland](https://img.shields.io/badge/Wayland-Protocol-5C6BC0?style=for-the-badge&logo=wayland&logoColor=white)](https://wayland.freedesktop.org/) [![NVIDIA Open Kernel](https://img.shields.io/badge/NVIDIA-Open_575_DKMS-76B900?style=for-the-badge&logo=nvidia&logoColor=white)](https://github.com/NVIDIA/open-gpu-kernel-modules) [![AMD Ryzen](https://img.shields.io/badge/Ryzen-7950X3D-ED1C24?style=for-the-badge&logo=amd&logoColor=white)](https://www.amd.com/en/processors/ryzen)
 
 ---
 
@@ -21,7 +21,7 @@
 
 ## 🎮 Current NVIDIA RTX 5090 Config
 
-[![NVIDIA RTX 5090](https://img.shields.io/badge/NVIDIA-RTX_5090_Config-76B900?logo=nvidia&logoColor=white)](../nvidia/nvidia.conf)
+[![NVIDIA RTX 5090](https://img.shields.io/badge/NVIDIA-RTX_5090_Config-76B900?style=for-the-badge&logo=nvidia&logoColor=white)](../nvidia/nvidia.conf)
 
 ## 🛠️ Workarounds (historical)
 - Previously tested with TKG kernel (reduced occurrence)

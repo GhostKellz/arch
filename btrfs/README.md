@@ -1,6 +1,6 @@
 # 🌐 BTRFS Backup Strategy 🔥👻 | GhostKellz
 
-[![Arch Linux](https://img.shields.io/badge/Arch-Linux-1793D1?style=flat&logo=arch-linux&logoColor=white)](https://archlinux.org) [![BTRFS Snapshots](https://img.shields.io/badge/BTRFS-Snapshots-blue)](https://btrfs.readthedocs.io) [![Synology NAS](https://img.shields.io/badge/Synology-NAS-2d3037)](https://www.synology.com/) [![Restic Backup](https://img.shields.io/badge/Restic-EncryptedBackup-green)](https://restic.net/) [![MinIO Storage](https://img.shields.io/badge/MinIO-Object_Storage-red)](https://min.io/) [![Microsoft Azure](https://img.shields.io/badge/Microsoft-Azure-blue)](https://azure.microsoft.com)
+[![Arch Linux](https://img.shields.io/badge/Arch-Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://archlinux.org) [![BTRFS Snapshots](https://img.shields.io/badge/BTRFS-Snapshots-blue?style=for-the-badge)](https://btrfs.readthedocs.io) [![Synology NAS](https://img.shields.io/badge/Synology-NAS-2d3037?style=for-the-badge)](https://www.synology.com/) [![Restic Backup](https://img.shields.io/badge/Restic-EncryptedBackup-green?style=for-the-badge)](https://restic.net/) [![MinIO Storage](https://img.shields.io/badge/MinIO-Object_Storage-red?style=for-the-badge)](https://min.io/) [![Microsoft Azure](https://img.shields.io/badge/Microsoft-Azure-blue?style=for-the-badge)](https://azure.microsoft.com)
 
 ---
 
