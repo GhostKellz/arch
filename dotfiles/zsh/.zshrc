@@ -27,9 +27,7 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # ── CLI Tools ────────────────────────────────────────────────
-# Prompt is Powerlevel10k (sourced via ~/.p10k.zsh). Starship is kept but
-# disabled to avoid two prompt engines fighting over PROMPT.
-# eval "$(starship init zsh)"
+eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(direnv hook zsh)"
