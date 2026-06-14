@@ -2,7 +2,7 @@
 
 [![Zsh](https://img.shields.io/badge/Zsh-Shell-689E6E?style=for-the-badge)](https://www.zsh.org/)
 [![Neovim](https://img.shields.io/badge/Neovim-Config-57A143?style=for-the-badge)](https://neovim.io/)
-[![Starship](https://img.shields.io/badge/Starship-Prompt-DD00FF?style=for-the-badge)](https://starship.rs/)
+[![Powerlevel10k](https://img.shields.io/badge/Powerlevel10k-Prompt-DD00FF?style=for-the-badge)](https://github.com/romkatv/powerlevel10k)
 [![Oh My Zsh](https://img.shields.io/badge/Oh_My_Zsh-Framework-3C3C3C?style=for-the-badge)](https://ohmyz.sh/)
 [![WezTerm](https://img.shields.io/badge/WezTerm-Terminal-5E81AC?style=for-the-badge)](https://wezfurlong.org/wezterm/)
 [![Ghostty](https://img.shields.io/badge/Ghostty-Terminal-7B68EE?style=for-the-badge)](https://github.com/ghostty-org/ghostty)
