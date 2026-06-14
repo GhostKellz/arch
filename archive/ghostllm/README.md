@@ -1,12 +1,5 @@
 # 👻 GhostLLM: Self-Hosted AI Mesh with Ollama + LiteLLM + OpenWebUI
 
-[![Arch-Based](https://img.shields.io/badge/Arch%20Linux-optimized-blue?logo=arch-linux\&logoColor=white)](https://archlinux.org)
-[![LLM Powered](https://img.shields.io/badge/Ollama-33B-inference-success?logo=openai\&logoColor=white)](https://ollama.com)
-[![VSCode Integrated](https://img.shields.io/badge/VSCode-Continue-blueviolet?logo=visualstudiocode\&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=Continue.continue)
-[![LiteLLM API](https://img.shields.io/badge/LiteLLM-Staging-yellow?logo=fastapi\&logoColor=white)](https://github.com/BerriAI/litellm)
-[![Federated Nodes](https://img.shields.io/badge/GPU%20Pool-4090%2F3070%2F2060-green?logo=nvidia\&logoColor=white)](https://ollama.com)
-[![NVIDIA Enabled](https://img.shields.io/badge/NVIDIA-Accelerated-success?logo=nvidia\&logoColor=white)](https://www.nvidia.com/)
-
 > Self-hosted, federated AI mesh using Ollama + LiteLLM + OpenWebUI. Powered by Arch, Proxmox, and RTX-class GPUs.
 
 ---
