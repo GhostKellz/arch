@@ -293,6 +293,14 @@ gh repo create "GhostKellz/$repo" \
 # Ensure SSH is used for future pushes
 git remote set-url origin "git@github.com:GhostKellz/$repo.git"
 
+# Enable Dependabot security updates (alerts + automated fixes).
+# These are repo-level toggles, not a workflow or committed file, so new repos
+# don't depend on the org "auto-enable for new repositories" default.
+gh api -X PUT "repos/$owner/$repo/vulnerability-alerts" --silent \
+  && echo "✅ Dependabot vulnerability alerts enabled"
+gh api -X PUT "repos/$owner/$repo/automated-security-fixes" --silent \
+  && echo "✅ Dependabot automated security fixes enabled"
+
 # Confirmation
 echo "\n✅ Repo '$repo' created at /data/projects/$repo and pushed via SSH"
 git remote -v

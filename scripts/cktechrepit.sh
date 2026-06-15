@@ -290,6 +290,14 @@ gh repo create "CK-Technology/$repo" \
 # Set SSH remote explicitly
 git remote set-url origin "git@github.com:CK-Technology/$repo.git"
 
+# Enable Dependabot security updates (alerts + automated fixes).
+# These are repo-level toggles, not a workflow or committed file, so new repos
+# don't depend on the org "auto-enable for new repositories" default.
+gh api -X PUT "repos/$owner/$repo/vulnerability-alerts" --silent \
+  && echo "✅ Dependabot vulnerability alerts enabled"
+gh api -X PUT "repos/$owner/$repo/automated-security-fixes" --silent \
+  && echo "✅ Dependabot automated security fixes enabled"
+
 # Apply topics if provided
 if [[ -n "$topics" ]]; then
   gh repo edit "CK-Technology/$repo" --add-topic ${(s: :)topics}
