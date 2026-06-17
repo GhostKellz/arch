@@ -1,0 +1,19 @@
+# Global Cargo configuration  ->  deploy to ~/.cargo/config.toml
+# Canonical source of truth lives here in the arch repo (rust/config.toml).
+# See README.md in this directory for the rationale behind each setting.
+
+[net]
+# Use the system `git` binary (and your SSH agent / ~/.ssh/config) to fetch
+# registry indexes and git dependencies instead of cargo's bundled libgit2.
+#
+# Required on this system because ~/.gitconfig contains:
+#   [url "git@github.com:"]
+#       insteadOf = https://github.com/
+# which rewrites all https GitHub URLs to SSH. libgit2 cannot authenticate
+# through ssh-agent the way the git CLI can, so plain `cargo update`/`cargo
+# fetch` fail on any git dependency (e.g. nih-plug). git-fetch-with-cli is the
+# cargo-team-recommended fix for this class of auth problem.
+git-fetch-with-cli = true
+
+# Retry transient network failures instead of aborting the whole build.
+retry = 3

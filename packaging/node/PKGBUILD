@@ -1,0 +1,48 @@
+# Maintainer: Christopher Kelley <ghost@ghostkellz.sh>
+
+pkgname=NAME-git
+pkgver=0.0.0
+pkgrel=1
+pkgdesc=""
+arch=('any')
+url="https://github.com/ghostkellz/REPO"
+license=('MIT')
+depends=('nodejs')
+makedepends=('git' 'npm')
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+options=('!emptydirs')
+source=("${pkgname%-git}::git+https://github.com/ghostkellz/REPO.git")
+sha256sums=('SKIP')
+
+pkgver() {
+	cd "$srcdir/${pkgname%-git}"
+	git describe --long --abbrev=7 --tags 2>/dev/null | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g' \
+		|| printf 'r%s.%s' "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+build() {
+	cd "$srcdir/${pkgname%-git}"
+	# Reproducible install from the committed lockfile, then compile/bundle.
+	npm ci --cache "$srcdir/npm-cache"
+	npm run build
+}
+
+package() {
+	cd "$srcdir/${pkgname%-git}"
+	# Pack the published artefact, then install it globally into $pkgdir so
+	# the bin shims and node_modules layout match a real `npm i -g`.
+	local tarball
+	tarball="$(npm pack --silent)"
+	npm install -g --prefix "$pkgdir/usr" --cache "$srcdir/npm-cache" "$srcdir/${pkgname%-git}/$tarball"
+
+	# Drop the absolute build-path leaking into package.json metadata.
+	find "$pkgdir/usr/lib/node_modules" -name package.json -print0 \
+		| xargs -0 -r sed -i '/_where/d'
+
+	# Normalise permissions npm sometimes leaves as 0777/0600.
+	chmod -R u=rwX,go=rX "$pkgdir/usr/lib/node_modules"
+
+	install -Dm644 README.md "$pkgdir/usr/share/doc/${pkgname%-git}/README.md"
+	install -Dm644 LICENSE "$pkgdir/usr/share/licenses/${pkgname%-git}/LICENSE"
+}

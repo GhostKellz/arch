@@ -1,0 +1,46 @@
+# Maintainer: Christopher Kelley <ghost@ghostkellz.sh>
+
+pkgname=NAME-git
+pkgver=0.0.0
+pkgrel=1
+pkgdesc=""
+arch=('x86_64')
+url="https://github.com/ghostkellz/REPO"
+license=('MIT')
+depends=('glibc')
+makedepends=('git' 'zig')
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+options=('!buildflags' '!lto')
+source=("${pkgname%-git}::git+https://github.com/ghostkellz/REPO.git")
+sha256sums=('SKIP')
+
+pkgver() {
+	cd "$srcdir/${pkgname%-git}"
+	git describe --long --abbrev=7 --tags 2>/dev/null | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g' \
+		|| printf 'r%s.%s' "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+build() {
+	cd "$srcdir/${pkgname%-git}"
+	# ReleaseSafe keeps runtime safety checks; -Dcpu=baseline keeps the
+	# binary portable across the x86_64 machines we ship to.
+	zig build \
+		-Doptimize=ReleaseSafe \
+		-Dcpu=baseline \
+		--prefix "$srcdir/install" \
+		--summary all
+}
+
+check() {
+	cd "$srcdir/${pkgname%-git}"
+	zig build test -Dcpu=baseline --summary all
+}
+
+package() {
+	cd "$srcdir/${pkgname%-git}"
+	# build() already installed into $srcdir/install via --prefix.
+	install -Dm755 "$srcdir/install/bin/${pkgname%-git}" "$pkgdir/usr/bin/${pkgname%-git}"
+	install -Dm644 README.md "$pkgdir/usr/share/doc/${pkgname%-git}/README.md"
+	install -Dm644 LICENSE "$pkgdir/usr/share/licenses/${pkgname%-git}/LICENSE"
+}
