@@ -45,8 +45,6 @@ arch/
 │   ├── GIT-CHEATSHEET.md      # Git basics and daily-use shortcuts
 │   ├── NVIM-CHEATSHEET.md     # Neovim keybindings and LSP tips
 │   ├── KWIN-CHEATSHEET.md     # KWin window manager shortcuts
-│   ├── RUST-CHEATSHEET.md     # Rust quick reference
-│   ├── RUST_GUIDE.md          # In-depth Rust guide
 │   ├── ZIG-CHEATSHEET.md      # Zig quick reference
 │   ├── ZIG_GUIDE.md           # In-depth Zig guide
 │   ├── ZIG_ASYNC.md           # Zig async patterns
@@ -67,6 +65,7 @@ arch/
 │   ├── claude/ · opencode/    # AI assistant configs
 │   └── zsh/                   # Modular Zsh configuration (.zshrc.d/, Starship, p10k)
 
+├── rust/                      # Cargo global config + Rust guide/cheatsheet
 ├── restic/                    # Restic systemd service/timer and env vars
 ├── nvidia/                    # NVIDIA driver tweaks, fixes, NVENC, gaming/Gamescope
 ├── networking/                # Network configs (Tailscale, nftables, Unbound DNS)

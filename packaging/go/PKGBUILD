@@ -1,0 +1,53 @@
+# Maintainer: Christopher Kelley <ghost@ghostkellz.sh>
+
+pkgname=NAME-git
+pkgver=0.0.0
+pkgrel=1
+pkgdesc=""
+arch=('x86_64')
+url="https://github.com/ghostkellz/REPO"
+license=('MIT')
+depends=('glibc')
+makedepends=('git' 'go')
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%-git}")
+options=('!lto')
+source=("${pkgname%-git}::git+https://github.com/ghostkellz/REPO.git")
+sha256sums=('SKIP')
+
+pkgver() {
+	cd "$srcdir/${pkgname%-git}"
+	git describe --long --abbrev=7 --tags 2>/dev/null | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g' \
+		|| printf 'r%s.%s' "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+prepare() {
+	cd "$srcdir/${pkgname%-git}"
+	# Vendor modules up front so build()/check() run offline and reproducibly.
+	go mod download
+}
+
+build() {
+	cd "$srcdir/${pkgname%-git}"
+	# Honour the distro toolchain flags and produce a hardened PIE binary.
+	export CGO_CPPFLAGS="${CPPFLAGS}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_CXXFLAGS="${CXXFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
+	go build -o "build/${pkgname%-git}" \
+		-ldflags "-linkmode=external -X main.version=$pkgver" \
+		.
+}
+
+check() {
+	cd "$srcdir/${pkgname%-git}"
+	go test ./...
+}
+
+package() {
+	cd "$srcdir/${pkgname%-git}"
+	install -Dm755 "build/${pkgname%-git}" "$pkgdir/usr/bin/${pkgname%-git}"
+	install -Dm644 README.md "$pkgdir/usr/share/doc/${pkgname%-git}/README.md"
+	install -Dm644 LICENSE "$pkgdir/usr/share/licenses/${pkgname%-git}/LICENSE"
+}
