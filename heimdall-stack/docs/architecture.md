@@ -112,6 +112,119 @@ the indexer via the `grafana-opensearch-datasource` plugin.
 
 ---
 
+## Reference deployment: log fan-in
+
+The public template supports a larger deployment without embedding private addresses.
+GitLab, public web servers, the DMZ reverse proxy, and the Proxmox fleet all converge
+on the same native syslog-ng pipeline:
+
+```mermaid
+flowchart LR
+    FG["FortiGate"] -->|"udp/tcp 5514"| SNG["syslog-ng"]
+    GIT["GitLab\napplication + audit logs"] -->|"tcp 601"| SNG
+    TH["Thallium\nNginx + CrowdSec logs"] -->|"tcp 601 over Tailscale"| SNG
+    WEB["ckel-web-01\nNginx + CrowdSec logs"] -->|"tcp 601 over Tailscale"| SNG
+    PVE["PVE1-PVE9\nhost + service logs"] -->|"514 or 601"| SNG
+
+    SNG -->|"HTTP push"| LOKI["Loki :3100"]
+    SNG --> ARCHIVE["On-disk archive"]
+    LOKI -->|"LogQL"| GRAFANA["Grafana"]
+```
+
+---
+
+## Reference deployment: metrics fan-in
+
+Prometheus scrapes infrastructure exporters directly or through Tailscale-only socket
+proxies. File-based service discovery keeps the host inventory outside the main scrape
+configuration.
+
+```mermaid
+flowchart LR
+    subgraph SOURCES["Metric sources"]
+        HD["Heimdall\nnode_exporter :9100\ncAdvisor :8085"]
+        PVE["PVE1-PVE9\nnode_exporter :9100"]
+        GIT["GitLab Omnibus Prometheus\n/federate :9090"]
+        TH["Thallium\nnode_exporter :9100\nCrowdSec :6060"]
+        WEB["ckel-web-01\nnode_exporter :9100\nCrowdSec :6060"]
+        EDGE["Production Nginx\nnode_exporter :9100\nCrowdSec :6060"]
+        CSL["Central CrowdSec\nmetrics :6060"]
+    end
+
+    HD --> PROM["Prometheus :9090"]
+    PVE -->|"file-SD"| PROM
+    GIT --> PROM
+    TH -->|"Tailscale"| PROM
+    WEB -->|"Tailscale"| PROM
+    EDGE -->|"Tailscale"| PROM
+    CSL --> PROM
+
+    PROM --> RULES["Alert rules"]
+    RULES --> AM["Alertmanager :9093"]
+    PROM -->|"PromQL"| GRAFANA["Grafana"]
+```
+
+---
+
+## Reference deployment: security services
+
+The perimeter firewall denies direct DMZ-to-LAN traffic from Thallium. Its CrowdSec
+and Wazuh web-proxy connections use destination-specific Tailscale grants instead.
+
+```mermaid
+flowchart TD
+    subgraph DMZ["DMZ"]
+        TH["Thallium\nNginx + CrowdSec agent"]
+        UI["CrowdSec Web UI"]
+        MIRROR["CrowdSec blocklist mirror"]
+        BOUNCER["Firewall bouncer"]
+    end
+
+    FW["Perimeter firewall"] -.->|"DENY DMZ to LAN"| LAN["LAN"]
+    TH --- FW
+
+    subgraph SECURITY["Security services over Tailscale"]
+        CS["Central CrowdSec LAPI\n8080/tcp"]
+        WZD["Wazuh dashboard\n443/tcp"]
+        WZI["Wazuh indexer\n9200/tcp"]
+    end
+
+    UI -->|"8080/tcp"| CS
+    MIRROR -->|"8080/tcp"| CS
+    BOUNCER -->|"8080/tcp"| CS
+    TH -->|"443/tcp"| WZD
+
+    CS -->|"metrics 6060/tcp"| PROM["Prometheus"]
+    WZI -->|"OpenSearch datasource"| GRAFANA["Grafana"]
+    PROM --> GRAFANA
+```
+
+The UI can exclude bulk CAPI/community-blocklist records from its local display cache
+without changing the decisions enforced by CrowdSec bouncers or the blocklist mirror.
+
+---
+
+## How Grafana assembles dashboards
+
+Grafana is the visualization layer, not the collector or primary telemetry store. Each
+panel queries its corresponding provisioned datasource:
+
+```mermaid
+flowchart LR
+    USERS["Operators"] --> G["Grafana :3000"]
+    G -->|"PromQL"| P["Prometheus\nmetrics + alert state"]
+    G -->|"LogQL"| L["Loki\nsyslog + application logs"]
+    G -->|"Alertmanager API"| A["Alertmanager\nfiring and silenced alerts"]
+    G -->|"OpenSearch query"| W["Wazuh indexer\nsecurity events"]
+
+    P --> PD["Host, container, Proxmox,\nGitLab and CrowdSec panels"]
+    L --> LD["FortiGate, Nginx, GitLab,\nCrowdSec and system-log panels"]
+    A --> AD["Alert-state panels"]
+    W --> WD["Wazuh SIEM panels"]
+```
+
+---
+
 ## Network & deployment topology
 
 ```mermaid
@@ -123,7 +236,7 @@ flowchart TB
     OPT -->|"docker compose up -d"| STACK["core containers"]
     REPO -.->|"copy conf.d/*"| SNGHOST["/etc/syslog-ng/conf.d (native)"]
 
-    subgraph LAN["LAN 10.0.0.0/24 + 192.0.2.0/24"]
+    subgraph LAN["Internal networks\nLAN 192.0.2.0/24 + DMZ 198.51.100.0/24"]
         STACK
         SNGHOST
     end

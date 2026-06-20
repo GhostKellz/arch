@@ -28,7 +28,10 @@ existing **CrowdSec** and **Wazuh** deployments.
 flowchart LR
     subgraph Sources["Log & Metric Sources"]
         FG["FortiGate firewall"]
-        PVE["7x Proxmox nodes"]
+        PVE["PVE1-PVE9\nnode_exporter + syslog"]
+        GIT["GitLab\nPrometheus federation + logs"]
+        EDGE["Thallium reverse proxy\nnode/CrowdSec metrics + logs"]
+        WEB["ckel-web-01\nnode/CrowdSec metrics + logs"]
         WS["Arch workstation / edge hosts"]
         CS["CrowdSec LAPI\n192.0.2.23:6060"]
         WZ["Wazuh indexer\n192.0.2.25:9200"]
@@ -47,10 +50,16 @@ flowchart LR
 
     FG -->|"syslog 5514"| SNG
     PVE -->|"syslog 514/601"| SNG
+    GIT -->|"syslog 601"| SNG
+    EDGE -->|"syslog 601"| SNG
+    WEB -->|"syslog 601"| SNG
     WS  -->|"syslog 514/601"| SNG
     SNG -->|"http push"| LOKI
 
-    PVE -.->|"node_exporter scrape"| PROM
+    PVE -.->|"node_exporter :9100"| PROM
+    GIT -.->|"/federate :9090"| PROM
+    EDGE -.->|"node_exporter + CrowdSec"| PROM
+    WEB -.->|"node_exporter + CrowdSec"| PROM
     NE  --> PROM
     CAD --> PROM
     LOKI --> PROM
@@ -64,6 +73,9 @@ flowchart LR
 ```
 
 See **[docs/architecture.md](docs/architecture.md)** for detailed data-flow diagrams.
+The reference deployment keeps its DMZ reverse proxy blocked from direct LAN access;
+its CrowdSec (`8080/tcp`) and Wazuh dashboard (`443/tcp`) connections run over
+Tailscale with destination-specific grants.
 
 ---
 

@@ -65,6 +65,7 @@ Then filter in the **Loki Logs Explorer** dashboard by `$host` / `$app`.
 
 ## Firewall
 
-`scripts/setup-ufw.sh` opens `514/udp`, `514/tcp`, `601/tcp` from `10.0.0.0/24` and
-`192.0.2.0/24`. Senders outside those ranges need their CIDR added to the script (or
+`scripts/setup-ufw.sh` opens `514/udp`, `514/tcp`, `601/tcp` from the example LAN
+`192.0.2.0/24` and DMZ `198.51.100.0/24`. Replace those documentation ranges with
+the deployment's actual CIDRs. Senders outside those ranges need their CIDR added (or
 must reach Heimdall over Tailscale, which is allowed in full).
