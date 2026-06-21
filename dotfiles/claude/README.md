@@ -42,6 +42,19 @@ Installed from the official `claude-plugins-official` marketplace
 | `security-guidance` | Security best-practice guidance |
 | `code-simplifier` | Refactor toward simpler code |
 
+Installed from the `openai-codex` marketplace (`openai/codex-plugin-cc`), user scope:
+
+| Plugin | Purpose |
+|--------|---------|
+| `codex` | Delegate to / get second-opinion reviews from Codex (GPT-5.x) without leaving Claude Code |
+
+`codex` shells out to the local `codex` CLI and reuses its auth (`~/.codex/auth.json`)
+and config (`~/.codex/config.toml`). Requires `codex` installed + logged in. Adds
+`/codex:review`, `/codex:adversarial-review`, `/codex:rescue`, `/codex:status`,
+`/codex:result`, `/codex:cancel`, `/codex:setup`. Leave the optional review gate
+(`/codex:setup --enable-review-gate`) **off** — it loops Claude↔Codex and drains
+both usage limits.
+
 ## Skills
 
 Sourced from the official `anthropics/skills` repo, copied into
@@ -105,6 +118,11 @@ for p in rust-analyzer-lsp clangd-lsp code-review pr-review-toolkit \
          commit-commands feature-dev security-guidance code-simplifier; do
   claude plugin install "$p@claude-plugins-official" -s user
 done
+
+# 2b. Codex plugin (separate marketplace; needs the codex CLI + login)
+#     npm install -g @openai/codex && codex login
+claude plugin marketplace add openai/codex-plugin-cc
+claude plugin install codex@openai-codex -s user
 
 # 3. Skills — pull from the official repo, copy the selected set
 tmp=$(mktemp -d)
