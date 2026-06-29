@@ -1,0 +1,49 @@
+# Read-only Docker socket proxy — deployed on each Docker host that Uptime Kuma
+# (and cAdvisor) should see container health for. Exposes a hardened, GET-only
+# subset of the Docker API on :2375 so Uptime Kuma's "Docker Container" monitor
+# can read container state without ever touching the real socket read-write.
+#
+# Deploy on the Docker host (NOT on Heimdall) under e.g. ~/socket-proxy/ alongside
+# a .env. See README.md for the full procedure and verification.
+services:
+  socket-proxy:
+    image: lscr.io/linuxserver/socket-proxy:latest
+    container_name: socket-proxy
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /run
+    environment:
+      # Writes stay disabled — this proxy is read-only by design.
+      - ALLOW_START=0
+      - ALLOW_STOP=0
+      - ALLOW_RESTARTS=0
+      - AUTH=0
+      - BUILD=0
+      - COMMIT=0
+      - CONFIGS=0
+      - CONTAINERS=1
+      - DISTRIBUTION=0
+      - EVENTS=1
+      - EXEC=0
+      - IMAGES=1
+      - INFO=1
+      - NETWORKS=1
+      - NODES=0
+      - PLUGINS=0
+      - POST=0
+      - SECRETS=0
+      - SERVICES=0
+      - SESSION=0
+      - SWARM=0
+      - SYSTEM=0
+      - TASKS=0
+      - VERSION=1
+      - VOLUMES=0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      # CRITICAL: bind to the host's Tailscale IP, not 0.0.0.0 or 127.0.0.1.
+      # Default 127.0.0.1 makes the proxy unreachable from Uptime Kuma on another
+      # host. Set SOCKET_PROXY_BIND_IP in .env to this host's tailnet address.
+      - "${SOCKET_PROXY_BIND_IP:-127.0.0.1}:2375:2375"

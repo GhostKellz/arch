@@ -28,7 +28,7 @@ sudo systemctl restart syslog-ng
 | Change | Command |
 |--------|---------|
 | Prometheus targets/alerts | `curl -X POST http://127.0.0.1:9090/-/reload` |
-| Alertmanager config | `curl -X POST http://127.0.0.1:9093/-/reload` |
+| Alertmanager config (routing/receivers, see [alerting.md](alerting.md)) | `curl -X POST http://127.0.0.1:9093/-/reload` |
 | Grafana dashboards | none — provider reloads every 30s |
 | Grafana datasources | recreate container: `docker compose up -d --force-recreate grafana` |
 
@@ -126,6 +126,10 @@ flowchart TD
 2. syslog-ng healthy? `systemctl status syslog-ng`, `sudo syslog-ng -s`
 3. Disk-buffer backing up (Loki down)? check `/var/lib/syslog-ng` size + `docker compose ps loki`
 4. Sender actually pointed at `192.0.2.10` and allowed by the host firewall?
+
+> Loki panels empty but the on-disk archive still growing? That's a stuck syslog-ng
+> disk-buffer, not a dead sender — see
+> [runbooks/syslog-ng-loki-recovery.md](runbooks/syslog-ng-loki-recovery.md).
 
 **A Prometheus target is DOWN**
 1. `curl -s :9090/api/v1/targets | jq '.data.activeTargets[]|select(.health!="up")|{job:.labels.job,err:.lastError}'`

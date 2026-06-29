@@ -1,20 +1,61 @@
-# Alertmanager - default null route for the lab. Wire a real receiver
-# (email/Slack/ntfy/webhook) when ready by editing the receivers below.
+# Alertmanager — Discord (#monitoring) + SMTP2Go email notifications.
+#
+# Secrets are NOT inlined here. They are mounted read-only from
+# ./secrets/alertmanager (gitignored) into /etc/alertmanager/secrets and read via
+# *_file directives. See docs/alerting.md and alertmanager/secrets.example/.
+#
+# Routing:
+#   warning and below -> Discord only
+#   critical          -> Discord + SMTP2Go email
 global:
   resolve_timeout: 5m
+  smtp_smarthost: mail.smtp2go.com:587
+  smtp_from: alertmanager@example.com
+  smtp_auth_username: alertmanager@example.com
+  smtp_auth_password_file: /etc/alertmanager/secrets/smtp-auth-password
+  smtp_require_tls: true
 
 route:
-  group_by: ["alertname", "job"]
+  group_by: ["alertname", "job", "host", "instance", "severity"]
   group_wait: 30s
   group_interval: 5m
   repeat_interval: 4h
-  receiver: default
+  receiver: monitoring-discord
+  routes:
+    - matchers: [severity="critical"]
+      receiver: monitoring-discord-email
 
 receivers:
-  - name: default
-    # Example webhook (e.g. ntfy/gotify). Uncomment + set url to enable.
-    # webhook_configs:
-    #   - url: "http://127.0.0.1:8088/alert"
+  - name: monitoring-discord
+    # Native discord_configs is required. Alertmanager's Slack-compatible
+    # attachment payload is rejected by Discord's /slack webhook with HTTP 400.
+    discord_configs:
+      - webhook_url_file: /etc/alertmanager/secrets/discord-monitoring-url
+        send_resolved: true
+        username: Alertmanager
+        title: '{{ .Status | toUpper }} {{ .CommonLabels.alertname }}'
+        message: >-
+          {{ range .Alerts -}}
+          *{{ .Labels.severity }}* {{ .Annotations.summary }}
+          {{ if .Annotations.description }}{{ .Annotations.description }}{{ end }}
+          {{ end }}
+
+  - name: monitoring-discord-email
+    discord_configs:
+      - webhook_url_file: /etc/alertmanager/secrets/discord-monitoring-url
+        send_resolved: true
+        username: Alertmanager
+        title: '{{ .Status | toUpper }} {{ .CommonLabels.alertname }}'
+        message: >-
+          {{ range .Alerts -}}
+          *{{ .Labels.severity }}* {{ .Annotations.summary }}
+          {{ if .Annotations.description }}{{ .Annotations.description }}{{ end }}
+          {{ end }}
+    email_configs:
+      - to: alerts@example.com
+        send_resolved: true
+        headers:
+          subject: '{{ .Status | toUpper }} {{ .CommonLabels.alertname }}'
 
 inhibit_rules:
   - source_matchers: [severity="critical"]
