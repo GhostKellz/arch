@@ -56,6 +56,9 @@ services:
       - --web.listen-address=:9093
     volumes:
       - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      # Notification secrets (gitignored). Copy alertmanager/secrets.example/* into
+      # secrets/alertmanager/ and fill in real values. See docs/alerting.md.
+      - ./secrets/alertmanager:/etc/alertmanager/secrets:ro
       - alertmanager-data:/alertmanager
 
   grafana:

@@ -72,3 +72,54 @@ Key metrics used by the dashboard: `cs_active_decisions{action,origin,reason}`,
 For log-level correlation, point the CrowdSec host's rsyslog at Heimdall as in
 [linux-syslog.md](linux-syslog.md). The metrics integration above is independent of
 this and sufficient for the dashboard.
+
+---
+
+## Optional: Discord remediation notifications
+
+CrowdSec can post to a Discord `#crowdsec` channel when it bans/remediates. Configure
+this on the **central Security Engine** (`192.0.2.23`), not on Heimdall.
+
+Add `/etc/crowdsec/notifications/discord-crowdsec.yaml`:
+
+```yaml
+type: http
+name: discord_crowdsec        # must match the profile reference below
+log_level: info
+format: |
+  CrowdSec remediation batch: {{ len . }} alert(s). Review CrowdSec console / Grafana.
+url: ${DISCORD_CROWDSEC_WEBHOOK}   # inject via env/secret, do not inline the URL
+method: POST
+headers:
+  Content-Type: application/json
+# Batch settings keep this from spamming one message per decision.
+group_wait: 30s
+group_threshold: 10
+max_retry: 3
+timeout: 10s
+```
+
+Enable it on the remediation profiles in `/etc/crowdsec/profiles.yaml`:
+
+```yaml
+name: default_ip_remediation
+# ...
+notifications:
+  - discord_crowdsec
+---
+name: default_range_remediation
+# ...
+notifications:
+  - discord_crowdsec
+```
+
+```bash
+cscli notifications test discord_crowdsec   # expect no error
+sudo systemctl restart crowdsec
+cscli notifications list                     # discord_crowdsec active on both profiles
+```
+
+> **Keep the template batch-oriented.** Per-decision templates produce Discord spam and
+> are easy to break — a field-level template that hits an unset value renders Go
+> `%!s(...)` formatting noise in the channel. The batch summary above avoids both. Send
+> the detailed signal to Grafana/the CrowdSec console, not Discord.

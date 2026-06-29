@@ -131,3 +131,73 @@ string plus `metrics` (count/cardinality) and `bucketAggs` (date_histogram/terms
 - **Auth/TLS errors** → check `WAZUH_*` in `.env`; `tlsSkipVerify: true` is set because
   the indexer uses a self-signed cert.
 - **Empty panels but health OK** → widen the dashboard time range; default is `now-24h`.
+
+---
+
+## Optional: Discord + SMTP2Go alert notifications
+
+This is configured on the **Wazuh manager** (`192.0.2.25`), independent of Heimdall's
+Grafana datasource above. Wazuh's `integrator` runs a custom script per matching alert.
+
+### Secrets (file-based)
+
+```
+/var/ossec/etc/secrets/wazuh-discord-webhook   # Discord channel webhook URL
+/var/ossec/etc/secrets/wazuh-smtp-password     # SMTP2Go SMTP password for wazuh@example.com
+```
+
+`chown root:wazuh`, `chmod 640`. Scripts read these; never inline the values into
+`ossec.conf` (it is world-readable within the install).
+
+### Wire the integrations in `/var/ossec/etc/ossec.conf`
+
+```xml
+<integration>
+  <name>custom-discord-wazuh</name>
+  <level>10</level>
+  <alert_format>json</alert_format>
+</integration>
+
+<integration>
+  <name>custom-wazuh-email</name>
+  <level>12</level>
+  <alert_format>json</alert_format>
+</integration>
+```
+
+Drop the matching wrapper + Python under `/var/ossec/integrations/`
+(`custom-discord-wazuh` + `.py`, `custom-wazuh-email` + `.py`), `chmod 750`,
+`chown root:wazuh`. Restart: `sudo systemctl restart wazuh-manager`; confirm
+`wazuh-integratord` is running.
+
+### Gotcha: STARTTLS needs the system CA bundle
+
+Wazuh ships its own bundled Python, which does **not** trust the OS CA store by default,
+so SMTP2Go STARTTLS fails with a certificate-verify error. Point the SSL context at the
+system bundle explicitly in the email script:
+
+```python
+import ssl
+ctx = ssl.create_default_context(cafile="/etc/ssl/certs/ca-certificates.crt")
+# server.starttls(context=ctx)
+```
+
+### Gotcha: suppress Uptime Kuma / Grafana polling noise (rule 31533)
+
+Rule `31533` (web `POST`) fires on normal dashboard polling — Uptime Kuma's
+`POST /socket.io/` and Grafana's `POST /api/ds/query`. Suppress these in the **Discord**
+script only (Wazuh still indexes the event for the SIEM; only the Discord notification is
+skipped):
+
+```python
+# in custom-discord-wazuh.py, before posting to Discord
+rule_id  = str(alert.get("rule", {}).get("id", ""))
+full_log = alert.get("full_log", "")
+if rule_id == "31533" and "uptime.example.com" in full_log and "/socket.io/" in full_log:
+    sys.exit(0)   # Kuma dashboard polling — indexed, not notified
+if rule_id == "31533" and ("grafana.example.com" in full_log or "/api/ds/query" in full_log):
+    sys.exit(0)   # Grafana datasource polling — indexed, not notified
+```
+
+Validate with a synthetic alert and confirm: a normal level-10 alert still posts to
+Discord, while a `31533` event referencing the Kuma/Grafana hostnames does not.

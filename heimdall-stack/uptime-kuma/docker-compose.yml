@@ -1,0 +1,22 @@
+# Uptime Kuma — friendly status/uptime monitoring (ping / keyword / push) with
+# Discord + SMTP2Go notifications. Complements Prometheus/Alertmanager: Kuma owns
+# human-facing reachability (clients, public portals, LAN->cloud heartbeats) while
+# Prometheus owns infra metrics/alerting.
+#
+# In the reference deployment Kuma runs on a Proxmox host behind nginx (no public
+# IP of its own); it reaches monitored targets outbound and is published as a
+# friendly hostname via the reverse proxy. See docs/senders/uptime-kuma.md.
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - uptime-kuma-data:/app/data
+    ports:
+      # Front this with nginx (TLS + auth/allow-list). Bind to loopback or the
+      # host's tailnet IP rather than 0.0.0.0 if the proxy is on the same host.
+      - "${KUMA_BIND_IP:-127.0.0.1}:3001:3001"
+
+volumes:
+  uptime-kuma-data:

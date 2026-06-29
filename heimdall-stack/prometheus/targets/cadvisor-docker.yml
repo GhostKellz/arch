@@ -1,0 +1,19 @@
+# Remote cAdvisor targets for Docker hosts. Prometheus hot-reloads this file.
+# Reload after edit: curl -X POST http://127.0.0.1:9090/-/reload
+#
+# Each Docker host runs a cAdvisor container bound to its Tailscale IP on :8085
+# (see docs/senders/uptime-kuma.md and docker-socket-proxy/ for the companion
+# read-only socket proxy used by Uptime Kuma).
+- targets:
+    - "100.64.0.40:8085"
+  labels:
+    host: docker01
+    role: docker
+    environment: prod
+
+- targets:
+    - "100.64.0.41:8085"
+  labels:
+    host: docker02
+    role: app
+    environment: prod

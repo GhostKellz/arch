@@ -94,6 +94,13 @@ Tailscale with destination-specific grants.
 | syslog-ng      | `5514/udp+tcp`  | LAN                     | FortiGate dedicated                      |
 | syslog-ng      | `6514/tcp`      | (scaffolded, disabled)  | RFC5425 TLS                              |
 
+Companion stacks (run on other hosts, not Heimdall):
+
+| Service            | Port       | Bind / scope         | Notes                                          |
+|--------------------|------------|----------------------|------------------------------------------------|
+| docker-socket-proxy| `2375/tcp` | tailnet-only         | read-only Docker API per Docker host (Uptime Kuma) |
+| Uptime Kuma        | `3001/tcp` | behind nginx         | reachability monitoring + notifications        |
+
 External (observed, not hosted here): CrowdSec LAPI `192.0.2.23:6060`, Wazuh indexer `192.0.2.25:9200`.
 
 ---
@@ -104,16 +111,18 @@ External (observed, not hosted here): CrowdSec LAPI `192.0.2.23:6060`, Wazuh ind
 heimdall-stack/
 ├── docker-compose.yml          # core stack: loki, prometheus, alertmanager, grafana, node-exporter, cadvisor
 ├── .env.example                # copy to .env on host; secrets + image pins
-├── alertmanager/               # alertmanager.yml (routing stub)
+├── alertmanager/               # alertmanager.yml (Discord + SMTP2Go) + secrets.example/
 ├── loki/                       # loki-config.yml (single-binary, 30d retention)
 ├── prometheus/
-│   ├── prometheus.yml          # scrape jobs (file-SD for nodes/proxmox)
+│   ├── prometheus.yml          # scrape jobs (file-SD for nodes/proxmox/cadvisor)
 │   ├── alerts/infra.yml        # alert rules
 │   └── targets/                # file-SD targets (hot-reload, no restart)
 ├── grafana/
 │   ├── provisioning/           # datasources + dashboard provider
 │   └── dashboards/             # 7 dashboards (overview, host, containers, logs, firewall, security)
 ├── syslog-ng/conf.d/           # native syslog-ng pipeline (sources → Loki + on-disk archive)
+├── docker-socket-proxy/        # read-only Docker API proxy (per Docker host) for Uptime Kuma
+├── uptime-kuma/                # reachability monitoring (ping/keyword/push) + notifications
 ├── scripts/setup-ufw.sh        # host firewall
 ├── docker/scripts/             # deploy.sh, test-syslog.sh
 └── docs/                       # documentation (you are here)
@@ -153,10 +162,13 @@ Full step-by-step in **[docs/deployment.md](docs/deployment.md)**.
 | [docs/architecture.md](docs/architecture.md)   | Components, data-flow diagrams, design decisions |
 | [docs/deployment.md](docs/deployment.md)        | Author→deploy workflow, first-run, verification |
 | [docs/operations.md](docs/operations.md)        | Day-2 ops: reload, logs, backup, troubleshooting |
+| [docs/alerting.md](docs/alerting.md)            | Alertmanager → Discord + SMTP2Go notifications |
 | [docs/networking.md](docs/networking.md)        | Ports, firewall, Tailscale, network segments |
 | [docs/dashboards.md](docs/dashboards.md)        | Dashboard catalog + provisioning |
+| [docs/runbooks/syslog-ng-loki-recovery.md](docs/runbooks/syslog-ng-loki-recovery.md) | Recover stalled syslog-ng→Loki ingestion |
 | [docs/senders/fortigate.md](docs/senders/fortigate.md)     | Onboard FortiGate syslog |
 | [docs/senders/proxmox.md](docs/senders/proxmox.md)         | Onboard Proxmox (syslog + node_exporter) |
 | [docs/senders/linux-syslog.md](docs/senders/linux-syslog.md) | Onboard generic Linux syslog senders |
-| [docs/senders/crowdsec.md](docs/senders/crowdsec.md)       | Enable CrowdSec Prometheus metrics |
-| [docs/senders/wazuh.md](docs/senders/wazuh.md)             | Wire Grafana to the Wazuh indexer |
+| [docs/senders/crowdsec.md](docs/senders/crowdsec.md)       | CrowdSec Prometheus metrics + Discord notifications |
+| [docs/senders/wazuh.md](docs/senders/wazuh.md)             | Wire Grafana to the Wazuh indexer + Discord/SMTP2Go |
+| [docs/senders/uptime-kuma.md](docs/senders/uptime-kuma.md) | Reachability monitors (ping/keyword/push) + notifications |
