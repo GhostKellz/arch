@@ -1,6 +1,6 @@
 ---
 name: gitlab-babysit-mr
-description: Drive a GitLab merge request to green — watch its pipeline, classify each failure (real bug vs flaky vs infra vs known-broken-master), apply the MINIMAL fix, and report, looping under strict guardrails. Use when asked to "get this MR passing", "babysit the MR", "fix the red pipeline on my MR". Write-capable (commits/retries/comments), so it runs bounded and asks before anything destructive. House-authored, inspired by gitlab-org/ai/skills (MIT). Triggers: "babysit my MR", "make the MR green", "fix the failing pipeline on MR <n>".
+description: 'Drive a GitLab merge request to green — watch its pipeline, classify each failure (real bug vs flaky vs infra vs known-broken-master), apply the MINIMAL fix, and report, looping under strict guardrails. Use when asked to "get this MR passing", "babysit the MR", "fix the red pipeline on my MR". Write-capable (commits/retries/comments), so it runs bounded and asks before anything destructive. House-authored, inspired by gitlab-org/ai/skills (MIT). Triggers: "babysit my MR", "make the MR green", "fix the failing pipeline on MR <n>".'
 allowed-tools: Bash(glab:*), Bash(git:*), Bash(jq:*), Read, Grep, Glob, Edit
 ---
 

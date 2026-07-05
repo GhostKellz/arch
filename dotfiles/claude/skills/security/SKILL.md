@@ -1,6 +1,6 @@
 ---
 name: security
-description: Review your OWN code for vulnerabilities and design a fix — OWASP-style appsec plus LLM/agentic-AI risks and per-language footguns (Rust, Zig, Go, Python, TS/JS). Use when asked to security-review a change/PR, threat-model a feature, harden an endpoint or parser, check for injection / authz / secret-handling / SSRF / deserialization bugs, or review an LLM/tool-calling/MCP integration. Read-only analysis: it reports findings and proposes fixes, it does not run exploits. Triggers: "security review", "is this safe", "threat model this", "check for vulnerabilities", "harden this", reviewing auth/input-handling/agent code.
+description: 'Review your OWN code for vulnerabilities and design a fix — OWASP-style appsec plus LLM/agentic-AI risks and per-language footguns (Rust, Zig, Go, Python, TS/JS). Use when asked to security-review a change/PR, threat-model a feature, harden an endpoint or parser, check for injection / authz / secret-handling / SSRF / deserialization bugs, or review an LLM/tool-calling/MCP integration. Read-only analysis: it reports findings and proposes fixes, it does not run exploits. Triggers: "security review", "is this safe", "threat model this", "check for vulnerabilities", "harden this", reviewing auth/input-handling/agent code.'
 allowed-tools: Read, Grep, Glob
 ---
 

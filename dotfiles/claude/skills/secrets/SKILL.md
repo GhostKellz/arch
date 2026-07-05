@@ -1,6 +1,6 @@
 ---
 name: secrets
-description: Handle and protect secrets — GitHub/GitLab PATs, SSH key passphrases, sudo/server creds, API keys/tokens, .env values, private-brain-tier and Hudu client secrets. Fetch at runtime from the keyring (secret-tool / pass), never persist to plaintext, env-in-git, shell history, the public dotfiles mirror, or the tracked brain tier. Also scan for leaked/exposed secrets before committing (gitleaks/trufflehog) and use CI-native secret stores. Triggers: needing a credential, "scan for secrets", "check for exposed credentials", "find hardcoded keys/API keys", rotating secrets.
+description: 'Handle and protect secrets — GitHub/GitLab PATs, SSH key passphrases, sudo/server creds, API keys/tokens, .env values, private-brain-tier and Hudu client secrets. Fetch at runtime from the keyring (secret-tool / pass), never persist to plaintext, env-in-git, shell history, the public dotfiles mirror, or the tracked brain tier. Also scan for leaked/exposed secrets before committing (gitleaks/trufflehog) and use CI-native secret stores. Triggers: needing a credential, "scan for secrets", "check for exposed credentials", "find hardcoded keys/API keys", rotating secrets.'
 ---
 
 # Secrets handling

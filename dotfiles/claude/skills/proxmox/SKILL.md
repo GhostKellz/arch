@@ -1,6 +1,6 @@
 ---
 name: proxmox
-description: Operate the Proxmox VE cluster and Proxmox Backup Server from the CLI — VMs (qm), containers (pct), storage (pvesm), cluster/quorum (pvecm), the API (pvesh), SDN, and VFIO/GPU passthrough; plus PBS backup/restore, datastores, prune/GC, verify, and sync. Use for creating/migrating/cloning VMs or LXCs, debugging a node or quorum, wiring GPU passthrough, or managing backups/restores. The node inventory lives in reference/infrastructure.md. Triggers: "on the proxmox cluster", qm/pct/pvesh/pvecm, "PBS", "backup this VM", GPU passthrough, PVE node work.
+description: 'Operate the Proxmox VE cluster and Proxmox Backup Server from the CLI — VMs (qm), containers (pct), storage (pvesm), cluster/quorum (pvecm), the API (pvesh), SDN, and VFIO/GPU passthrough; plus PBS backup/restore, datastores, prune/GC, verify, and sync. Use for creating/migrating/cloning VMs or LXCs, debugging a node or quorum, wiring GPU passthrough, or managing backups/restores. The node inventory lives in reference/infrastructure.md. Triggers: "on the proxmox cluster", qm/pct/pvesh/pvecm, "PBS", "backup this VM", GPU passthrough, PVE node work.'
 ---
 
 # Proxmox VE + Backup Server

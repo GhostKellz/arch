@@ -1,6 +1,6 @@
 ---
 name: skill-audit
-description: Audit a third-party Claude/Codex skill (or MCP server, or agent) BEFORE adopting it — read every line, judge the allowed-tools permission surface, and scan for exfiltration / prompt-injection / backdoor patterns. Use when reviewing, vetting, importing, or "checking out" any skill from a marketplace or GitHub repo, deciding whether a skill is safe to run, or choosing between adopting verbatim vs authoring a safe in-house variant. Triggers: "is this skill safe", "audit this skill", "review this skill/MCP before I install it", "vet this before adopting", cloning/copying a foreign SKILL.md.
+description: 'Audit a third-party Claude/Codex skill (or MCP server, or agent) BEFORE adopting it — read every line, judge the allowed-tools permission surface, and scan for exfiltration / prompt-injection / backdoor patterns. Use when reviewing, vetting, importing, or "checking out" any skill from a marketplace or GitHub repo, deciding whether a skill is safe to run, or choosing between adopting verbatim vs authoring a safe in-house variant. Triggers: "is this skill safe", "audit this skill", "review this skill/MCP before I install it", "vet this before adopting", cloning/copying a foreign SKILL.md.'
 ---
 
 # Auditing a skill before you trust it

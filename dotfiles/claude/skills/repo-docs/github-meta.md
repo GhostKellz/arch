@@ -180,4 +180,3 @@ gh api repos/actions/checkout/releases --jq '.[].tag_name' | head
 - `runs-on:` matches the runner's registered labels (`[self-hosted, linux, x64]`),
   not `ubuntu-latest`.
 - The `github-actions` dependabot group above keeps these from going stale.
-```

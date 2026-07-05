@@ -1,6 +1,6 @@
 ---
 name: acme
-description: Issue, renew, and deploy Let's Encrypt TLS certificates with acme.sh using Cloudflare DNS-01 (dns_cf), including wildcards. Use for any "cert expired / issue a cert / renew / wildcard / *.domain / TLS not trusted" task on a host running acme.sh. CRITICAL: also use when a cert is expired in the browser but acme.sh says it renewed — that is the silent-deploy bug this skill exists to prevent and fix.
+description: 'Issue, renew, and deploy Let''s Encrypt TLS certificates with acme.sh using Cloudflare DNS-01 (dns_cf), including wildcards. Use for any "cert expired / issue a cert / renew / wildcard / *.domain / TLS not trusted" task on a host running acme.sh. CRITICAL: also use when a cert is expired in the browser but acme.sh says it renewed — that is the silent-deploy bug this skill exists to prevent and fix.'
 ---
 
 # acme.sh — Let's Encrypt + Cloudflare DNS-01

@@ -1,6 +1,6 @@
 ---
 name: terraform
-description: Author and operate Terraform/OpenTofu safely — module structure, plan/apply discipline, remote state (GitLab-managed HTTP backend), provider pinning, and secret handling — tuned to this stack (Proxmox via bpg/proxmox, GitLab CI). Use when writing or reviewing .tf, planning infrastructure changes, wiring state/backends, or provisioning VMs/containers/cloud resources as code. Triggers: "terraform", "opentofu", ".tf", "provision infra as code", "terraform plan/apply", IaC for Proxmox or the agent-deploy concept.
+description: 'Author and operate Terraform/OpenTofu safely — module structure, plan/apply discipline, remote state (GitLab-managed HTTP backend), provider pinning, and secret handling — tuned to this stack (Proxmox via bpg/proxmox, GitLab CI). Use when writing or reviewing .tf, planning infrastructure changes, wiring state/backends, or provisioning VMs/containers/cloud resources as code. Triggers: "terraform", "opentofu", ".tf", "provision infra as code", "terraform plan/apply", IaC for Proxmox or the agent-deploy concept.'
 ---
 
 # Terraform / OpenTofu

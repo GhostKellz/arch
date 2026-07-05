@@ -1,6 +1,6 @@
 ---
 name: gitlab
-description: Drive the self-hosted GitLab instance (gitlab.example.com) from the CLI with glab — MRs, pipelines/CI, issues, releases, and raw REST/GraphQL via glab api. Use when creating/reviewing a merge request, checking or debugging a pipeline, working issues, cutting a release, or scripting against the GitLab API on this instance. Knows the self-hosted host/token wiring and the glab-api pagination + message-escaping traps. Triggers: "open an MR", "check the pipeline", "glab", "gitlab api", GitLab issues/releases on gitlab.example.com.
+description: 'Drive the self-hosted GitLab instance (gitlab.example.com) from the CLI with glab — MRs, pipelines/CI, issues, releases, and raw REST/GraphQL via glab api. Use when creating/reviewing a merge request, checking or debugging a pipeline, working issues, cutting a release, or scripting against the GitLab API on this instance. Knows the self-hosted host/token wiring and the glab-api pagination + message-escaping traps. Triggers: "open an MR", "check the pipeline", "glab", "gitlab api", GitLab issues/releases on gitlab.example.com.'
 ---
 
 # GitLab via glab (self-hosted)

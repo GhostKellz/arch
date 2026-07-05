@@ -1,6 +1,6 @@
 ---
 name: gitlab-pipeline-watch
-description: Watch a GitLab MR/branch pipeline to completion and report what passed, failed, or is still running — a read-only poll loop over `glab`, no mutation. Use after pushing to a branch or opening an MR when you need to WAIT for CI and react to the terminal state instead of guessing. House-authored, inspired by gitlab-org/ai/skills (MIT). Triggers: "watch the pipeline", "wait for CI", "poll the pipeline until it's done", "did the pipeline pass".
+description: 'Watch a GitLab MR/branch pipeline to completion and report what passed, failed, or is still running — a read-only poll loop over `glab`, no mutation. Use after pushing to a branch or opening an MR when you need to WAIT for CI and react to the terminal state instead of guessing. House-authored, inspired by gitlab-org/ai/skills (MIT). Triggers: "watch the pipeline", "wait for CI", "poll the pipeline until it''s done", "did the pipeline pass".'
 allowed-tools: Bash(glab:*), Bash(sleep:*), Read
 ---
 
