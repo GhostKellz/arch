@@ -24,6 +24,7 @@ dotfiles/zsh/
 ├── .zshrc.d/         # Modular, per-domain alias files (auto-loaded)
 │   ├── docker.zsh    # Docker / Compose helpers
 │   ├── git-aliases.zsh
+│   ├── repo-scripts.zsh # New-repo bootstrappers: ghostkellz / cktech / gitlab
 │   ├── restic.zsh    # Restic backup helpers
 │   ├── snapper.zsh   # Btrfs/Snapper snapshot helpers
 │   ├── system.zsh    # systemd, systemd-boot, journal
@@ -85,6 +86,7 @@ Every `*.zsh` file in `~/.zshrc.d/` is auto-sourced, keeping concerns separated:
 |------|--------|
 | `docker.zsh` | `d`, `dc`, `dps`, `dlogs`, `dclean`, container exec helpers |
 | `git-aliases.zsh` | `gaa`, `gc`, `gp`, `gl`, plus `gcp`/`gpush` add-commit-push one-liners |
+| `repo-scripts.zsh` | `ghostkellz`, `cktech`, `gitlab` — new-repo bootstrappers (GitHub + self-hosted GitLab) |
 | `restic.zsh` | `restic-backup`, `restic-snapshots`, `restic-prune`, `restic-check` |
 | `snapper.zsh` | `snapls`, `snap`, `snaprm`, `snapdiff`, `snapmount` |
 | `system.zsh` | systemd power/service/journal + systemd-boot entry helpers |
@@ -92,6 +94,12 @@ Every `*.zsh` file in `~/.zshrc.d/` is auto-sourced, keeping concerns separated:
 
 The main `.zshrc` adds further aliases for `exa`-based `ls`, pacman/yay updates, reflector mirror
 refresh, DKMS/initramfs rebuilds, KWin restart, DNS/network tooling, and dev-toolchain shortcuts.
+
+> **Repo bootstrappers:** `repo-scripts.zsh` wires up `ghostkellz` (personal GitHub / GhostKellz),
+> `cktech` (CK-Technology org), and `gitlab` (self-hosted GitLab). All three scaffold a new project
+> — license, badge'd README with a one-line description, `docs/` + advisories tree — and set the
+> matching remote repo description. Full per-script docs live alongside the scripts in
+> `~/arch/scripts/` (`build-repo.md`, `cktechrepit.md`, `gitlab.md`).
 
 ---
 

@@ -9,15 +9,28 @@ plugins / skills / MCP servers.
 ```
 claude/
 ├── CLAUDE.md              # Global working agreement (loaded every session)
+├── settings.json          # Model + ccusage status line + enabled plugins
+├── .gitignore             # Excludes ephemeral/machine-local Claude state
 ├── rules/                 # Path-scoped rules, loaded ONLY when matching files are touched
 │   ├── rust.md            #   *.rs, Cargo.toml
 │   ├── zig.md             #   *.zig, build.zig.zon
+│   ├── go.md              #   *.go, go.mod, go.sum
+│   ├── python.md          #   *.py, pyproject.toml, requirements*.txt
+│   ├── nix.md             #   *.nix, flake.nix, flake.lock
 │   ├── systems-safety.md  #   *.rs/*.zig/*.c/*.cpp  (NASA Power-of-10, condensed)
 │   ├── docker.md          #   Dockerfile, docker-compose*, docker/**
-│   └── docs-and-release.md#   *.md, packaging/**, release/**, manifests
-└── reference/
-    └── infrastructure.md  # Hardware/cluster/VM inventory (read on demand)
+│   ├── docs-and-release.md#   *.md, packaging/**, release/**, manifests
+│   ├── ansible.md         #   ansible.cfg, playbooks/**, roles/**/tasks/, inventory/**
+│   └── ci.md              #   workflows, *-ci.yml (GitHub + GitLab), package.json, go.mod, Cargo.toml, Dockerfile
+├── reference/
+│   ├── infrastructure.md  # Hardware/cluster/VM inventory (read on demand)
+│   ├── playwright.md      # Which Playwright toolchain (Python venv vs repo Node)
+│   └── skill-audit-findings.md # Decision log: third-party skills evaluated + verdicts
+└── skills/                # See "Skills" below (custom + vendored upstream)
 ```
+
+> `lessons.md` (a running local corrections log) is intentionally **not** mirrored —
+> it accrues host/secret detail over time and stays machine-local.
 
 ### Context model
 `CLAUDE.md` loads in every session, so it stays lean (universal workflow and
@@ -57,15 +70,38 @@ both usage limits.
 
 ## Skills
 
-Sourced from the official `anthropics/skills` repo, copied into
-`~/.claude/skills/`. Not vendored here (upstream-maintained) — see bootstrap.
+`ssh`, `acme`, `cloudflare`, `hudu`, and `gitlab` are custom local skills
+(sanitized here — host-specific values, real domains, instance URLs, and zone
+plans stay machine-local). `gitlab-pipeline-watch` and `gitlab-babysit-mr` are
+house-authored, inspired by the MIT-licensed `gitlab-org/ai/skills` (rewritten
+lean, not vendored). `xlsx`, `docx`, and the Anthropic set are vendored from the
+official `anthropics/skills` repo with their upstream `LICENSE.txt`; `defuddle`
+is vendored from `kepano/obsidian-skills`. Vendored skills can be re-pulled via
+bootstrap.
 
-| Skill | Purpose |
-|-------|---------|
-| `skill-creator` | Author, improve, and measure skills |
-| `mcp-builder` | Build high-quality MCP servers |
-| `webapp-testing` | Playwright-based local web-app testing (e.g. strix console) |
-| `pdf` | Read / edit / create PDF files |
+| Skill | Source | Purpose |
+|-------|--------|---------|
+| `ssh` | custom | SSH/SCP/rsync/remote-sudo discipline (key-first, PTY sudo, config traps) |
+| `acme` | custom | acme.sh Let's Encrypt + Cloudflare DNS-01; the silent-deploy-failure reflex |
+| `cloudflare` | custom | Cloudflare API v4 — AI-bot/SBFM, cache rules, WAF, rate limiting, purge |
+| `repo-docs` | custom | House-style repo docs — tech badges, single docs/ index, mermaid, advisories, issue templates, dependabot |
+| `hudu` | custom | Hudu MSP-docs MCP wiring + egress guardrail (Claude Code transport, secret-rotation, search-before-create) |
+| `secrets` | custom | Secret handling — keyring fetch (secret-tool/pass), generation, rotation, leaked-secret scanning, CI-native stores |
+| `security` | custom | Defensive review of own code — OWASP + LLM/agentic risks + per-language footguns (Rust/Zig/Go/Py/TS); read-only |
+| `skill-audit` | custom | Vet third-party skills/MCPs before adopting — allowed-tools surface, exfil/injection/backdoor scan, adopt vs author-fresh |
+| `pentest` | custom | Authorized pentest of own assets — recon→enumerate→validate→report; no payloads/persistence/exfil, feeds findings to `security` |
+| `gitlab` | custom | Drive self-hosted GitLab via `glab` — MRs, pipelines/CI, issues, releases, the `glab api` pagination/escaping traps |
+| `gitlab-pipeline-watch` | custom | Read-only poll of an MR/branch pipeline to completion; ships a bounded `glab` watch script (inspired by gitlab-org/ai/skills, MIT) |
+| `gitlab-babysit-mr` | custom | Write-capable "drive the MR to green" loop — classify failure, minimal fix, retry; strict guardrails (inspired by gitlab-org/ai/skills, MIT) |
+| `proxmox` | custom | Operate PVE + Proxmox Backup Server — qm/pct/pvesm/pvecm/pvesh, VFIO passthrough, vzdump/PBS backup-restore |
+| `terraform` | custom | Terraform/OpenTofu with plan/apply discipline — GitLab HTTP state backend, provider pinning, `bpg/proxmox`, secret handling |
+| `skill-creator` | upstream | Author, improve, and measure skills |
+| `mcp-builder` | upstream | Build high-quality MCP servers |
+| `webapp-testing` | upstream | Playwright-based local web-app testing (e.g. strix console) |
+| `pdf` | upstream | Read / edit / create PDF files |
+| `xlsx` | upstream | Read / edit / create spreadsheets (MSP deliverables) |
+| `docx` | upstream | Read / edit / create Word documents (MSP deliverables) |
+| `defuddle` | kepano | Clean-markdown web extraction (`defuddle parse <url> --md`); needs the CLI |
 
 ## MCP servers
 
@@ -107,9 +143,10 @@ claude mcp add --transport http github https://api.githubcopilot.com/mcp/ \
 ## Bootstrap on a fresh machine
 
 ```sh
-# 1. Config — copy instructions, rules, and reference into ~/.claude
+# 1. Config — copy instructions, settings, rules, and reference into ~/.claude
 mkdir -p ~/.claude/rules ~/.claude/reference
 cp CLAUDE.md            ~/.claude/CLAUDE.md
+cp settings.json        ~/.claude/settings.json
 cp rules/*.md           ~/.claude/rules/
 cp reference/*.md       ~/.claude/reference/
 
@@ -124,14 +161,11 @@ done
 claude plugin marketplace add openai/codex-plugin-cc
 claude plugin install codex@openai-codex -s user
 
-# 3. Skills — pull from the official repo, copy the selected set
-tmp=$(mktemp -d)
-git clone --depth 1 https://github.com/anthropics/skills.git "$tmp/skills"
+# 3. Skills — copy the set (custom ssh/acme/cloudflare + vendored xlsx/docx/etc.)
 mkdir -p ~/.claude/skills
-for s in skill-creator mcp-builder webapp-testing pdf; do
-  cp -r "$tmp/skills/skills/$s" ~/.claude/skills/
-done
-rm -rf "$tmp"
+cp -r skills/* ~/.claude/skills/
+# (upstream skills can instead be re-pulled fresh from github.com/anthropics/skills)
+# defuddle needs its CLI:  npm install -g defuddle
 
 # 4. MCP servers
 claude mcp add --transport http context7 https://mcp.context7.com/mcp -s user

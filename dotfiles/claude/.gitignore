@@ -1,0 +1,31 @@
+# Ephemeral / machine-local Claude Code state — never mirror
+settings.local.json
+.credentials.json
+projects/
+todos/
+shell-snapshots/
+statsig/
+history/
+file-history/
+paste-cache/
+session-env/
+debug/
+logs/
+plans/
+telemetry/
+tasks/
+cache/
+
+# Dismissed-security-warning caches (per-session, regenerated on demand)
+security_warnings_state_*.json
+stats-cache.json
+history.jsonl
+
+# Plugin runtime (downloaded content + local state, like node_modules)
+plugins/cache/
+plugins/repos/
+plugins/config.json
+plugins/installed_plugins.json
+
+# Local-only notes that may accrue host/secret detail
+lessons.md
