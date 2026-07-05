@@ -115,7 +115,8 @@ arch/
 
   - LazyVim Lua config for Neovim
   - Modular Zsh setup using `.zshrc.d/` with Starship + Powerlevel10k
-  - Terminal and AI-assistant (Claude / opencode) configs
+  - Terminal and AI-assistant (Claude / opencode) configs — the full, up-to-date
+    agentic-AI skills repo lives at [git.cktechx.com/ghostkellz/skills](https://git.cktechx.com/ghostkellz/skills)
 
 - **`btrfs/`** – BTRFS subvolume layouts, Snapper snapshot automation, restore procedures
 
@@ -142,6 +143,12 @@ arch/
 - **`virtualization/`** – KVM, Libvirt, PCIe passthrough, and Docker Compose stacks
 
 ### 🤖 AI / ML Stack
+
+> 🧠 **Agentic AI skills are moving.** The Claude, Codex, and agentic-AI skills
+> (and their rules/docs) now live in a dedicated, actively maintained repo:
+> **[git.cktechx.com/ghostkellz/skills](https://git.cktechx.com/ghostkellz/skills)**.
+> The `dotfiles/claude/` copy here is a point-in-time mirror — for the accurate,
+> up-to-date, full agentic-AI skills repo, check out that repo.
 
 - **`ollama/`** – Native, GPU-accelerated Ollama on the RTX 5090 (Blackwell, CUDA 13.x)
 

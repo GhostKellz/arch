@@ -1,0 +1,21 @@
+# Sanitized Codex config shape.
+# Copy to your Codex config path only after reviewing for the target machine.
+
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+
+# Add project roots deliberately. Avoid broad trust unless the whole tree is
+# intentionally treated as a workspace.
+#
+# [projects."<workspace-root>"]
+# trust_level = "trusted"
+
+# MCP servers are host-specific. Pin versions where practical instead of using
+# @latest for reproducible startup.
+#
+# [mcp_servers.obsidian-vault]
+# command = "npx"
+# args = ["-y", "@bitbonsai/mcpvault@<version>", "<obsidian-vault-root>"]
+
+[notice]
+hide_rate_limit_model_nudge = true
