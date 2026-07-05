@@ -1,0 +1,7 @@
+# Proprietary Anthropic skills (docx / pdf / xlsx) are source-available under
+# Anthropic's Terms of Service and licensed for local, single-operator use only.
+# They must NEVER be published to this public mirror. Guard against re-adding them
+# through any skills path (Claude skills dir or the Codex plugin skills dir).
+**/skills/docx/
+**/skills/pdf/
+**/skills/xlsx/

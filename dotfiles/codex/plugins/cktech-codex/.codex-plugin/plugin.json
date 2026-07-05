@@ -1,10 +1,10 @@
 {
   "name": "cktech-codex",
   "version": "0.1.0+codex.20260705154608",
-  "description": "CKTech Codex skills for DevOps, security, documentation, observability, and knowledge systems.",
+  "description": "CK Technology Codex skills for DevOps, security, documentation, observability, and knowledge systems.",
   "author": {
-    "name": "CK Technology",
-    "email": "support@cktechx.com",
+    "name": "CK Technology LLC",
+    "email": "info@cktechx.com",
     "url": "https://cktechx.com/"
   },
   "homepage": "https://cktechx.com/",
@@ -20,9 +20,9 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "CKTech Codex",
-    "shortDescription": "CKTech operating skills for Codex",
-    "longDescription": "Codex-native skills for CKTech DevOps, security, infrastructure, observability, package auditing, Hudu, and Obsidian brain workflows.",
-    "developerName": "CK Technology",
+    "shortDescription": "CK Technology operating skills for Codex",
+    "longDescription": "Codex-native skills for CK Technology DevOps, security, infrastructure, observability, package auditing, Hudu, and Obsidian brain workflows.",
+    "developerName": "CK Technology LLC",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
@@ -32,9 +32,9 @@
     "privacyPolicyURL": "https://cktechx.com/privacy",
     "termsOfServiceURL": "https://cktechx.com/terms",
     "defaultPrompt": [
-      "Use CKTech DevOps skills on this repo",
+      "Use CK Technology DevOps skills on this repo",
       "Audit this Codex setup for drift",
-      "Use CKTech observability context"
+      "Use CK Technology observability context"
     ],
     "brandColor": "#2563EB",
     "screenshots": []
