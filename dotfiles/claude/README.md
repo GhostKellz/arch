@@ -95,6 +95,7 @@ bootstrap.
 | `gitlab-babysit-mr` | custom | Write-capable "drive the MR to green" loop — classify failure, minimal fix, retry; strict guardrails (inspired by gitlab-org/ai/skills, MIT) |
 | `proxmox` | custom | Operate PVE + Proxmox Backup Server — qm/pct/pvesm/pvecm/pvesh, VFIO passthrough, vzdump/PBS backup-restore |
 | `terraform` | custom | Terraform/OpenTofu with plan/apply discipline — GitLab HTTP state backend, provider pinning, `bpg/proxmox`, secret handling |
+| `tui-dev` | custom | Headless TUI develop/debug — run in tmux, capture+see the screen, drive keys, golden-screen snapshots; Ratatui/Bubble Tea/Textual |
 | `skill-creator` | upstream | Author, improve, and measure skills |
 | `mcp-builder` | upstream | Build high-quality MCP servers |
 | `webapp-testing` | upstream | Playwright-based local web-app testing (e.g. strix console) |
