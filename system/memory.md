@@ -2,6 +2,11 @@
 
 Memory configuration for 64GB workstation (9950X3D). Philosophy: **fail fast instead of freezing**.
 
+> **Before blaming memory for a freeze:** a full zram device is *not* memory
+> pressure. Check `/proc/pressure/memory` vs `/proc/pressure/io` first — most
+> "critical" freezes on this box are I/O stalls, not RAM. See
+> `freeze-diagnosis.md`.
+
 ---
 
 ## ZRAM Swap

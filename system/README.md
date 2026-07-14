@@ -75,6 +75,7 @@ See `io.md` for details.
 | `kernel/linux-cachyos/` | CachyOS kernel customization |
 | `kernel/nvidia/` | NVIDIA DKMS patches |
 | `memory.md` | ZRAM, swap, OOM configuration |
+| `freeze-diagnosis.md` | PSI-based freeze triage; zram vs I/O; Baloo indexer fix |
 | `docker.md` | Docker kernel requirements, GPU support |
 | `makepkg.conf` | Compiler flags for znver5 |
 | `io.md` | I/O scheduler and disk tuning |

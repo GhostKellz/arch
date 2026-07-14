@@ -71,6 +71,30 @@ See `memory.md` for current dirty_ratio and dirty_background_ratio settings.
 
 ---
 
+## Desktop File Indexing (Baloo)
+
+KDE's `baloo_file` content-indexes file *contents*. Its default excludes target
+a normal home, not a dev box — it misses language build caches and grinds
+through millions of files, stalling the system on I/O (observed: 2.66M files,
+7.34GB index, 248GB I/O).
+
+Fix — filename-only indexing plus dev-cache excludes in `~/.config/baloofilerc`:
+
+```ini
+[General]
+onlyBasicIndexing=true
+exclude filters=...,target,.cargo,.rustup,.cache,.zig-cache,zig-out,go,pkg,dist,build,.gradle,.m2
+```
+
+```bash
+balooctl6 disable && balooctl6 enable
+```
+
+Prefer `ripgrep`/`fd` for full-text code search. Full write-up and PSI-based
+diagnosis in `freeze-diagnosis.md`.
+
+---
+
 ## Benchmark Tools
 
 - `fio` - I/O stress testing
