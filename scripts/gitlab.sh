@@ -11,14 +11,81 @@ set -euo pipefail
 # Environment overrides:
 #   GITLAB_TOKEN       Personal access token for project creation API
 #   GITLAB_HOST        Defaults to git.cktechx.com
-#   GITLAB_NAMESPACE   Optional numeric namespace_id for GitLab groups
+#   GITLAB_NAMESPACE   Namespace path or friendly alias; skips the prompt
 #   BASE_DIR           Defaults to /data/projects
 
 GITLAB_HOST="${GITLAB_HOST:-git.cktechx.com}"
 BASE_DIR="${BASE_DIR:-/data/projects}"
-NAMESPACE_PATH="${GITLAB_NAMESPACE:-}"
+GITLAB_NAMESPACE_OVERRIDE="${GITLAB_NAMESPACE:-}"
 GITLAB_TOKEN="${GITLAB_TOKEN:-$(secret-tool lookup service gitlab account ck-arch 2>/dev/null || true)}"
 GITLAB_TOKEN="${GITLAB_TOKEN:?No token - run: secret-tool store --label='GitLab CK-Arch' service gitlab account ck-arch}"
+
+select_namespace() {
+  local selection="$GITLAB_NAMESPACE_OVERRIDE"
+
+  if [[ -z "$selection" ]]; then
+    print -r -- "Select GitLab namespace:"
+    print -r -- "1) ghostkellz"
+    print -r -- "2) cktech"
+    read "selection?Selection [2]: "
+  fi
+
+  case "${selection:l}" in
+    1|ghostkellz|personal)
+      namespace_path="ghostkellz"
+      ;;
+    ''|2|cktech|ck|company)
+      namespace_path="cktech"
+      ;;
+    *)
+      print -u2 -r -- "Unknown GitLab namespace '$selection'. Use ghostkellz/personal/1 or cktech/ck/company/2."
+      return 1
+      ;;
+  esac
+}
+
+resolve_namespace() {
+  local response matches match_count
+
+  if ! response=$(curl -fsS --get \
+    --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+    --data-urlencode "search=$namespace_path" \
+    "https://$GITLAB_HOST/api/v4/namespaces"); then
+    print -u2 -r -- "Failed to query GitLab for namespace '$namespace_path'."
+    return 1
+  fi
+
+  if ! matches=$(jq -c --arg namespace "$namespace_path" \
+    '[.[] | select(.full_path == $namespace or .path == $namespace)]' <<<"$response"); then
+    print -u2 -r -- "GitLab returned an invalid namespace response."
+    return 1
+  fi
+
+  match_count=$(jq -r 'length' <<<"$matches")
+  case "$match_count" in
+    0)
+      print -u2 -r -- "GitLab namespace '$namespace_path' was not found."
+      return 1
+      ;;
+    1)
+      namespace_id=$(jq -r '.[0].id' <<<"$matches")
+      namespace_path=$(jq -r '.[0].full_path // .[0].path' <<<"$matches")
+      ;;
+    *)
+      print -u2 -r -- "GitLab namespace '$namespace_path' is ambiguous. Exact matches:"
+      jq -r '.[] | "  - \(.full_path // .path) (ID \(.id))"' <<<"$matches" >&2
+      return 1
+      ;;
+  esac
+
+  if [[ ! "$namespace_id" =~ '^[0-9]+$' ]]; then
+    print -u2 -r -- "GitLab returned an invalid ID for namespace '$namespace_path'."
+    return 1
+  fi
+}
+
+select_namespace
+resolve_namespace
 
 echo -n "Enter new CKTech GitLab repo name: "
 read repo
@@ -49,6 +116,28 @@ read topics
 
 owner="CK Technology LLC"
 
+repo_url_path() {
+  print -r -- "$namespace_path/$repo"
+}
+
+repository_path=$(repo_url_path)
+repository_web_url="https://$GITLAB_HOST/$repository_path"
+repository_ssh_url="git@$GITLAB_HOST:$repository_path.git"
+
+if [[ -e "$BASE_DIR/$repo" ]]; then
+  print -u2 -r -- "Refusing to overwrite existing path: $BASE_DIR/$repo"
+  exit 1
+fi
+
+print
+print -r -- "Selected namespace: $namespace_path (ID $namespace_id)"
+print -r -- "Project URL: $repository_web_url"
+read "confirm?Create $visibility project $repository_path? [Y/n] "
+if [[ "$confirm" =~ '^[Nn]' ]]; then
+  print -r -- "Project creation cancelled."
+  exit 0
+fi
+
 render() {
   local output="$1"
   local content
@@ -57,6 +146,9 @@ render() {
   content=${content//__DESCRIPTION__/$description}
   content=${content//__OWNER__/$owner}
   content=${content//__GITLAB_HOST__/$GITLAB_HOST}
+  content=${content//__NAMESPACE_PATH__/$namespace_path}
+  content=${content//__REPOSITORY_WEB_URL__/$repository_web_url}
+  content=${content//__REPOSITORY_SSH_URL__/$repository_ssh_url}
   print -r -- "$content" > "$output"
 }
 
@@ -77,19 +169,6 @@ license_badge() {
     *) print -r -- "MIT-blue" ;;
   esac
 }
-
-repo_url_path() {
-  if [[ -n "$NAMESPACE_PATH" ]]; then
-    print -r -- "$repo"
-  else
-    print -r -- "$repo"
-  fi
-}
-
-if [[ -e "$BASE_DIR/$repo" ]]; then
-  echo "Refusing to overwrite existing path: $BASE_DIR/$repo" >&2
-  exit 1
-fi
 
 mkdir -p "$BASE_DIR/$repo"
 cd "$BASE_DIR/$repo"
@@ -355,7 +434,7 @@ initialize_language() {
       cargo init --bin --name "$repo" .
       ;;
     go)
-      go mod init "git.${GITLAB_HOST#git.}/$repo" || true
+      go mod init "$GITLAB_HOST/$namespace_path/$repo" || true
       mkdir -p cmd/"$repo"
       cat > cmd/"$repo"/main.go <<EOF
 package main
@@ -547,7 +626,7 @@ Thanks for your interest in contributing to __REPO__.
 ## Development Setup
 
 ```bash
-git clone git@__GITLAB_HOST__:__REPO__.git
+git clone __REPOSITORY_SSH_URL__
 cd __REPO__
 ```
 
@@ -637,7 +716,7 @@ On release, copy the [Unreleased] entries under a new dated heading, e.g.:
 
 Then reset [Unreleased] to empty groups and add a link reference at the bottom:
 
-  [1.0.0]: https://__GITLAB_HOST__/ghostkellz/__REPO__/-/tags/v1.0.0
+  [1.0.0]: __REPOSITORY_WEB_URL__/-/tags/v1.0.0
 
 Change groups (in this order; omit any that are empty):
   Added       new features
@@ -653,7 +732,7 @@ Semantic Versioning - given MAJOR.MINOR.PATCH, increment the:
   PATCH  for backward-compatible bug fixes
 -->
 
-[Unreleased]: https://__GITLAB_HOST__/ghostkellz/__REPO__/-/commits/main
+[Unreleased]: __REPOSITORY_WEB_URL__/-/commits/main
 TEMPLATE_EOF
 
   render docs/development/roadmap.md <<'TEMPLATE_EOF'
@@ -794,16 +873,16 @@ project_payload='{
 }'
 
 if [[ -n "$topics" ]]; then
-  project_payload="$project_payload + { tag_list: ($topics | split(\",\") | map(gsub(\"^\\\\s+|\\\\s+$\"; \"\")) | map(select(length > 0))) }"
+  project_payload="$project_payload + { tag_list: (\$topics | split(\",\") | map(gsub(\"^\\\\s+|\\\\s+$\"; \"\")) | map(select(length > 0))) }"
 fi
 
 payload=$(jq -n \
   --arg name "$repo" \
   --arg description "$description" \
   --arg visibility "$visibility" \
-  --arg namespace "$NAMESPACE_PATH" \
+  --argjson namespace_id "$namespace_id" \
   --arg topics "$topics" \
-  "$project_payload + if \$namespace != \"\" then {namespace_id: (\$namespace | tonumber)} else {} end")
+  "$project_payload + {namespace_id: \$namespace_id}")
 
 response=$(curl -fsS \
   --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
@@ -812,6 +891,7 @@ response=$(curl -fsS \
   "https://$GITLAB_HOST/api/v4/projects")
 
 ssh_url=$(jq -r '.ssh_url_to_repo' <<<"$response")
+web_url=$(jq -r '.web_url // empty' <<<"$response")
 
 if [[ -z "$ssh_url" || "$ssh_url" == "null" ]]; then
   echo "GitLab did not return an SSH URL. Response:" >&2
@@ -824,4 +904,5 @@ git push -u origin main
 
 echo
 echo "GitLab repo created and pushed:"
+[[ -n "$web_url" ]] && echo "$web_url"
 echo "$ssh_url"
