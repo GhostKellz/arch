@@ -22,6 +22,9 @@
 > drivers, kernels, and tooling change constantly, so details (version numbers,
 > commands, diagram labels) reflect a point in time and may drift.
 
+> 🌐 **More context:** Portfolio at [ckelley.dev](https://ckelley.dev/) — deeper dive on
+> the architecture behind this setup at [ckelley.dev/architecture](https://ckelley.dev/architecture/).
+
 🌐 This repository uses GPG commit signing with a private WKD-compliant public key.
 You can verify signed commits or manually import the GPG public key by visiting ghostkellz.sh.
 
@@ -172,7 +175,10 @@ arch/
 
 ---
 
-### 🔍 Maintained by [Christopher Kelley](https://github.com/ghostkellz)  
+### 🔍 Maintained by [Christopher Kelley](https://github.com/ghostkellz)
+
+🌐 **Portfolio:** [ckelley.dev](https://ckelley.dev/) — more on the thinking behind this setup at [ckelley.dev/architecture](https://ckelley.dev/architecture/).
+
 ### 🔐 GPG Commit Signing
 
 This repository supports verified commits using GPG.
