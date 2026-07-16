@@ -24,6 +24,7 @@
 
 > 🌐 **More context:** Portfolio at [ckelley.dev](https://ckelley.dev/) — deeper dive on
 > the architecture behind this setup at [ckelley.dev/architecture](https://ckelley.dev/architecture/).
+> AI Second Brain & cheatsheet at [brain.ckelley.dev](https://brain.ckelley.dev/).
 
 🌐 This repository uses GPG commit signing with a private WKD-compliant public key.
 You can verify signed commits or manually import the GPG public key by visiting ghostkellz.sh.
@@ -178,6 +179,8 @@ arch/
 ### 🔍 Maintained by [Christopher Kelley](https://github.com/ghostkellz)
 
 🌐 **Portfolio:** [ckelley.dev](https://ckelley.dev/) — more on the thinking behind this setup at [ckelley.dev/architecture](https://ckelley.dev/architecture/).
+
+🧠 **AI Second Brain & Cheatsheet:** [brain.ckelley.dev](https://brain.ckelley.dev/).
 
 ### 🔐 GPG Commit Signing
 
