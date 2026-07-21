@@ -270,6 +270,44 @@ export CPATH="$CUDA_HOME/include:$CPATH"
 # ─── ghost Tech  ────────────────────────────────────────────────
 alias forge="ghostforge"
 
+# Resolve the external executable through PATH even when a same-named wrapper
+# function exists. This supports pacman, npm --prefix ~/.local, and nvm installs
+# without hardcoding one machine-specific path.
+_agent_binary() {
+  local binary
+  binary="$(whence -p "$1")" || {
+    print -u2 -- "$1 executable not found in PATH"
+    return 127
+  }
+  print -r -- "$binary"
+}
+
+_agent_scoped() {
+  local command_name="$1"
+  local binary
+  shift
+  binary="$(_agent_binary "$command_name")" || return
+  agent-scope "$binary" "$@"
+}
+
+_agent_unscoped() {
+  local command_name="$1"
+  local binary
+  shift
+  binary="$(_agent_binary "$command_name")" || return
+  "$binary" "$@"
+}
+
+# Keep agentic workloads inside the aggregate memory boundary by default.
+codex() { _agent_scoped codex "$@"; }
+claude() { _agent_scoped claude "$@"; }
+gemini() { _agent_scoped gemini "$@"; }
+
+# Deliberate escape hatches for exceptional, actively monitored work.
+codex-unscoped() { _agent_unscoped codex "$@"; }
+claude-unscoped() { _agent_unscoped claude "$@"; }
+gemini-unscoped() { _agent_unscoped gemini "$@"; }
+
 # ---- b.net chromium fix ----
 # Battle.net
 alias bnet='WINEPREFIX=~/.wine-bnet64 wine64 ~/.wine-bnet64/drive_c/Program\ Files\ \(x86\)/Battle.net/Battle.net.exe'
@@ -289,6 +327,4 @@ bnet-fix() {
   echo "✅ Proton/Wine cleanup complete."
   echo "👉 Relaunch Battle.net from Steam."
 }
-
-
 

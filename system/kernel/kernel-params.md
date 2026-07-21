@@ -5,15 +5,20 @@ This document explains various boot flags used across my custom kernels. These a
 ## 🔧 Memory & Swap
 
 - `zswap.enabled=0`: Disable zswap (I use zram instead).
-- `nowatchdog`: Disables the software watchdog timer to reduce latency.
 - `quiet loglevel=3`: Reduce boot spam, cleaner logs.
 
 ## 🎮 NVIDIA-Specific
 
 - `nvidia_drm.modeset=1`: Enables DRM KMS — required for Wayland.
-- `nvidia.NVreg_EnableGpuFirmware=0`: Disables GSP firmware for stability (still testing).
-- `nvidia.NVreg_UsePageAttributeTable=1`: Enables PAT (better throughput).
-- `nvidia.NVreg_OpenRmEnableUnsupportedGpus=1`: Allows unsupported GPUs if needed.
+- `nvidia.NVreg_PreserveVideoMemoryAllocations=1`: Preserves VRAM across
+  suspend when the NVIDIA systemd sleep units are enabled.
+
+Module configuration in `../../nvidia/nvidia.conf` explicitly enables supported
+firmware and Resizable BAR behavior and stores suspend VRAM under disk-backed
+`/var/tmp`. Rejected, undocumented, and unsupported-GPU overrides are omitted.
+
+Keep the NMI watchdog enabled on this workstation so a future hard lockup can
+produce diagnostic evidence.
 
 ## 🧬 CPU & Power
 

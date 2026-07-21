@@ -4,6 +4,8 @@ Operation = Upgrade
 Type = Package
 Target = nvidia-utils
 Target = nvidia-open-dkms
+Target = nvidia-utils-beta
+Target = opencl-nvidia-beta
 
 [Action]
 Description = Regenerating NVIDIA CDI spec for container toolkit...

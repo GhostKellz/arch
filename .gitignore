@@ -5,3 +5,10 @@
 **/skills/docx/
 **/skills/pdf/
 **/skills/xlsx/
+tasks/
+.scratch/
+dotfiles/obs/basic/scenes/
+dotfiles/obs/basic/profiles/*/service.json
+dotfiles/obs/plugin_config/
+dotfiles/obs/logs/
+dotfiles/obs/profiler_data/

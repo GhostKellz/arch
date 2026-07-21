@@ -1,155 +1,77 @@
-# freeze-diagnosis.md
+# Workstation Pressure and Application-Kill Diagnosis
 
-Diagnosing "my system froze / went critical" on a 64GB workstation.
+Use measurements from the same event. Swap occupancy, free RAM, or a process
+name alone is not a diagnosis.
 
-**The one-line lesson:** a full zram device is *not* memory pressure. Most
-"critical" freezes on this box are **I/O stalls**, not RAM exhaustion. Measure
-pressure before you blame memory.
-
----
-
-## The trap: zram "swap used" looks catastrophic but isn't
-
-zram is *compressed RAM*, not a disk. When `free -h` or a system monitor shows
-15GB of 16GB swap used, that is not 15GB of thrashing — zstd compresses it
-roughly 2.5:1, so it occupies far less physical RAM.
-
-Real capture from an event that felt "critical":
-
-```
-$ zramctl
-NAME       ALGORITHM DISKSIZE  DATA COMPR TOTAL MOUNTPOINT
-/dev/zram0 zstd           16G 14.7G  5.7G  5.9G [SWAP]
-```
-
-14.7GB of swapped pages → **5.9GB of actual RAM**. Meanwhile `free` reported
-26GB available. Nothing was starving. With `swappiness=10` the kernel had simply
-parked cold pages in zram and left them there; that is zram working as designed,
-not a warning sign.
-
-**Do not use swap percentage as a health metric on a zram system.**
-
----
-
-## Diagnose with PSI, not vibes
-
-`/proc/pressure/*` (kernel Pressure Stall Information) is the ground truth. It
-reports the share of time tasks stalled waiting on a resource.
+## First capture
 
 ```bash
-cat /proc/pressure/memory   # real memory stall
-cat /proc/pressure/io       # disk stall
-cat /proc/pressure/cpu      # cpu contention
+date --iso-8601=seconds
+free -h
+zramctl
+swapon --show
+cat /proc/pressure/memory
+cat /proc/pressure/io
+cat /proc/pressure/cpu
+systemd-cgtop --depth=3 --iterations=1
 ```
 
-From the same "critical" event:
-
-```
-memory: some avg10=0.00  full avg10=0.00     # zero memory pressure
-io:     some avg10=64.84  full avg10=55.82    # everything stalled on disk
-```
-
-- `full avg10 > ~20` on **io** → the machine is choking on disk, not RAM.
-- `full avg10` near 0 on **memory** → memory is fine no matter what swap says.
-
-Rule of thumb: **if memory PSI is ~0 and io PSI is high, stop looking at RAM.**
-
----
-
-## Find the actual culprit
-
-### Who is in swap (usually harmless, but shows the picture)
+Then inspect a bounded journal window around the event:
 
 ```bash
-for f in /proc/*/status; do
-  awk '/^Name:/{n=$2}/^VmSwap:/{if($2>0)print $2, n}' "$f" 2>/dev/null
-done | sort -rn | head
+journalctl -k --since '-5 min' --no-pager -n 300
+journalctl --user --since '-5 min' --no-pager -n 300
 ```
 
-Example ranking (KB): qemu 4.1G · codex ×2 2.4G · rust-analyzer 1.76G ·
-claude ×2 1.0G · baloo 809M · brave renderers. It is always the *sum* of the
-dev stack, never "one VM."
+Never stream an unfiltered multi-boot journal into Ghostty. Large terminal
+output has itself produced severe I/O pressure and multi-gigabyte terminal
+memory peaks on this workstation.
 
-### Who is hammering the disk (this is what freezes you)
+## Interpret the signals together
 
-```bash
-for f in /proc/*/io; do
-  p=$(dirname "$f")
-  r=$(awk -F': ' '/^read_bytes/{print $2}' "$f" 2>/dev/null)
-  w=$(awk -F': ' '/^write_bytes/{print $2}' "$f" 2>/dev/null)
-  [ -n "$r" ] && echo "$((r+w)) $(cat "$p/comm" 2>/dev/null)"
-done | sort -rn | head
-```
+- High memory PSI means tasks are stalling on memory reclaim.
+- High I/O PSI with low memory PSI points to storage or terminal/log churn.
+- High zram occupancy is not itself pressure, but a completely full zram device
+  removes swap headroom and must be correlated with the kernel event.
+- `MemAvailable` is more useful than `MemFree`, but neither replaces the OOM
+  task table, zone information, PSI, and zram statistics.
+- The selected OOM victim is not necessarily the process that created the
+  pressure. Chromium applications commonly carry a positive OOM score.
+- Cgroup `MemoryCurrent` includes charged file cache and can be much larger than
+  the resident set of its processes. Correlate it with PSI, swap, reclaim, and
+  current activity before declaring a service runaway.
 
-Result that solved the case (cumulative bytes over process lifetime):
+## Known contributors on this host
 
-```
-248 GB  baloo_file    <- KDE file indexer, 8x everything else
- 32 GB  zsh
- 26 GB  brave
- 18 GB  codex
-```
+- The zram ceiling was reduced from approximately 31 GiB to 16 GiB on
+  2026-04-24. Every retained global OOM after that change occurred with the
+  16 GiB device essentially full. The workstation now follows the explicit
+  RAM-sized local policy documented in `memory.md`.
+- `CKEL-VM-01` was configured for 16 GiB and 6 vCPUs even though the intended
+  allocation was 8 GiB and 4 vCPUs.
+- Historical dev processes reached 9-30 GiB RSS. Agent/build workloads belong
+  in `agent-workload.slice`.
+- Ghostty reached approximately 6.8 GiB peak memory while processing excessive
+  output and was the source of a captured high-I/O-PSI incident.
+- Baloo has previously generated heavy cumulative I/O. It is configured for
+  filename-only indexing and development caches should remain excluded.
+- Baloo can retain several GiB of cgroup-charged index file cache while idle;
+  this accounting is not equivalent to its process RSS.
+- Wazuh has shown a historical cgroup peak around 5.5 GiB but was near 1.3 GiB
+  with no swap during the latest audit. Recheck only if the peak repeats with
+  pressure.
+- Large crash batches can create coredump/DrKonqi processing storms; coredumps
+  are bounded by the policy in `memory/`.
 
-Live view instead of cumulative: `sudo iotop -ao` or `dstat -d --top-io`.
+## Triage order
 
----
+1. Capture PSI, zram, available RAM, and cgroup usage.
+2. Determine whether the symptom was a kernel OOM kill, systemd-oomd action,
+   application crash, or desktop/I/O stall.
+3. If I/O PSI is high, inspect live per-cgroup I/O before blaming memory.
+4. If memory PSI is high, identify the growing cgroup and confirm whether it was
+   launched in the bounded workload slice.
+5. Preserve only a bounded journal window and the complete relevant OOM block.
+6. Change one policy variable at a time unless correcting a known-bad bundle.
 
-## Root cause on this box: KDE Baloo content indexing
-
-`baloo_file` content-indexes the *contents* of files. Its default exclude list
-targets a normal user's home, not a developer's — it misses language build
-caches entirely. On this machine it had indexed **2.66 million files** into a
-**7.34GB** index, generating 248GB of I/O and stalling the whole system.
-
-The gap: the stock list excludes `node_modules`, `.venv`, `.terraform`,
-`CMakeFiles`, but **not** the caches that dominate a rust/zig/go/python/node box:
-`target/`, `.cargo/`, `.rustup/`, `.cache/`, `.zig-cache/`, `zig-out/`, `~/go`,
-`build/`, `dist/`.
-
-### Fix: filename-only indexing + exclude dev caches
-
-Keep instant file-*name* search in KRunner/Dolphin, kill the content thrashing.
-
-Edit `~/.config/baloofilerc`:
-
-```ini
-[Basic Settings]
-Indexing-Enabled=true
-
-[General]
-onlyBasicIndexing=true
-exclude filters=...,target,.cargo,.rustup,.cache,.rust-analyzer,.zig-cache,zig-out,zig-cache,go,pkg,dist,build,.gradle,.m2
-```
-
-Apply (a plain `enable` re-reads config; toggle to be safe):
-
-```bash
-balooctl6 disable
-balooctl6 enable
-balooctl6 status
-```
-
-Verify `Files waiting for content indexing: 0` and that the index stops growing.
-
-### Alternatives
-
-- **Full-text code search** — don't rely on Baloo. `ripgrep` (`rg`) and `fd` are
-  git-aware, respect `.gitignore`, and are far faster.
-- **Don't use KDE search at all** — `balooctl6 disable` and forget it.
-- **Keep content indexing** — only if you truly use Dolphin full-text; then the
-  exclude list is mandatory, not optional.
-
----
-
-## Playbook: "system feels critical"
-
-1. `cat /proc/pressure/memory` and `/proc/pressure/io` — which resource?
-2. Memory PSI ~0? Ignore the swap number entirely; it's a zram red herring.
-3. io PSI high? Rank `/proc/*/io` by bytes; find the disk hog.
-4. Fix the hog (indexer, runaway build, backup job), don't tune RAM.
-5. Only if **memory** PSI is genuinely high: revisit zram size, dirty ratios,
-   and `systemd-oomd` in `memory.md`.
-
----
-
-See also: `memory.md` (zram, swappiness, OOM), `io.md` (schedulers, writeback).
+See `memory.md` for the installed policy and verification commands.

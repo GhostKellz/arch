@@ -1,0 +1,19 @@
+[Unit]
+Description=Bounded sequential Btrfs verification
+Documentation=https://btrfs.readthedocs.io/en/latest/btrfs-scrub.html
+ConditionPathIsMountPoint=/data
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/btrfs-scrub-safe
+Nice=19
+CPUSchedulingPolicy=idle
+IOSchedulingClass=idle
+CPUWeight=1
+IOWeight=1
+IOReadBandwidthMax=/dev/nvme0n1 64M
+IOReadBandwidthMax=/dev/nvme1n1 64M
+TimeoutStartSec=18h
+KillSignal=SIGINT
+

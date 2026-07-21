@@ -8,6 +8,12 @@ Disk I/O tuning and scheduler configuration.
 
 Linux supports multiple I/O schedulers that influence how read/write requests are handled. Selecting the right scheduler can significantly improve performance based on the device type:
 
+The two Samsung NVMe devices on this workstation currently use `mq-deadline`.
+Btrfs upstream warns that idle `ionice` priority is not reliable with this
+scheduler. Maintenance must use Btrfs `--limit` and systemd cgroup
+`IOReadBandwidthMax=` controls; `Nice=` or `IOSchedulingClass=idle` alone is not
+an adequate scrub safeguard.
+
 ### Scheduler Types
 
 | Scheduler     | Best For                      | Notes                                                                 |
@@ -54,9 +60,9 @@ To persist readahead, you can add it to a systemd service or tuning script.
 
 ---
 
-## Writeback and Dirty Ratios
+## Writeback ceilings
 
-See `memory.md` for current dirty_ratio and dirty_background_ratio settings.
+See `memory.md` for the fixed dirty-byte and background-writeback ceilings.
 
 ---
 
@@ -100,4 +106,3 @@ diagnosis in `freeze-diagnosis.md`.
 - `fio` - I/O stress testing
 - `iostat` - I/O usage stats
 - `hdparm` - Simple throughput tests
-

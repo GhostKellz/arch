@@ -64,21 +64,29 @@ sudo mount -a
 # Check for errors
 sudo btrfs device stats /
 
-# Scrub to check integrity
-sudo btrfs scrub start /
+# Inspect the most recent verification result. Do not launch an ad-hoc scrub on
+# an interactive workstation.
 sudo btrfs scrub status /
+
+# Run only the no-operation safety gates for the bounded sequential job.
+sudo /usr/local/bin/btrfs-scrub-safe --check
 ```
 
 ### "No space left" But Disk Shows Free
 
-BTRFS metadata might be full:
+Btrfs metadata might be full. Inspect allocation first; do not start a balance
+from this symptom alone:
 ```bash
 # Check actual usage
 sudo btrfs filesystem usage /
 
-# If metadata is full, rebalance
-sudo btrfs balance start -dusage=50 /
+# Check whether a previously approved balance is already active
+sudo btrfs balance status /
 ```
+
+Balance rewrites filesystem extents and is never part of automatic maintenance
+on this workstation. Diagnose the allocation and obtain an explicit maintenance
+window before choosing any filters.
 
 ### Subvolume Shows Wrong Size
 
@@ -182,4 +190,5 @@ sudo fstrim -v /  # If SSD
 | `sudo btrfs filesystem usage /` | Disk usage breakdown |
 | `sudo btrfs subvolume get-default /` | Check default subvol |
 | `findmnt -no SOURCE /` | Check what's mounted as root |
-| `sudo btrfs scrub start /` | Check filesystem integrity |
+| `sudo btrfs scrub status /` | Show the latest filesystem verification result |
+| `sudo /usr/local/bin/btrfs-scrub-safe --check` | Run scrub safety gates without starting one |

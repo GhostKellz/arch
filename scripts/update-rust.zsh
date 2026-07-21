@@ -34,11 +34,9 @@ log "Current versions:"
 rustc --version | tee -a "$LOG_FILE"
 cargo --version | tee -a "$LOG_FILE"
 
-# Cleanup old toolchains (keep only active ones)
-log "Cleaning up unused toolchains..."
-rustup toolchain list | grep -E '^[0-9]+\.[0-9]+' | while read -r tc; do
-    log "Removing old pinned toolchain: $tc"
-    rustup toolchain uninstall "$tc" 2>&1 | tee -a "$LOG_FILE" || true
-done
+# Pinned toolchains may be required by older projects. Uninstalling them from an
+# unattended job can break reproducible builds, so cleanup is deliberately left
+# to an interactive maintenance session.
+log "Keeping pinned and project-specific toolchains unchanged"
 
 log "Rust update complete"

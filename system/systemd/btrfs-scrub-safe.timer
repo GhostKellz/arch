@@ -1,0 +1,10 @@
+[Unit]
+Description=Run bounded sequential Btrfs verification monthly
+
+[Timer]
+OnCalendar=Sun *-*-01..07 05:00:00
+AccuracySec=5m
+RandomizedDelaySec=30m
+
+[Install]
+WantedBy=timers.target

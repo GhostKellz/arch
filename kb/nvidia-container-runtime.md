@@ -139,9 +139,9 @@ Operation = Install
 Operation = Upgrade
 Type = Package
 Target = nvidia-utils
-Target = nvidia-utils-beta
 Target = nvidia-open-dkms
-Target = nvidia-open-beta-dkms
+Target = nvidia-utils-beta
+Target = opencl-nvidia-beta
 
 [Action]
 Description = Regenerating NVIDIA CDI spec for container toolkit...
@@ -149,6 +149,13 @@ When = PostTransaction
 Exec = /usr/bin/nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 NeedsTargets
 ```
+
+The stable targets are retained for portability. This workstation currently
+uses source-registered `nvidia-open` DKMS modules with beta userspace, so the two
+`*-beta` targets are the ones that regenerate CDI during driver updates. Arch's
+standard `70-dkms-*` hooks rebuild registered modules when kernel headers
+change; do not add a second hook that runs `dkms autoinstall` for the same
+transaction.
 
 ## Docker Compose Template (GPU container with host networking)
 

@@ -1,9 +1,12 @@
 [Unit]
-Description=Weekly System Maintenance
-Wants=network-online.target
-After=network-online.target
+Description=Weekly workstation health and cache maintenance
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/weekly_maintenance.sh
-
+ExecStart=/usr/local/bin/weekly-maintenance
+Nice=19
+CPUSchedulingPolicy=idle
+IOSchedulingClass=idle
+CPUWeight=1
+IOWeight=1
+UMask=0022

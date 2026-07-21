@@ -1,81 +1,61 @@
-# ⚙️ systemd.md
+# systemd Policy and Timers
 
-This file outlines customizations, logging tweaks, service enhancements, and general tips for using `systemd` effectively on an Arch-based system.
+## Memory control
 
-While most service-specific timers and overrides are stored within their respective tool directories (see below), this file acts as the central hub for systemd-level notes and tuning.
+- `user.slice` is monitored by systemd-oomd for sustained memory PSI only.
+- `agent-workload.slice` bounds explicitly launched agent/build work to
+  `MemoryHigh=16G`, `MemoryMax=24G`, and `MemorySwapMax=16G`.
+- `earlyoom` remains disabled to avoid competing userspace OOM policies.
 
----
+See `memory.md` and `systemd/user/agent-workload.slice`.
 
-## 🔧 Overview
+## Journal retention
 
-`systemd` is the init system and service manager used on most modern Linux distributions. It handles service lifecycles, journaling, timers, and boot processes.
+`systemd/journald.conf.d/60-workstation.conf` makes the existing persistent
+journal policy explicit: compression enabled, 4 GiB maximum use, 50 GiB kept
+free, 256 MiB file rotation, and 30 days maximum retention. Do not reduce this
+to CachyOS's generic 50 MiB limit; this host needs bounded crash and lockup
+history.
 
-This file includes:
-- Journaling and logging optimizations
-- Timer and persistent service notes
-- Startup and boot performance tweaks
-- Links to other tool-specific systemd units
+Install and verify:
 
----
-
-## 🗂️ Service References
-
-Some systemd units are managed directly within tool-specific directories:
-
-| Tool      | Path          | Description                                      |
-|-----------|---------------|--------------------------------------------------|
-| **Restic**  | `/restic/`     | Backup service + timer with `.env` configs       |
-| **Snapper** | `/snapper/`    | Snapper cleanup service + timer                 |
-| **Btrfs**   | `/btrfs/`      | Snapshot maintenance units + tuning notes       |
-
----
-
-## 🧾 Journald Configuration
-
-Logging can be tuned by editing `/etc/systemd/journald.conf`. Some useful options:
-
-```ini
-[Journal]
-Storage=persistent
-Compress=yes
-SystemMaxUse=500M
-RuntimeMaxUse=100M
-MaxRetentionSec=30day
-```
-
-Apply changes:
 ```bash
+sudo install -Dm644 systemd/journald.conf.d/60-workstation.conf \
+  /etc/systemd/journald.conf.d/60-workstation.conf
 sudo systemctl restart systemd-journald
+systemd-analyze cat-config systemd/journald.conf
+journalctl --disk-usage
 ```
 
----
+## Snapper and Btrfs
 
-## ⏱️ Timer Behavior
+- Snapper timeline creation is overridden from hourly to daily because the root
+  configuration retains daily snapshots and zero hourly snapshots.
+- Snapper cleanup remains hourly and count-based.
+- Qgroups remain disabled to avoid high-churn accounting overhead; therefore
+  Snapper `SPACE_LIMIT` and `FREE_LIMIT` are not enforcement mechanisms.
+- The packaged per-filesystem scrub timers remain disabled. They can overlap and
+  concurrent `/` plus `/data` scrubs caused a hard lockup on this workstation.
+- `weekMain.timer` runs lightweight health checks and bounded cache cleanup
+  weekly; it never launches scrub or balance.
+- `btrfs-scrub-safe.timer` follows upstream's monthly recommendation. Its
+  service verifies one filesystem at a time, read-only, at 64 MiB/s, with both
+  Btrfs-native and systemd cgroup bandwidth limits plus an exclusive lock. It
+  skips a busy or newly booted host.
+- Both timers are deliberately non-persistent: a missed maintenance window
+  never triggers catch-up work during an interactive boot.
+- Btrfs balance is never scheduled blindly. Run a filtered balance only after
+  inspecting allocation and confirming it is needed.
 
-- **Persistent timers** (e.g., restic, snapper) continue across reboots.
-- Use `OnCalendar=` or `OnBootSec=` in custom timers.
-- Check timer status:
-  ```bash
-  systemctl list-timers
-  ```
+## Weekly maintenance
 
----
+`weekMain.timer` runs the bounded `/usr/local/bin/weekly-maintenance` health and
+cache job. It does not perform package/AUR upgrades, orphan deletion, Btrfs
+balance, DKMS builds, or user development-tool updates.
 
-## 🚀 Boot Optimization Tips
+Inspect timers and their previous results:
 
 ```bash
-systemd-analyze blame       # Show slow boot services
-systemd-analyze             # Total boot + kernel time
+systemctl list-timers --all
+journalctl -u weekMain.service -u btrfs-scrub-safe.service
 ```
-
-Use overrides to delay or disable slow or unnecessary services.
-
-Create an override:
-```bash
-sudo systemctl edit NAME.service
-```
-
----
-
-Feel free to add more general-purpose overrides, timers, or logging tricks here!
-

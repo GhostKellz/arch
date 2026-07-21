@@ -15,7 +15,7 @@ Built for **Arch Linux** users who demand top-tier performance and maximum stabi
 GhostKellz Certified. 👻✅
 
 ### Topics Covered:
-- 🛠️ Compatibility fixes for Wayland and NVIDIA Open 610 drivers
+- 🛠️ Compatibility fixes for Wayland and current NVIDIA Open drivers
 - 🎮 Gaming optimization and OBS streaming tweaks
 - 🎥 NVENC encoding improvements
 - 🖥️ Monitor/refresh rate fixes under Wayland
@@ -31,15 +31,14 @@ GhostKellz Certified. 👻✅
 | `fixes.md`                   | General fixes and workaround notes        |
 | `gaming.md`                  | OBS/Game-focused performance tips         |
 | `container-toolkit.md`        | NVIDIA Container Toolkit — how/benefits/when |
-| `modprobe-nvidia.conf`        | Kernel module options (disable GSP)       |
+| `nvidia.conf`                 | Supported NVIDIA kernel module options    |
 | `nvenc.md`                   | NVENC performance tuning                  |
-| `nvidia.conf`                 | Xorg/NVIDIA config overrides              |
 
 ---
 
 ## 🚀 Quick Highlights
 
-- 🔥 **Disables unstable GSP firmware** on Open drivers
+- Uses the supported GSP firmware path on current NVIDIA Open drivers
 - 📈 **Unlocks maximum gaming performance** on Wayland
 - 🎥 **Optimizes NVENC** for high-quality OBS recording
 - 🧹 **Cleans up environment variables** for Gamescope/Wayland
@@ -52,17 +51,20 @@ Most configs are meant to be copied into your local `/etc/modprobe.d/`, `/etc/X1
 
 Example:
 ```bash
-sudo cp modprobe-nvidia.conf /etc/modprobe.d/nvidia.conf
-sudo cp nvidia.conf /etc/X11/xorg.conf.d/20-nvidia.conf
+sudo install -Dm644 nvidia.conf /etc/modprobe.d/nvidia.conf
+sudo mkinitcpio -p linux-cachyos-lto
 ```
 
-For Wayland environment variables, you can source them via your session launcher or `.zshrc`.
+The active boot entry keeps early DRM modesetting and VRAM preservation enabled.
+The module file stores VRAM under disk-backed `/var/tmp`; do not use this host's
+RAM-backed `/tmp` for the 32 GiB RTX 5090. NVIDIA suspend, hibernate, and resume
+units must remain enabled.
 
 ---
 
 ## 🚧 Warnings
 - **Built for modern RTX cards (40/50 series).**
-- **Assumes a recent kernel (7.0+) and NVIDIA Open 610 drivers.**
+- **Assumes a recent kernel and current NVIDIA Open drivers.**
 - **Wayland performance may vary based on compositor (KDE/Hyprland/Gamescope).**
 
 > Use at your own risk — but works well on daily driver. 20/30 series cards require a bit more. I've virtualized so kvm + vfio gpu passtrhrough + looking glass and I can get a 2060 and a 3070 to work well on wayland but in my experience 40/50 series cards are less work and less finicky overall.

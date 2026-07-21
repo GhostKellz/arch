@@ -158,8 +158,9 @@ cat /etc/systemd/zram-generator.conf
 ```bash
 sysctl vm.swappiness
 sysctl vm.vfs_cache_pressure
-sysctl vm.dirty_ratio
-sysctl vm.dirty_background_ratio
+sysctl vm.dirty_bytes
+sysctl vm.dirty_background_bytes
+sysctl vm.dirty_writeback_centisecs
 ```
 # Show if zswap is enabled
 ```bash
