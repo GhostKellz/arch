@@ -53,3 +53,6 @@ font-size=15
 foreground=#57c7ff
 background=#0d1117
 cursor-color=#57c7ff
+
+# Bound per-surface terminal history; bulk command output must still be filtered.
+scrollback-limit = 10000000

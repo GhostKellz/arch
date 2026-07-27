@@ -22,12 +22,10 @@ plugins=(
   zsh-completions
   zsh-history-substring-search
   colored-man-pages
-  zsh-syntax-highlighting
 )
 source $ZSH/oh-my-zsh.sh
 
 # ── CLI Tools ────────────────────────────────────────────────
-eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(direnv hook zsh)"
@@ -66,35 +64,19 @@ HISTFILE=~/.zsh_history
 # ── Editor ──────────────────────────────────────────────────
 export EDITOR="nvim"
 
-# ── Terminal  ──────────────────────────────────────────────────
-# 🧠 Detect terminal and set TERM properly
-if [ "$TERM" = "xterm-ghostty" ] && infocmp xterm-ghostty &>/dev/null; then
-  export TERM="xterm-ghostty"
-  export TERMINAL_PROFILE="ghostty"
-elif [ "$TERM_PROGRAM" = "WezTerm" ]; then
-  export TERM="xterm-256color"
-  export TERMINAL_PROFILE="wezterm"
-else
-  export TERM="xterm-256color"
-  export TERMINAL_PROFILE="fallback"
-fi
-
 # ── Aliases ─────────────────────────────────────────────────
 alias vi='nvim'
 alias vim='nvim'
 alias reload='exec zsh'
-alias sudo='sudo -E'
 alias copy='wl-copy'
 alias paste='wl-paste'
-alias ls='exa --icons --group-directories-first'
+alias ls='eza --icons --group-directories-first'
 alias ll='ls -lah'
 alias la='ls -A'
 alias l='ls -CF'
-alias dotls='exa -a --icons --group-directories-first | grep "^\\."'
-alias dotfiles='exa -a --icons --group-directories-first | grep "^\\."'
-#alias update='sudo pacman -Syu && yay -Syu'
-#alias update='sudo pacman -Syu --noconfirm && yay -Qua --devel --quiet'
-alias update='sudo pacman -Syu --noconfirm && yay -Qua --quiet | grep -v "ignoring package upgrade"'
+alias dotls='eza -a --icons --group-directories-first | grep "^\\."'
+alias dotfiles='eza -a --icons --group-directories-first | grep "^\\."'
+alias update='sudo pacman -Syu && yay -Sua'
 alias ffx='MOZ_ENABLE_WAYLAND=1 firefox --profile ~/.mozilla/firefox/b2s53f9w.default-release'
 
 # Battle.net
@@ -181,17 +163,20 @@ export __GL_YIELD="USLEEP"
 export __GL_SYNC_TO_VBLANK="1"
 
 # ── NVIDIA Digital Vibrance  ────────────────────────────
-alias vibe60='~/.local/bin/vibrance-low.sh'
-alias vibe100='~/.local/bin/vibrance-high.sh'
+# nvctl vibrance takes 0-200 (100 = driver default / no boost).
+# Replaced the old nvibrant wrapper scripts, which used a different 0-1023
+# scale -- the numbers do not map 1:1, so tune these to taste.
+alias vibe='nvctl vibrance'
+alias vibe100='nvctl vibrance 100'
+alias vibe150='nvctl vibrance 150'
+alias vibe200='nvctl vibrance 200'
 
 
 # ── NVIDIA Vulkan Environment Variables ────────────────────────────
-export __GLX_VENDOR_LIBRARY_NAME=nvidia
 export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json
 export VK_LAYER_PATH=/usr/share/vulkan/explicit_layer.d
 
 # ── GTK / Cursor Theme ──────────────────────────────────────
-export GTK_THEME=Sweet-Amber
 export XCURSOR_THEME=Tela
 
 # ── Gaming Environment ──────────────────────────────────────
@@ -217,14 +202,12 @@ export GPG_AGENT_INFO=
 # ── Zsh Autocomplete ────────────────────────────────────────
 if [[ -r /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
   source /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-  echo "%F{green}[zsh-autocomplete] loaded ✅%f"
 fi
 
 # ─── Go Dev Environment  ────────────────────────────────────────────────
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN
-export PATH="$HOME/go/bin:$PATH"
+export PATH="$GOBIN:$PATH"
 
 # ─── Python Dev Environment  ────────────────────────────────────────────────
 export PYENV_ROOT="$HOME/.pyenv"
@@ -308,10 +291,6 @@ codex-unscoped() { _agent_unscoped codex "$@"; }
 claude-unscoped() { _agent_unscoped claude "$@"; }
 gemini-unscoped() { _agent_unscoped gemini "$@"; }
 
-# ---- b.net chromium fix ----
-# Battle.net
-alias bnet='WINEPREFIX=~/.wine-bnet64 wine64 ~/.wine-bnet64/drive_c/Program\ Files\ \(x86\)/Battle.net/Battle.net.exe'
-
 # Fix stuck Battle.net / Proton-GE sessions (Wayland-safe)
 bnet-fix() {
   echo "🔧 Fixing stuck Battle.net / Proton processes..."
@@ -327,4 +306,3 @@ bnet-fix() {
   echo "✅ Proton/Wine cleanup complete."
   echo "👉 Relaunch Battle.net from Steam."
 }
-

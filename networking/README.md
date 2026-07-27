@@ -5,7 +5,6 @@
 [![WireGuard VPN](https://img.shields.io/badge/WireGuard-ModernVPN-88171A?style=for-the-badge&logo=wireguard&logoColor=white)](https://www.wireguard.com)
 [![Fortinet Secured](https://img.shields.io/badge/Fortinet-Secured-red?style=for-the-badge&logo=fortinet&logoColor=white)](https://www.fortinet.com/)
 [![SD-WAN Powered](https://img.shields.io/badge/SD--WAN-Enabled-00B386?style=for-the-badge)](https://en.wikipedia.org/wiki/SD-WAN)
-[![Unbound Powered](https://img.shields.io/badge/Powered%20by-Unbound-blue?style=for-the-badge)](https://nlnetlabs.nl/projects/unbound/)
 [![Next-Gen Networking](https://img.shields.io/badge/Networking-CuttingEdge-0078D7?style=for-the-badge)]()
 
 ---
@@ -20,7 +19,6 @@ Built on top of:
 - ⚡ **WireGuard** for blazing-fast peer-to-peer connections
 - 🏰 **Fortigate 90G** firewall securing WAN and LAN edges
 - 🌐 **SD-WAN** failover (Fiber + Cable) for redundant, always-on connectivity
-- 🔵 **Unbound** DNS resolver with hardened root hints and DNSSEC validation
 
 All optimized for:
 - 🔒 Maximum Security
