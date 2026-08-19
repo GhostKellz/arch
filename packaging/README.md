@@ -24,6 +24,14 @@ one for your language, fill the placeholders, and build.
 | [REVIEWING.md](REVIEWING.md)   | Reviewing build files and diffs with `paru`/`yay` before they build — review prompts, diff/edit menus, manual `git diff` workflow. |
 | [MAINTAINING.md](MAINTAINING.md) | Upkeep of our packages — version/`pkgrel` rules, refreshing checksums, regenerating `.SRCINFO`, verifying changes, AUR publishing. |
 
+## Local packages
+
+Not templates — packaging we actually run on this machine.
+
+| Folder | Covers |
+|--------|--------|
+| [`linux-cachyos-lto/`](linux-cachyos-lto/CUSTOMIZATIONS.md) | Our delta on upstream `CachyOS/linux-cachyos`, plus `ghostzen5.patch` (znver5). The build itself lives in the clone at `/data/repo/linux-cachyos`, branch `ghostkellz`. |
+
 ## Quick start
 
 ```sh
