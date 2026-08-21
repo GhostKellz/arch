@@ -79,6 +79,27 @@ array correctly, so prefer that over hand-editing.
   is irrelevant to us.
 - **zfs, debug, r8125** — all off.
 
+## Prerequisite: upstream signing keys
+
+Upstream added `validpgpkeys` + a detached `.asc` on 2026-06-01, after the
+base this delta originally forked from — so a build that used to work will
+now stop with `unknown public key C3C4820857F654FE`. These keys live in
+*your* GPG keyring, not pacman's, so `cachyos-keyring` does not satisfy it.
+
+```sh
+gpg --recv-keys E18447AC260021D31F3FF6C4C8A2A4774B8B63C4 \
+                E8B9AA39F054E30E8290D492C3C4820857F654FE
+```
+
+Both fingerprints were checked against keyserver.ubuntu.com and match the
+maintainers who sign the releases (Eric Naim `dnaim@cachyos.org`, Peter Jung
+`admin@ptr1337.dev`). Peter's encryption subkey expires 2026-09-24; the
+signing key runs to 2028-03-31, and verification uses the signing key.
+
+Do not reach for `--skippgpcheck`. Upstream's own CI does, which is why its
+`Build and lint` job fails on this in ~54s without ever compiling — that is
+a gap in their CI, not a reason to drop the check locally.
+
 ## Rebase onto a new release
 
 ```sh
