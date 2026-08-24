@@ -29,6 +29,16 @@ pick a different one. They can equivalently be set in the environment.
 | `_use_llvm_lto` | `thin` | `full` | full LTO |
 | `_use_lto_suffix` | `no` | `yes` | package name `linux-cachyos-lto` |
 
+The remaining performance defaults are intentionally retained: O3
+(`_cc_harder=yes`), 1000 Hz, full tickless operation, full preemption, and
+THP-always.
+
+For the `always` profile, shmem and tmpfs retain the installed 7.1.8
+`within_size` policy. This permits hugepages when an allocation remains inside
+the object size, without the unconditional memory-footprint risk of selecting
+shmem/tmpfs `always`. Upstream 7.2 changed both defaults to `advise`, so these
+symbols are set explicitly during `prepare()`.
+
 ### znver5 support — `ghostzen5.patch`
 
 Upstream's patchset stops at `CONFIG_MZEN4`. `ghostzen5.patch` adds
@@ -59,6 +69,14 @@ Upstream's `_tcp_bbr3` block is wrong in two ways, so we rewrite it:
 
 Ours sets `TCP_CONG_BBR3`, `DEFAULT_BBR3`, `DEFAULT_TCP_CONG="bbr3"`,
 `NET_SCH_FQ` and `DEFAULT_FQ`.
+
+### Full preemption without runtime switching
+
+The installed 7.1.8 kernel used `PREEMPT=y`, `PREEMPT_LAZY=n`, and
+`PREEMPT_DYNAMIC=n`. Preserve that behavior explicitly: the `full` and `lazy`
+arms disable `PREEMPT_DYNAMIC`; only the explicit `dynamic` arm enables it.
+Upstream 7.2 stopped changing this symbol, so omitting the local handling would
+silently retain the input config's `PREEMPT_DYNAMIC=y`.
 
 ### b2sums
 
@@ -96,19 +114,22 @@ maintainers who sign the releases (Eric Naim `dnaim@cachyos.org`, Peter Jung
 `admin@ptr1337.dev`). Peter's encryption subkey expires 2026-09-24; the
 signing key runs to 2028-03-31, and verification uses the signing key.
 
-Do not reach for `--skippgpcheck`. Upstream's own CI does, which is why its
-`Build and lint` job fails on this in ~54s without ever compiling — that is
-a gap in their CI, not a reason to drop the check locally.
+Do not use `--skippgpcheck` for the real build. It is acceptable only for an
+isolated, non-installing source-preparation audit when checksum verification
+remains enabled.
 
 ## Rebase onto a new release
 
 ```sh
 cd /data/repo/linux-cachyos
 git fetch origin
-git rebase origin/master ghostkellz      # or origin/<ver> before it merges
-rm -f linux-cachyos/*.patch              # keep ghostzen5.patch (tracked)
+git rebase origin/master ghostkellz
+git branch --set-upstream-to=origin/master ghostkellz
+# Remove only known downloaded remote patches if their checksums are stale.
+rm -f linux-cachyos/dkms-clang.patch linux-cachyos/0001-bore-cachy.patch
 cd linux-cachyos
 updpkgsums
+makepkg --printsrcinfo > .SRCINFO
 makepkg --printsrcinfo | grep -cE 'source =|b2sums ='   # counts must match
 makepkg -s
 ```
@@ -121,6 +142,5 @@ Things that reliably need attention on a rebase:
   existing file rather than refetching, so a stale one fails checksum
   validation (or, worse, gets applied under `--skipchecksums`).
 
-Do not build against an unmerged upstream release branch without a working
-rollback: the running kernel's modules under `/usr/lib/modules/` plus a
-bootloader entry are not a package, and cannot be reinstalled.
+Keep the packaged `linux-zen` kernel, matching headers, boot entry, and its DKMS
+modules working as the rollback before installing a new custom kernel.
