@@ -1,73 +1,44 @@
-# NVIDIA Kernel Patches
+# NVIDIA Open Modules for Custom Kernels
 
-Patches and fixes for NVIDIA drivers with custom kernels.
+The RTX 5090 uses NVIDIA Open built from `~/open-gpu-kernel-modules` and
+registered as `nvidia-open/<version>` with DKMS. The CachyOS PKGBUILD keeps
+`_build_nvidia_open=no`; CachyOS's prebuilt NVIDIA module package is not part of
+this workflow.
 
----
+## Kernel-install contract
 
-## Current Setup
+Installing or upgrading either `linux-cachyos-lto` or `linux-zen` must leave a
+matching NVIDIA DKMS module for every bootable kernel. Pacman's DKMS hook should
+perform that build automatically after the matching headers are installed.
 
-- **Driver**: nvidia-open 595.x (manual DKMS)
-- **GPU**: RTX 5090 (Blackwell)
-- **Kernel**: 7.0.x
-
----
-
-## Kernel 7.0 Compatibility
-
-Linux 7.0 changed BTF generation (`pahole-flags.sh` → `gen-btf.sh`), breaking NVIDIA DKMS builds.
-
-**Fix location**: `/var/lib/dkms/nvidia-open/<VERSION>/source/kernel-open/Makefile`
-
-**Full documentation**: `~/arch/kb/kernel-7.0-compat.md`
-
-### Quick Fix
-
-Edit line ~98 in the Makefile:
-
-```makefile
-# Before
-PAHOLE_VARIABLES=$(if $(wildcard $(KERNEL_SOURCES)/scripts/pahole-flags.sh),,"PAHOLE=$(AWK) '$(PAHOLE_AWK_PROGRAM)'")
-
-# After
-PAHOLE_VARIABLES=$(if $(or $(wildcard $(KERNEL_SOURCES)/scripts/pahole-flags.sh),$(wildcard $(KERNEL_SOURCES)/scripts/gen-btf.sh)),,"PAHOLE=$(AWK) '$(PAHOLE_AWK_PROGRAM)'")
-```
-
-Then rebuild:
-```bash
-sudo dkms build nvidia-open/595.58.03 -k $(uname -r)
-sudo dkms install nvidia-open/595.58.03 -k $(uname -r)
-sudo mkinitcpio -P
-```
-
----
-
-## Available Patches
-
-| Patch | Description |
-|-------|-------------|
-| `kernel-7.0-btf.patch` | BTF generation fix for kernel 7.0+ |
-
-### Applying kernel-7.0-btf.patch
+Verify rather than assuming:
 
 ```bash
-cd /var/lib/dkms/nvidia-open/595.58.03/source
-sudo patch -p1 < ~/arch/system/kernel/nvidia/kernel-7.0-btf.patch
+dkms status
+kernel_release=$(basename "$(dirname "$(readlink -f /usr/src/linux-cachyos-lto)")")
+modinfo -k "$kernel_release" nvidia | grep -E '^(filename|version|vermagic):'
 ```
 
----
+The `vermagic` release must match the target kernel. Keep the Zen module built
+as the rollback before rebooting into a newly installed CachyOS-LTO kernel.
 
-## Adding Future Patches
+## Source and userland consistency
 
-Place kernel-specific patches here with naming convention:
+The source tag, DKMS module version, `nvidia-utils-beta`, and
+`lib32-nvidia-utils-beta` must match. Query live state instead of recording a
+version here:
 
+```bash
+git -C ~/open-gpu-kernel-modules describe --tags --exact-match
+dkms status
+pacman -Q nvidia-utils-beta lib32-nvidia-utils-beta
 ```
-kernel-<version>-<fix>.patch    # e.g., kernel-7.1-btf.patch
-```
 
----
+## Historical BTF workaround
 
-## Notes
-
-- nvidia-open requires kernel 5.x+ and driver 515+
-- RTX 5090 (Blackwell) requires nvidia-open 570+
-- Legacy nvidia-all patches removed (were for kernels 4.x-6.x)
+`kernel-7.0-btf.patch` records a BTF-generation compatibility fix required by
+an older NVIDIA Open source release. It is historical evidence, not a patch to
+apply automatically to current source. See
+[`../../../kb/kernel-7.0-compat.md`](../../../kb/kernel-7.0-compat.md) and use it
+only if the documented error is reproduced and the current source still lacks
+the equivalent change.

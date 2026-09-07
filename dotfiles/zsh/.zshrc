@@ -5,6 +5,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Keep inherited and tool-managed PATH entries unique across nested shells/tmux.
+typeset -U path PATH
 
 # ── Oh My Zsh ───────────────────────────────────────────────
 # ~/.zshrc - GhostKellz Edition
@@ -18,7 +20,6 @@ plugins=(
   git
   sudo
   zsh-autosuggestions
-  zsh-syntax-highlighting
   zsh-completions
   zsh-history-substring-search
   colored-man-pages
@@ -46,15 +47,9 @@ export NVM_DIR="$HOME/.nvm"
 # ── Terminal Appearance ─────────────────────────────────────
 #export CLICOLOR=1
 #export LSCOLORS="Gxfxcxdxbxegedabagacad"
-LS_COLORS='uu=38;5;246:gu=38;5;246:st=38;5;246:tw=38;5;246:ow=38;5;246:or=38;5;131:mi=48;5;52;38;5;231:ex=38;5;77:bd=38;5;246:cd=38;5;246:su=38;5;131:sg=38;5;131:ca=38;5;131:di=38;5;68:ln=38;5;68:pi=38;5;131:so=38;5;131:do=38;5;131:bd=38;5;246:cd=38;5;246:su=38;5;131:sg=38;5;131:ca=38;5;131:*.tar=38;5;208:*.tgz=38;5;208:*.arc=38;5;208:*.arj=38;5;208:*.taz=38;5;208:*.lha=38;5;208:*.lz4=38;5;208:*.lzh=38;5;208:*.lzma=38;5;208:*.tlz=38;5;208:*.txz=38;5;208:*.tzo=38;5;208:*.t7z=38;5;208:*.zip=38;5;208:*.z=38;5;208:*.dz=38;5;208:*.gz=38;5;208:*.lrz=38;5;208:*.lz=38;5;208:*.lzo=38;5;208:*.xz=38;5;208:*.zst=38;5;208:*.tzst=38;5;208:*.bz2=38;5;208:*.bz=38;5;208:*.tbz=38;5;208:*.tbz2=38;5;208:*.tz=38;5;208:*.deb=38;5;208:*.rpm=38;5;208:*.jar=38;5;208:*.war=38;5;208:*.ear=38;5;208:*.sar=38;5;208:*.rar=38;5;208:*.alz=38;5;208:*.ace=38;5;208:*.zoo=38;5;208:*.cpio=38;5;208:*.7z=38;5;208:*.rz=38;5;208:*.cab=38;5;208:*.wim=38;5;208:*.swm=38;5;208:*.dwm=38;5;208:*.esd=38;5;208:*.jpg=38;5;131:*.jpeg=38;5;131:*.mjpg=38;5;131:*.mjpeg=38;5;131:*.gif=38;5;131:*.bmp=38;5;131:*.pbm=38;5;131:*.pgm=38;5;131:*.ppm=38;5;131:*.tga=38;5;131:*.xbm=38;5;131:*.xpm=38;5;131:*.tif=38;5;131:*.tiff=38;5;131:*.png=38;5;131:*.svg=38;5;131:*.svgz=38;5;131:*.mng=38;5;131:*.pcx=38;5;131:*.mov=38;5;131:*.mpg=38;5;131:*.mpeg=38;5;131:*.m2v=38;5;131:*.mkv=38;5;131:*.webm=38;5;131:*.webp=38;5;131:*.ogm=38;5;131:*.mp4=38;5;131:*.m4v=38;5;131:*.vob=38;5;131:*.qt=38;5;131:*.nuv=38;5;131:*.wmv=38;5;131:*.asf=38;5;131:*.rm=38;5;131:*.rmvb=38;5;131:*.flc=38;5;131:*.avi=38;5;131:*.fli=38;5;131:*.flv=38;5;131:*.gl=38;5;131:*.dl=38;5;131:*.xcf=38;5;131:*.xwd=38;5;131:*.yuv=38;5;131:*.cgm=38;5;131:*.emf=38;5;131:*.ogv=38;5;131:*.ogx=38;5;131:*.aac=38;5;131:*.au=38;5;131:*.flac=38;5;131:*.m4a=38;5;131:*.mid=38;5;131:*.midi=38;5;131:*.mka=38;5;131:*.mp3=38;5;131:*.mpc=38;5;131:*.ogg=38;5;131:*.ra=38;5;131:*.wav=38;5;131:*.oga=38;5;131:*.opus=38;5;131:*.spx=38;5;131:*.xspf=38;5;131:*.pdf=38;5;231:*.nix=38;5;142'
 #export LS_COLORS="$(vivid generate tokyonight-moon)"
 export LS_COLORS="$(vivid generate ghost-hacker-blue)"
 export LESS='-R'
-#ZSH_HIGHLIGHT_STYLES[command]='fg=#98ff98'
-ZSH_HIGHLIGHT_STYLES[command]='fg=#7FFFD4'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=#98ff98'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=#98ff98'
-ZSH_HIGHLIGHT_STYLES[function]='fg=#98ff98'
 
 # ── History ─────────────────────────────────────────────────
 HISTSIZE=10000
@@ -83,9 +78,8 @@ alias ffx='MOZ_ENABLE_WAYLAND=1 firefox --profile ~/.mozilla/firefox/b2s53f9w.de
 alias bnet='WINEPREFIX=~/.wine-bnet64 wine64 ~/.wine-bnet64/drive_c/Program\ Files\ \(x86\)/Battle.net/Battle.net.exe'
 
 
-# ⚙️ Rebuild DKMS and Initramfs (ernel)manually
+# ⚙️ Rebuild DKMS and initramfs manually
 alias rebuild='echo "[+] Rebuilding DKMS modules..." && sudo dkms autoinstall && echo "[+] Regenerating initramfs..." && sudo mkinitcpio -P && echo "[+] Done ✅"'
-alias rebuild-test='echo "[TEST] Rebuilding DKMS modules..." && sudo dkms autoinstall && echo "[TEST] Regenerating initramfs..." && sudo mkinitcpio -P && echo "[TEST] Finished ✅"'
 
 # Fast restart of KWin (Wayland-safe)
 krestart() {
@@ -107,8 +101,6 @@ alias gps='git push origin main'
 alias ghostinit="~/scripts/bootstrap-repo.zsh"
 # ── GPG  ─────────────────────────────────────────────
 alias gpgchk='gpg --locate-keys ckelley@ghostkellz.sh'
-
-[[ -z "$GPG_AGENT_INFO" ]] && export GPG_AGENT_INFO="$(gpgconf --list-dirs agent-socket)"
 
 # ── Network Aliases ───────────────────────────────────────
 alias pgd='ping google.com'
@@ -140,27 +132,13 @@ alias pyver='python --version'
 alias activate-lsp='source ~/.venvs/lsp/bin/activate'
 alias lspenvrc='echo "source ~/.venvs/lsp/bin/activate" > .envrc && direnv allow'
 
-# ── Completion System ───────────────────────────────────────
-autoload -Uz compinit
-compinit
-
 # ── Modular Zsh Config Loader ───────────────────────────────
 for config in ~/.zshrc.d/*.zsh(N); do
   source "$config"
 done
 
-# ── NVIDIA Environment Variables ────────────────────────────
-export KDE_NO_GALLIUM=1
-export KWIN_DRM_NO_VAAPI=1
-export GBM_BACKEND=nvidia-drm
-export __GLX_VENDOR_LIBRARY_NAME=nvidia
-export VDPAU_DRIVER=nvidia
-export LIBVA_DRIVER_NAME=nvidia
-export DRI_PRIME=1
-export __NV_PRIME_RENDER_OFFLOAD=1
-export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-export __GL_YIELD="USLEEP"
-export __GL_SYNC_TO_VBLANK="1"
+# NVIDIA session selection lives in /etc/environment. Keep app/game overrides
+# scoped to their launchers so Vulkan and GLVND can discover every installed GPU.
 
 # ── NVIDIA Digital Vibrance  ────────────────────────────
 # nvctl vibrance takes 0-200 (100 = driver default / no boost).
@@ -171,10 +149,6 @@ alias vibe100='nvctl vibrance 100'
 alias vibe150='nvctl vibrance 150'
 alias vibe200='nvctl vibrance 200'
 
-
-# ── NVIDIA Vulkan Environment Variables ────────────────────────────
-export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json
-export VK_LAYER_PATH=/usr/share/vulkan/explicit_layer.d
 
 # ── GTK / Cursor Theme ──────────────────────────────────────
 export XCURSOR_THEME=Tela
@@ -197,7 +171,6 @@ export PATH="$HOME/.local/bin:$PATH"
 # ── GPG / SSH ───────────────────────────────────────────────
 export GPG_TTY=$(tty)
 export SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
-export GPG_AGENT_INFO=
 
 # ── Zsh Autocomplete ────────────────────────────────────────
 if [[ -r /usr/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
@@ -234,10 +207,9 @@ export PATH="$HOME/zls/zig-out/bin:$PATH"
 #export NODE_PATH="$HOME/.npm-global/lib/node_modules"
 
 # --- Cuda Dev Environment -----------------------------------
-export CUDA_HOME=/opt/cuda
-export PATH="$CUDA_HOME/bin:$PATH"
-export LD_LIBRARY_PATH="$CUDA_HOME/lib64:$LD_LIBRARY_PATH"
-export CPATH="$CUDA_HOME/include:$CPATH"
+# The Arch CUDA package supplies PATH and linker discovery through profile.d
+# and ld.so.conf.d. CUDA_HOME remains for build systems that expect it.
+export CUDA_HOME="${CUDA_PATH:-/opt/cuda}"
 
 # ─── ccache  ────────────────────────────────────────────────
 #export PATH="/usr/lib/ccache/bin:$PATH"
@@ -306,3 +278,10 @@ bnet-fix() {
   echo "✅ Proton/Wine cleanup complete."
   echo "👉 Relaunch Battle.net from Steam."
 }
+
+# Must load after compinit and every plugin/widget that can modify the ZLE buffer.
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_STYLES[command]='fg=#7FFFD4'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=#98ff98'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=#98ff98'
+ZSH_HIGHLIGHT_STYLES[function]='fg=#98ff98'

@@ -1,0 +1,28 @@
+[Unit]
+Description=Alert on failure of %i
+
+# Instantiated via OnFailure= in the restic units. This exists because the
+# previous restic job failed silently for 26 consecutive nights (2026-07-22
+# through 2026-08-17) with no notification path. A backup you are not told
+# about is a backup you do not have.
+
+[Service]
+Type=oneshot
+User=root
+StateDirectory=restic
+
+# Channel 1: persistent marker. This is the reliable one - it works with no
+# session logged in, survives reboots, and is surfaced by the shell snippet in
+# dotfiles/. Everything else is best-effort on top of this.
+ExecStart=/usr/bin/bash -c '\
+    { /usr/bin/date -Iseconds; \
+      /usr/bin/systemctl status %i --no-pager -n 40 || true; \
+    } > /var/lib/restic/LAST_FAILURE'
+
+# Channel 2: desktop toast. A root unit has no route to the user session bus,
+# so the address must be passed explicitly. Leading "-" so a headless boot
+# (no session, no bus) does not itself become a unit failure.
+ExecStart=-/usr/bin/systemd-run --uid=1000 --quiet --collect --wait \
+    --setenv=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus \
+    /usr/bin/notify-send -u critical \
+    "Backup FAILED" "%i - journalctl -u %i"

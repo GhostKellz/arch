@@ -69,7 +69,9 @@ units must remain enabled.
 
 > Use at your own risk — but works well on daily driver. 20/30 series cards require a bit more. I've virtualized so kvm + vfio gpu passtrhrough + looking glass and I can get a 2060 and a 3070 to work well on wayland but in my experience 40/50 series cards are less work and less finicky overall.
 
-Daily Driver: 9950x3d RTX 5090 - Arch KDE Nvidia Open 610 branch and CachyOS Kernel 7.0
+Daily driver: Ryzen 9 9950X3D + RTX 5090 on Arch KDE, using the current
+NVIDIA Open source tag through DKMS and the custom CachyOS-LTO kernel. Query
+`dkms status` and `uname -r` for live versions; do not copy them into this doc.
 
 ## Proxmox Hosts
 PVE1 VMhost1 - 14900k/RTX 4090 - Arch GPU passthrough via vfio + looking glass. Hosts ollama and openwebUI mostly server and AI stuff. 

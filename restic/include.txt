@@ -1,0 +1,40 @@
+# Critical tier - install to /etc/restic/include.txt
+#
+# Selection rule: paths where loss is permanent, plus small working trees where
+# a remote exists but uncommitted/unpushed work does not. Anything large and
+# reproducible belongs in the bulk tier (PBS), not here.
+#
+# Deliberately NOT included:
+#   /data/projects  - has git remotes on GitLab; bulk tier covers it
+#   ~/.cache        - 43G of reproducible junk
+
+# No remote copy exists anywhere. This is the whole reason this tier exists.
+/home/chris/brain/private
+
+# Wiki tier is tracked and pushed, but the working copy holds unpushed edits and
+# the repo itself is small. Cheap to carry, expensive to lose a day of writing.
+/home/chris/brain/wiki
+
+# Public repo at github.com/GhostKellz/arch. Same reasoning as the wiki: the
+# remote is not the working tree, and this holds the backup config itself.
+/home/chris/arch
+
+# Identity material. GPG loss is unrecoverable - you cannot regenerate a key
+# that others have already encrypted to.
+/home/chris/.gnupg
+/home/chris/.ssh
+
+# Durable agent config. Do not archive the whole ~/.claude tree: it also holds
+# multi-gigabyte session/debug history and a credentials file. Those are not
+# part of the stated config/rules/lessons recovery goal.
+/home/chris/.claude/CLAUDE.md
+/home/chris/.claude/settings.json
+/home/chris/.claude/settings.local.json
+/home/chris/.claude/lessons.md
+/home/chris/.claude/rules
+/home/chris/.claude/reference
+/home/chris/.claude/skills
+
+# System config. Small, and captures sshd_config, systemd units, and the
+# credstore blobs needed to rebuild this host.
+/etc

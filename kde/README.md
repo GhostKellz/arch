@@ -1,6 +1,6 @@
 # 👻  KDE + Wayland GhostKellz Setup
 
-[![KDE Plasma](https://img.shields.io/badge/KDE-Plasma-1D99F3?style=for-the-badge&logo=kde&logoColor=white)](https://kde.org/plasma-desktop/) [![Wayland](https://img.shields.io/badge/Wayland-Protocol-5C6BC0?style=for-the-badge&logo=wayland&logoColor=white)](https://wayland.freedesktop.org/) [![NVIDIA Open Kernel](https://img.shields.io/badge/NVIDIA-Open_575_DKMS-76B900?style=for-the-badge&logo=nvidia&logoColor=white)](https://github.com/NVIDIA/open-gpu-kernel-modules) [![AMD Ryzen](https://img.shields.io/badge/Ryzen-7950X3D-ED1C24?style=for-the-badge&logo=amd&logoColor=white)](https://www.amd.com/en/processors/ryzen)
+[![KDE Plasma](https://img.shields.io/badge/KDE-Plasma-1D99F3?style=for-the-badge&logo=kde&logoColor=white)](https://kde.org/plasma-desktop/) [![Wayland](https://img.shields.io/badge/Wayland-Protocol-5C6BC0?style=for-the-badge&logo=wayland&logoColor=white)](https://wayland.freedesktop.org/) [![NVIDIA Open Kernel](https://img.shields.io/badge/NVIDIA-Open_DKMS-76B900?style=for-the-badge&logo=nvidia&logoColor=white)](https://github.com/NVIDIA/open-gpu-kernel-modules) [![AMD Ryzen](https://img.shields.io/badge/Ryzen-9950X3D-ED1C24?style=for-the-badge&logo=amd&logoColor=white)](https://www.amd.com/en/processors/ryzen)
 
 ---
 
@@ -13,7 +13,10 @@
   - Return to graphical session: `Ctrl + Alt + F1`
   - This refreshes the compositor without rebooting or killing session. Or also logging off and logging back in.
 
-✅ **Update:** As of **NVIDIA Open Beta DKMS 575** and recent **CachyOS 6.14 kernel**, this pageflip timeout issue appears resolved under standard usage.
+**Current status:** this has not reproduced under standard usage with the
+current NVIDIA Open source-DKMS module and CachyOS-LTO kernel. Treat any future
+recurrence as a new incident and capture the exact kernel, driver, KWin, and
+connector state rather than assuming the historical cause.
 
 ## 🪛 System Info
 
@@ -35,5 +38,5 @@
 
 ---
 
-> 🛡️ System is now stable under **KDE + Wayland + NVIDIA Open 575** + **CachyOS 6.14** kernel with AMD 7950X3D architecture.
-
+Current hardware is a Ryzen 9 9950X3D and RTX 5090. Live driver and kernel
+versions come from `dkms status` and `uname -r`.

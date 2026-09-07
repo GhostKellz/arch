@@ -1,0 +1,37 @@
+[Unit]
+Description=Restic repository integrity check (ck-arch)
+Wants=network-online.target
+After=network-online.target
+OnFailure=restic-failure@%n.service
+
+# A backup that has never been verified is a hypothesis, not a backup.
+# PBS gets this via its verify jobs; this is the equivalent for Wasabi.
+
+[Service]
+Type=oneshot
+
+LoadCredentialEncrypted=repopw:/etc/credstore.encrypted/restic-repo-password
+LoadCredentialEncrypted=aws:/etc/credstore.encrypted/restic-aws-credentials
+
+Environment=RESTIC_REPOSITORY=s3:https://s3.wasabisys.com/ck-arch
+Environment=AWS_DEFAULT_REGION=us-east-1
+Environment=RESTIC_CACHE_DIR=/var/cache/restic
+Environment=TMPDIR=/var/cache/restic
+
+# Structural check every run, plus 15% of pack data actually downloaded and
+# hashed. Full --read-data would re-download the repo weekly; at 15% the whole
+# repo is covered roughly every 7 weeks with minimal egress.
+ExecStart=/usr/bin/env \
+    RESTIC_PASSWORD_FILE=%d/repopw \
+    AWS_SHARED_CREDENTIALS_FILE=%d/aws \
+    /usr/bin/restic check --read-data-subset=15%%
+
+Nice=19
+IOSchedulingClass=idle
+CacheDirectory=restic
+CacheDirectoryMode=0700
+
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+NoNewPrivileges=true

@@ -7,6 +7,13 @@
 **/skills/xlsx/
 tasks/
 .scratch/
+
+# Live credential files must never reach this public mirror. Only the
+# .example template is tracked; real secrets live TPM-sealed in
+# /etc/credstore.encrypted/ and are never written here in plaintext.
+restic/restic.env
+restic/*.env
+!restic/*.env.example
 dotfiles/obs/basic/scenes/
 dotfiles/obs/basic/profiles/*/service.json
 dotfiles/obs/plugin_config/

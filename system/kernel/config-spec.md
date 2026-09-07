@@ -1,6 +1,11 @@
 # config-spec.md
 
-Kernel CONFIG_* options specification for ghostkellz.myfrag.
+Kernel `CONFIG_*` requirements checklist for the workstation.
+
+This document originated with `ghostkellz.myfrag`, which is now retired. It is
+reference material for auditing the installed CachyOS-LTO and Zen configs, not
+an input to either build. The authoritative CachyOS customization profile lives
+in `../../packaging/linux-cachyos-lto/CUSTOMIZATIONS.md`.
 
 Target: AMD Ryzen 9950X3D (Zen 5) / 64GB DDR5 / RTX 5090 / NVMe
 

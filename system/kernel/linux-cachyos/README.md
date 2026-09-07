@@ -1,69 +1,41 @@
-# Linux-CachyOS-LTO Configuration
+# Linux-CachyOS-LTO Reference Files
 
-Primary kernel - [CachyOS kernel](https://github.com/CachyOS/linux-cachyos) with full LTO.
+This directory contains older configuration snapshots and boot references. It
+is not the active build tree and must not become a second copy of the PKGBUILD.
 
-**Version**: 7.0.x
-**Build location**: `/data/repo/linux-cachyos/linux-cachyos/`
+## Authoritative locations
 
----
+| Purpose | Location |
+| --- | --- |
+| Build tree | `/data/repo/linux-cachyos/linux-cachyos/` |
+| Local branch | `ghostkellz`, tracking `origin/master` |
+| Build/rebase runbook | [`../../../packaging/linux-cachyos-lto/CUSTOMIZATIONS.md`](../../../packaging/linux-cachyos-lto/CUSTOMIZATIONS.md) |
+| Canonical Ghost Zen 5 patch | [`../../../packaging/linux-cachyos-lto/ghostzen5.patch`](../../../packaging/linux-cachyos-lto/ghostzen5.patch) |
+| Prior-release backups | `/data/backup/linux-cachyos/` |
 
-## Files
+## Ghost Zen 5 target
 
-| File | Description |
-|------|-------------|
-| `PKGBUILD` | Modified PKGBUILD with ZEN5 support |
-| `ghostzen5.patch` | Adds CONFIG_MZEN5 for Ryzen 9000 series |
-| `ghostkellz.myfrag` | Custom kernel config fragment |
-| `config-overrides.cfg` | CachyOS PKGBUILD variable overrides |
+The patch is deliberately modeled on CachyOS's `CONFIG_MZEN4` implementation.
+It adds the parallel `CONFIG_MZEN5` choice and wires it to `-march=znver5` for
+C and Rust. Selecting `_processor_opt=zen5` enables MZEN5 and disables MZEN4,
+native, and generic targets. This is an explicit, reproducible Zen 5 build—not
+`-march=native`.
 
----
+The active profile also selects BORE, O3, full Clang LTO, 1000 Hz, performance
+governor, full tickless operation, non-dynamic full preemption, BBR3/FQ, and
+THP-always with shmem/tmpfs `within_size`.
 
-## Key Settings
+## Retained files
 
-```bash
-_cpusched="cachyos"           # EEVDF + BORE patches
-_use_llvm_lto="full"          # Full LTO with Clang
-_processor_opt="zen5"         # Zen 5 optimizations (Ryzen 9000/9950X3D)
-_HZ_ticks="1000"              # 1000Hz tick
-_tickrate="full"              # Full tickless
-_preempt="full"               # Low-latency preemption
-_hugepage="always"            # THP always enabled
-_cc_harder="yes"              # -O3 optimizations
-```
+| File | Status |
+| --- | --- |
+| `PKGBUILD` | Historical snapshot; never build or refresh it here |
+| `ghostkellz.myfrag` | Retired fragment; not applied by the active PKGBUILD |
+| `config-overrides.cfg` | Historical experiment; not consumed by the active build |
+| `dkms-clang.patch` | Old downloaded snapshot; active builds fetch the checksum-pinned upstream source |
+| `ghostzen5.patch` | Legacy mirror; canonical tracked copy is under `packaging/` |
+| `linux-cachyos-lto.conf` | Reference copy of the systemd-boot entry |
 
----
-
-## ZEN5 Support
-
-The PKGBUILD includes explicit ZEN5 support via:
-
-1. **ghostzen5.patch** - Adds `CONFIG_MZEN5` to kernel Kconfig
-2. **PKGBUILD modification** - `ZEN5` case in CPU optimization switch
-3. **Default** - `_processor_opt=zen5`
-
-This matches CachyOS pre-built znver5 repository binaries.
-
----
-
-## Config Fragment (ghostkellz.myfrag)
-
-Enables:
-- Elgato/UVC webcam support
-- CIFS/SMB, FUSE3
-- Docker/container support (namespaces, cgroups, overlayfs)
-- nftables + iptables compat
-- KVM/QEMU, VFIO passthrough
-- WireGuard, Tailscale
-- NVIDIA container toolkit support
-- AMD Zen5 optimizations
-
----
-
-## Build
-
-```bash
-cd /data/repo/linux-cachyos/linux-cachyos
-makepkg -si
-```
-
-The built package installs as `linux-cachyos-lto`.
+Do not copy any of these files into the live clone during an update. Rebase the
+tracked `ghostkellz` commit, regenerate `.SRCINFO`, verify the effective config,
+and build from the live clone as documented in the canonical runbook.

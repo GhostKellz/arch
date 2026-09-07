@@ -1,0 +1,11 @@
+[Unit]
+Description=Monthly Restic prune for the critical-tier repository
+
+[Timer]
+OnCalendar=Sun *-*-01..07 08:00
+RandomizedDelaySec=30m
+Persistent=true
+Unit=restic-prune.service
+
+[Install]
+WantedBy=timers.target

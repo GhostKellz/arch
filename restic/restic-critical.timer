@@ -1,0 +1,13 @@
+[Unit]
+Description=Daily Restic critical-tier backup to Wasabi
+
+[Timer]
+OnCalendar=daily
+# Spread load and avoid every host hitting Wasabi at exactly 00:00
+RandomizedDelaySec=30m
+# Run on next boot if the machine was off at the scheduled time
+Persistent=true
+Unit=restic-critical.service
+
+[Install]
+WantedBy=timers.target

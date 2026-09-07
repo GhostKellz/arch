@@ -1,0 +1,21 @@
+# Critical tier exclusions - install to /etc/restic/exclude.txt
+
+# Sockets and runtime state under /etc-adjacent trees
+**/.cache
+**/cache
+*.sock
+*.socket
+
+# GPG runtime sockets - these are recreated by gpg-agent and backing them up
+# is meaningless. The keys themselves (private-keys-v1.d) ARE included.
+/home/chris/.gnupg/S.*
+/home/chris/.gnupg/*.lock
+
+# SSH control sockets from ControlMaster
+/home/chris/.ssh/cm-*
+/home/chris/.ssh/*.sock
+
+# Claude Code transient state - session logs and shell snapshots regenerate
+/home/chris/.claude/shell-snapshots
+/home/chris/.claude/statsig
+/home/chris/.claude/todos

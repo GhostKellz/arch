@@ -4,10 +4,10 @@ The kernel is built from a clone of upstream `CachyOS/linux-cachyos` at
 `/data/repo/linux-cachyos` (this package is the `linux-cachyos/` subdir).
 `origin` is upstream itself, **not a fork**, so nothing local is ever pushed.
 
-The local delta lives on branch **`ghostkellz`**, rebased onto each upstream
-release. This directory is documentation plus the one file upstream does not
-carry (`ghostzen5.patch`); it is not a second copy of the PKGBUILD, which
-would rot.
+The local delta lives on branch **`ghostkellz`**, tracking `origin/master` and
+rebased after each upstream release lands. This directory is documentation plus
+the one file upstream does not carry (`ghostzen5.patch`); it is not a second
+copy of the PKGBUILD, which would rot.
 
 Backups of prior PKGBUILDs and configs: `/data/backup/linux-cachyos/`.
 
@@ -33,17 +33,19 @@ The remaining performance defaults are intentionally retained: O3
 (`_cc_harder=yes`), 1000 Hz, full tickless operation, full preemption, and
 THP-always.
 
-For the `always` profile, shmem and tmpfs retain the installed 7.1.8
+For the `always` profile, shmem and tmpfs retain the proven installed baseline's
 `within_size` policy. This permits hugepages when an allocation remains inside
 the object size, without the unconditional memory-footprint risk of selecting
-shmem/tmpfs `always`. Upstream 7.2 changed both defaults to `advise`, so these
-symbols are set explicitly during `prepare()`.
+shmem/tmpfs `always`. The current upstream input config changed both defaults to
+`advise`, so these symbols are set explicitly during `prepare()`.
 
 ### znver5 support — `ghostzen5.patch`
 
-Upstream's patchset stops at `CONFIG_MZEN4`. `ghostzen5.patch` adds
-`CONFIG_MZEN5` to `arch/x86/Kconfig.cpu` and the matching `-march=znver5`
-to `arch/x86/Makefile`.
+Upstream's patchset stops at `CONFIG_MZEN4`. `ghostzen5.patch` deliberately
+mirrors that implementation: it adds `CONFIG_MZEN5` to
+`arch/x86/Kconfig.cpu` and the matching `-march=znver5` to
+`arch/x86/Makefile`. Selecting Zen 5 replaces the MZEN4/native/generic choice;
+it is not shorthand for `-march=native`.
 
 Wiring in the PKGBUILD:
 
@@ -72,11 +74,12 @@ Ours sets `TCP_CONG_BBR3`, `DEFAULT_BBR3`, `DEFAULT_TCP_CONG="bbr3"`,
 
 ### Full preemption without runtime switching
 
-The installed 7.1.8 kernel used `PREEMPT=y`, `PREEMPT_LAZY=n`, and
+The proven installed baseline used `PREEMPT=y`, `PREEMPT_LAZY=n`, and
 `PREEMPT_DYNAMIC=n`. Preserve that behavior explicitly: the `full` and `lazy`
 arms disable `PREEMPT_DYNAMIC`; only the explicit `dynamic` arm enables it.
-Upstream 7.2 stopped changing this symbol, so omitting the local handling would
-silently retain the input config's `PREEMPT_DYNAMIC=y`.
+The current upstream PKGBUILD stopped changing this symbol, so omitting the
+local handling would silently retain the input config's
+`PREEMPT_DYNAMIC=y`.
 
 ### b2sums
 
@@ -99,10 +102,9 @@ array correctly, so prefer that over hand-editing.
 
 ## Prerequisite: upstream signing keys
 
-Upstream added `validpgpkeys` + a detached `.asc` on 2026-06-01, after the
-base this delta originally forked from — so a build that used to work will
-now stop with `unknown public key C3C4820857F654FE`. These keys live in
-*your* GPG keyring, not pacman's, so `cachyos-keyring` does not satisfy it.
+Upstream uses `validpgpkeys` plus a detached release signature. These keys live
+in *your* GPG keyring, not pacman's, so `cachyos-keyring` does not satisfy the
+makepkg check.
 
 ```sh
 gpg --recv-keys E18447AC260021D31F3FF6C4C8A2A4774B8B63C4 \
@@ -111,8 +113,8 @@ gpg --recv-keys E18447AC260021D31F3FF6C4C8A2A4774B8B63C4 \
 
 Both fingerprints were checked against keyserver.ubuntu.com and match the
 maintainers who sign the releases (Eric Naim `dnaim@cachyos.org`, Peter Jung
-`admin@ptr1337.dev`). Peter's encryption subkey expires 2026-09-24; the
-signing key runs to 2028-03-31, and verification uses the signing key.
+`admin@ptr1337.dev`). Recheck current key validity rather than relying on an
+expiry date copied into documentation.
 
 Do not use `--skippgpcheck` for the real build. It is acceptable only for an
 isolated, non-installing source-preparation audit when checksum verification
@@ -131,7 +133,7 @@ cd linux-cachyos
 updpkgsums
 makepkg --printsrcinfo > .SRCINFO
 makepkg --printsrcinfo | grep -cE 'source =|b2sums ='   # counts must match
-makepkg -s
+makepkg -si
 ```
 
 Things that reliably need attention on a rebase:
@@ -144,3 +146,22 @@ Things that reliably need attention on a rebase:
 
 Keep the packaged `linux-zen` kernel, matching headers, boot entry, and its DKMS
 modules working as the rollback before installing a new custom kernel.
+
+## Post-install verification
+
+Do not reboot on package-install success alone. Verify the installed config,
+boot files, and separate DKMS modules first:
+
+```sh
+pacman -Q linux-cachyos-lto linux-cachyos-lto-headers linux-zen linux-zen-headers
+ls -lh /boot/vmlinuz-linux-cachyos-lto /boot/initramfs-linux-cachyos-lto.img
+dkms status
+kernel_release=$(basename "$(dirname "$(readlink -f /usr/src/linux-cachyos-lto)")")
+grep -E '^(CONFIG_(MZEN5|SCHED_BORE|CC_OPTIMIZE_FOR_PERFORMANCE_O3|HZ_1000|LTO_CLANG_FULL|TCP_CONG_BBR3))=' \
+  "/usr/lib/modules/$kernel_release/build/.config"
+modinfo -k "$kernel_release" nvidia | grep -E '^(filename|version|vermagic):'
+bootctl list
+```
+
+After reboot, `uname -r` must match the installed CachyOS-LTO release and
+`zgrep CONFIG_MZEN5 /proc/config.gz` must report `CONFIG_MZEN5=y`.

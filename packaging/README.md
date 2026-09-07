@@ -30,7 +30,8 @@ Not templates — packaging we actually run on this machine.
 
 | Folder | Covers |
 |--------|--------|
-| [`linux-cachyos-lto/`](linux-cachyos-lto/CUSTOMIZATIONS.md) | Our delta on upstream `CachyOS/linux-cachyos`, plus `ghostzen5.patch` (znver5). The build itself lives in the clone at `/data/repo/linux-cachyos`, branch `ghostkellz`. |
+| [`linux-cachyos-lto/`](linux-cachyos-lto/CUSTOMIZATIONS.md) | Authoritative runbook for the local `CachyOS/linux-cachyos` delta: explicit Ghost Zen 5, BORE, O3, full LTO, 1000 Hz, non-dynamic full preemption, BBR3/FQ, THP policy, rollback, and DKMS verification. The live build tree is `/data/repo/linux-cachyos`, branch `ghostkellz`. |
+| [`wazuh-agent/`](wazuh-agent/CUSTOMIZATIONS.md) | Local delta on the AUR `wazuh-agent` package — a version bump ahead of the maintainer, now superseded upstream and due to be retired. Records the 2026-08 audit and what to verify given the package repackages a vendor RPM with no signature check. The live build tree is `/data/repo/wazuh-agent`. |
 
 ## Quick start
 

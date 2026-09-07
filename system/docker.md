@@ -6,7 +6,9 @@ Docker configuration and kernel requirements.
 
 ## Kernel Requirements
 
-Docker networking requires specific kernel modules. These are configured in the kernel myfrag files.
+Docker networking requires specific kernel features. The active CachyOS-LTO
+config and the packaged Zen fallback must be verified directly; the retired
+`ghostkellz.myfrag` is only a requirements reference.
 
 ### Netfilter / nftables
 
@@ -133,4 +135,6 @@ CONFIG_NETFILTER_XT_MATCH_CONNMARK=m
 CONFIG_NET_ACT_CONNMARK=m
 ```
 
-These are included in the ghostkellz.myfrag kernel configs.
+Verify these against the installed kernel config. The requirements checklist is
+maintained in `kernel/config-spec.md`; the old fragment is not an active build
+input.

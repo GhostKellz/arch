@@ -80,7 +80,7 @@ arch/
 │   └── checks/                # Re-runnable detection scripts
 
 ├── system/                    # System-wide tuning (ZRAM, systemd, memory, kernel)
-│   ├── kernel/                # Kernel build configs (CachyOS, TKG, NVIDIA)
+│   ├── kernel/                # Kernel state, boot, validation, rollback, references
 │   ├── sysctl/ · hooks/       # sysctl tuning and mkinitcpio hooks
 │   ├── io.md · memory.md      # I/O scheduler and memory/ZRAM tuning
 │   └── power.md · systemd.md  # Power profiles and systemd overrides
@@ -128,7 +128,7 @@ arch/
 
 - **`nvidia/`** – NVIDIA driver fixes, performance tuning, NVENC, Gamescope, and gaming tweaks
 
-- **`system/`** – Core tuning (ZRAM, disk IO, memory, suspend) and kernel builds (CachyOS / TKG)
+- **`system/`** – Core tuning plus kernel state, boot, validation, and rollback; the CachyOS-LTO build runbook lives under `packaging/`
 
 - **`wayland/`** – Wayland env vars, app compatibility, input, fractional scaling, NVIDIA fixes
 

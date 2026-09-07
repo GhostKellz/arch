@@ -1,0 +1,34 @@
+[Unit]
+Description=Restic monthly prune - critical tier on Wasabi (ck-arch)
+Wants=network-online.target
+After=network-online.target
+OnFailure=restic-failure@%n.service
+
+[Service]
+Type=oneshot
+
+LoadCredentialEncrypted=repopw:/etc/credstore.encrypted/restic-repo-password
+LoadCredentialEncrypted=aws:/etc/credstore.encrypted/restic-aws-credentials
+
+Environment=RESTIC_REPOSITORY=s3:https://s3.wasabisys.com/ck-arch
+Environment=AWS_DEFAULT_REGION=us-east-1
+Environment=RESTIC_CACHE_DIR=/var/cache/restic
+Environment=TMPDIR=/var/cache/restic
+
+ExecStart=/usr/bin/env \
+    RESTIC_PASSWORD_FILE=%d/repopw \
+    AWS_SHARED_CREDENTIALS_FILE=%d/aws \
+    /usr/bin/restic prune --retry-lock=2h
+
+Nice=19
+IOSchedulingClass=idle
+CacheDirectory=restic
+CacheDirectoryMode=0700
+
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX

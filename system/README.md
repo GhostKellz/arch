@@ -54,10 +54,17 @@ Both kernels include:
 - Full netfilter stack for Docker/Tailscale (CONNMARK, nftables compat)
 - VFIO/KVM passthrough support
 - Container namespaces and cgroups
-- BBR3 TCP congestion control
-- Performance governor default
+- the workstation-required storage, networking, container, and virtualization
+  features documented in `kernel/config-spec.md`
 
-See `kernel/` for myfrag configs and PKGBUILD settings.
+The custom CachyOS-LTO profile additionally enables explicit Ghost Zen 5,
+BORE, O3, full Clang LTO, 1000 Hz, full tickless operation, non-dynamic full
+preemption, BBR3/FQ, and the performance governor. NVIDIA Open is built from
+the separate local source tree through DKMS, not by the CachyOS PKGBUILD.
+
+See `../packaging/linux-cachyos-lto/CUSTOMIZATIONS.md` for the authoritative
+build/rebase runbook and `kernel/` for boot, validation, rollback, and historical
+reference notes.
 
 ---
 
@@ -85,10 +92,10 @@ See `io.md` for details.
 
 | Path | Description |
 |------|-------------|
-| `kernel/` | Kernel configs, myfrag files, PKGBUILD settings |
+| `kernel/` | Kernel system state, boot, validation, rollback, and historical references |
 | `kernel/linux-tkg/` | TKG kernel customization |
-| `kernel/linux-cachyos/` | CachyOS kernel customization |
-| `kernel/nvidia/` | NVIDIA DKMS patches |
+| `kernel/linux-cachyos/` | Historical CachyOS snapshots and pointer to the live build tree |
+| `kernel/nvidia/` | Separate NVIDIA Open source-DKMS contract and historical patch notes |
 | `memory.md` | Zram, reclaim, OOM, coredump, and workload-limit policy |
 | `memory/` | Installable zram, oomd, and coredump configuration |
 | `freeze-diagnosis.md` | PSI-based freeze triage; zram vs I/O; Baloo indexer fix |

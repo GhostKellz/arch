@@ -1,73 +1,41 @@
-# NVIDIA Open Drivers with Linux Kernel 7.0
+# Historical NVIDIA Open BTF Compatibility Fix
 
-Linux kernel 7.0 introduced changes to BTF (BPF Type Format) generation that break NVIDIA DKMS module builds. This documents the fix.
+Status: historical. The current source-DKMS workflow builds against the custom
+CachyOS-LTO kernel without this local patch. Retain this note only for diagnosing
+the exact older failure signature below.
 
-## The Problem
+## Original failure
 
-Kernel 7.0 replaced `scripts/pahole-flags.sh` with `scripts/gen-btf.sh`. NVIDIA's Makefile only checks for the old script, causing the awk-based PAHOLE wrapper to be used incorrectly with the new BTF system.
+The kernel BTF helper changed from `scripts/pahole-flags.sh` to
+`scripts/gen-btf.sh`. Older NVIDIA Open Makefiles checked only the former and
+selected an incompatible awk-based PAHOLE wrapper.
 
-### Error Symptoms
-
-```
-awk: cmd. line:1: 'BEGIN
+```text
 awk: cmd. line:1: ^ invalid char ''' in expression
-make[5]: *** [scripts/Makefile.modfinal:59: nvidia.ko] Error 1
+make: *** [scripts/Makefile.modfinal:...: nvidia.ko] Error 1
 ```
 
-Modules compile successfully but fail during BTF generation.
+## Recorded fix
 
-## The Fix
+The historical change taught the NVIDIA Makefile to accept either helper:
 
-Patch the NVIDIA kernel-open Makefile to also check for `gen-btf.sh`:
-
-### Location
-```
-/var/lib/dkms/nvidia-open/<VERSION>/source/kernel-open/Makefile
-```
-
-### Change (Line ~98)
-
-**Before:**
-```makefile
-PAHOLE_VARIABLES=$(if $(wildcard $(KERNEL_SOURCES)/scripts/pahole-flags.sh),,"PAHOLE=$(AWK) '$(PAHOLE_AWK_PROGRAM)'")
-```
-
-**After:**
 ```makefile
 PAHOLE_VARIABLES=$(if $(or $(wildcard $(KERNEL_SOURCES)/scripts/pahole-flags.sh),$(wildcard $(KERNEL_SOURCES)/scripts/gen-btf.sh)),,"PAHOLE=$(AWK) '$(PAHOLE_AWK_PROGRAM)'")
 ```
 
-## Applying the Fix
+The retained patch is
+[`../system/kernel/nvidia/kernel-7.0-btf.patch`](../system/kernel/nvidia/kernel-7.0-btf.patch).
 
-1. Edit the Makefile (use your editor, not sed):
-   ```bash
-   sudo nvim /var/lib/dkms/nvidia-open/595.58.03/source/kernel-open/Makefile
-   ```
+## Safe triage
 
-2. Rebuild the module:
-   ```bash
-   sudo dkms build nvidia-open/595.58.03 -k $(uname -r)
-   sudo dkms install nvidia-open/595.58.03 -k $(uname -r)
-   ```
+1. Capture the real DKMS failure from `journalctl` or the module's
+   `/var/lib/dkms/nvidia-open/<version>/build/make.log`.
+2. Confirm the error matches this BTF failure exactly.
+3. Check `~/open-gpu-kernel-modules/kernel-open/Makefile` for equivalent
+   upstream handling before applying anything.
+4. Patch the tracked source tree only through a reviewed commit; do not edit
+   `/var/lib/dkms` as the durable source of truth.
+5. Rebuild for the explicit target kernel and verify `vermagic` with `modinfo`.
 
-3. Regenerate initramfs:
-   ```bash
-   sudo mkinitcpio -P
-   ```
-
-## Affected Versions
-
-- **Kernel:** 7.0+
-- **NVIDIA Driver:** 595.x (nvidia-open)
-- **Fix verified:** 595.58.03 on kernel 7.0.1-tkg
-
-## References
-
-- [Manjaro kernel-7.0.patch](https://gitlab.manjaro.org/packages/extra/nvidia-utils/-/blob/master/kernel-7.0.patch)
-- [CachyOS NVIDIA integration](https://discuss.cachyos.org/)
-
-## Notes
-
-- This fix may be included in future nvidia-open-dkms package updates
-- The proprietary nvidia-dkms likely needs the same fix
-- CachyOS kernel packages may include this patch automatically
+If current source already handles `gen-btf.sh`, this workaround is obsolete and
+must not be applied.
