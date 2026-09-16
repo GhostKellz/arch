@@ -18,6 +18,14 @@ current NVIDIA Open source-DKMS module and CachyOS-LTO kernel. Treat any future
 recurrence as a new incident and capture the exact kernel, driver, KWin, and
 connector state rather than assuming the historical cause.
 
+## 🖥️ OLED Pixel Refresh
+
+Three QD-OLED panels (PG32UCDM, AW2725DF, and an incoming gen4 32"). PowerDevil
+had screen-off-when-idle disabled, so the panels never entered standby and never
+ran their compensation cycles. See
+[oled-pixel-refresh.md](oled-pixel-refresh.md) for the root cause, the
+PowerDevil config, and the `kscreen-doctor --dpms off` workflow.
+
 ## 🪛 System Info
 
 ![System Info](../assets/CK-Arch-System.png)
