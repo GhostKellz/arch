@@ -56,7 +56,7 @@ arch/
 │   └── CI_IMPROVEMENT.md      # CI/CD notes
 
 ├── scripts/                   # Modular post-install scripts and automation
-├── kb/                        # Troubleshooting knowledge base (Docker, NVIDIA, Zig, kernel)
+├── kb/                        # Troubleshooting knowledge base (Docker, NVIDIA, Zig, kernel, phone webcam)
 
 ├── btrfs/                     # Snapper and backup strategies using BTRFS
 │   └── snapper/               # Root snapper config and layout
@@ -134,7 +134,7 @@ arch/
 
 - **`kde/`** – KDE Plasma Wayland tweaks and bug workarounds (multi-monitor pageflip, etc.)
 
-- **`kb/`** – Troubleshooting knowledge base (Docker storage, NVIDIA runtime, kernel compat, Zig)
+- **`kb/`** – Troubleshooting knowledge base (Docker storage, NVIDIA runtime, kernel compat, Zig, phone-as-webcam for QR wallet signing)
 
 ### 🌐 Networking & Security
 
