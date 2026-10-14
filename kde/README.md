@@ -20,11 +20,10 @@ connector state rather than assuming the historical cause.
 
 ## 🖥️ OLED Pixel Refresh
 
-Three QD-OLED panels (PG32UCDM, AW2725DF, and an incoming gen4 32"). PowerDevil
-had screen-off-when-idle disabled, so the panels never entered standby and never
-ran their compensation cycles. See
-[oled-pixel-refresh.md](oled-pixel-refresh.md) for the root cause, the
-PowerDevil config, and the `kscreen-doctor --dpms off` workflow.
+Three QD-OLED panels (PG32UCDM, AW2725DF, and an incoming gen4 32"). QD-OLEDs
+run their compensation cycles on entering standby, so the host supplies regular
+idle DPMS windows. See [oled-pixel-refresh.md](oled-pixel-refresh.md) for the
+PowerDevil config and the `kscreen-doctor --dpms off` workflow.
 
 ## 🪛 System Info
 
