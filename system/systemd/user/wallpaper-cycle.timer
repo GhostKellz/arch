@@ -1,0 +1,10 @@
+[Unit]
+Description=Cycle wallpaper every 10 minutes
+
+[Timer]
+OnStartupSec=30s
+OnUnitActiveSec=10min
+AccuracySec=10s
+
+[Install]
+WantedBy=timers.target

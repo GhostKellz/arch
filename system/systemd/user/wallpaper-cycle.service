@@ -1,0 +1,7 @@
+[Unit]
+Description=Apply one random wallpaper to all screens
+After=plasma-plasmashell.service
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/wallpaper-cycle.sh

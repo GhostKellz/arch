@@ -25,6 +25,13 @@ run their compensation cycles on entering standby, so the host supplies regular
 idle DPMS windows. See [oled-pixel-refresh.md](oled-pixel-refresh.md) for the
 PowerDevil config and the `kscreen-doctor --dpms off` workflow.
 
+## 🖼️ Synced Wallpaper Cycling
+
+Plasma's Slideshow plugin drifts per screen. A user timer runs
+`plasma-apply-wallpaperimage` on a random pick from a curated pool so every
+monitor shows the same image, rotating every 10 minutes. See
+[wallpaper-cycle.md](wallpaper-cycle.md) for the script, units, and pool.
+
 ## 🪛 System Info
 
 ![System Info](../assets/CK-Arch-System.png)

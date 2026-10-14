@@ -70,6 +70,25 @@ sudo /usr/local/bin/btrfs-scrub-safe --check
 The final two commands are preflight-only. Never test the service by manually
 launching a production scrub.
 
+### `wallpaper-cycle.sh`
+
+- Picks a random image from a curated wallpaper pool and applies it to every
+  screen with `plasma-apply-wallpaperimage`, so all monitors stay in sync.
+- Skips the image shown last time; state lives in
+  `~/.local/state/wallpaper-cycle.last`.
+- Runs every 10 minutes from the user-scope `wallpaper-cycle.timer`. No root
+  involved. Details in [`../kde/wallpaper-cycle.md`](../kde/wallpaper-cycle.md).
+
+Install the script and user units:
+
+```bash
+install -Dm755 wallpaper-cycle.sh ~/.local/bin/wallpaper-cycle.sh
+install -Dm644 ../system/systemd/user/wallpaper-cycle.service ~/.config/systemd/user/wallpaper-cycle.service
+install -Dm644 ../system/systemd/user/wallpaper-cycle.timer ~/.config/systemd/user/wallpaper-cycle.timer
+systemctl --user daemon-reload
+systemctl --user enable --now wallpaper-cycle.timer
+```
+
 ### `agent-scope.sh`
 
 Runs an agent, compiler, analyzer, or test command inside the aggregate
