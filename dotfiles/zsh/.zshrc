@@ -254,8 +254,22 @@ _agent_unscoped() {
 }
 
 # Keep agentic workloads inside the aggregate memory boundary by default.
-codex() { _agent_scoped codex "$@"; }
-claude() { _agent_scoped claude "$@"; }
+# `claude yolo` / `codex yolo` expand to the permission-bypass flag; any
+# further arguments are passed through unchanged.
+codex() {
+  if [[ "$1" == yolo ]]; then
+    shift
+    set -- --dangerously-bypass-approvals-and-sandbox "$@"
+  fi
+  _agent_scoped codex "$@"
+}
+claude() {
+  if [[ "$1" == yolo ]]; then
+    shift
+    set -- --dangerously-skip-permissions "$@"
+  fi
+  _agent_scoped claude "$@"
+}
 gemini() { _agent_scoped gemini "$@"; }
 
 # Deliberate escape hatches for exceptional, actively monitored work.
