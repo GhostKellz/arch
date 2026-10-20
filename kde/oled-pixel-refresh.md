@@ -160,8 +160,8 @@ Read from OSD → OLED Care. "Interval" is panel-on time since the last clean.
 | 2026-09-17 | PG32UCDM | 3549 h | 64 | 1 h | FW MCM109; before the standby fix took effect, ~1 clean / 55 h |
 | 2026-10-18 | PG32UCDM | 3707 h | 189 | 0 h | +125 cleans in +158 h → **~1 clean / 1.3 h** |
 | 2026-10-18 | PG32UCDM3 | 75 h | 72 | 0 h | ~1 clean / h |
-| 2026-10-20 | PG32UCDM | 3721 h | 200 | — | +11 cleans in +14 h → ~1 clean / 1.3 h; FW not re-read |
-| 2026-10-20 | PG32UCDM3 | 89 h | 84 | — | +12 cleans in +14 h → ~1 clean / 1.2 h |
+| 2026-10-20 | PG32UCDM | 3721 h | 200 | 2 h | +11 cleans in +14 h → ~1 clean / 1.3 h; FW not re-read |
+| 2026-10-20 | PG32UCDM3 | 89 h | 84 | 2 h | +12 cleans in +14 h → ~1 clean / 1.2 h |
 | 2026-10-20 | AW2725DF | 17520 h | 1947 | — | ~1 clean / 9 h |
 
 Pass/fail: the count should keep pace with on-time at about one clean per hour.
