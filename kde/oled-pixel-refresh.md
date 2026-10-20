@@ -15,10 +15,8 @@ RTX 5090, NVIDIA open DKMS module).
 | # | Output | Model | Panel | Mode |
 |---|--------|-------|-------|------|
 | 1 | `DP-2` | ASUS ROG Swift **PG32UCDM** | 32" QD-OLED (gen3) | 3840x2160 @ 240 Hz, HDR |
-| 2 | `DP-3` | ASUS ROG Swift **PG32UCDM3** | 32" QD-OLED (gen4) | 3840x2160 @ 240 Hz, DP 2.1 |
-| 3 | *(not connected)* | Alienware **AW2725DF** | 27" QD-OLED | 2560x1440 @ 360 Hz, HDR |
-
-Monitor 3 has no recorded baseline. Take one the next time it is attached.
+| 2 | `DP-3` | ASUS ROG Swift **PG32UCDM3** | 32" QD-OLED (gen4) | 3840x2160 @ 240 Hz, HDR, DP 2.1 |
+| 3 | `DP-1` | Alienware **AW2725DF** | 27" QD-OLED | 2560x1440 @ 360 Hz, HDR |
 
 ---
 
@@ -164,7 +162,7 @@ Read from OSD → OLED Care. "Interval" is panel-on time since the last clean.
 | 2026-10-18 | PG32UCDM3 | 75 h | 72 | 0 h | ~1 clean / h |
 | 2026-10-20 | PG32UCDM | 3721 h | 200 | — | +11 cleans in +14 h → ~1 clean / 1.3 h; FW not re-read |
 | 2026-10-20 | PG32UCDM3 | 89 h | 84 | — | +12 cleans in +14 h → ~1 clean / 1.2 h |
-| — | AW2725DF | — | — | — | not connected |
+| 2026-10-20 | AW2725DF | 17520 h | 1947 | — | ~1 clean / 9 h |
 
 Pass/fail: the count should keep pace with on-time at about one clean per hour.
 If a panel's count stalls across days of normal use, something is preventing or
@@ -202,5 +200,5 @@ advanced on 2026-10-18. If a later firmware or driver change stops it blanking,
 the likely cause is link training at UHBR20 on NVIDIA. In that case drop to
 DP 1.4 + DSC in the OSD and retest before suspecting KWin.
 
-If the AW2725DF is reattached as monitor 3, re-check DPMS on all three
+With the AW2725DF on `DP-1`, check DPMS blanks all three
 outputs. The idle logic is session-wide, but each panel tracks its own hours.
