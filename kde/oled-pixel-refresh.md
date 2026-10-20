@@ -12,14 +12,13 @@ Model strings come from EDID
 (`strings /sys/class/drm/card1-DP-*/edid`), all on `card1` (`0000:01:00.0`,
 RTX 5090, NVIDIA open DKMS module).
 
-| Output | Model | Panel | Mode |
-|--------|-------|-------|------|
-| `DP-2` | ASUS ROG Swift **PG32UCDM** | 32" QD-OLED (gen3) | 3840x2160 @ 240 Hz, HDR |
-| `DP-3` | Alienware **AW2725DF** | 27" QD-OLED | 2560x1440 @ 360 Hz, HDR |
-| *(incoming)* | ASUS **PG32UCDM3** | 32" QD-OLED (gen4) | 3840x2160 @ 240 Hz, DP 2.1 |
+| # | Output | Model | Panel | Mode |
+|---|--------|-------|-------|------|
+| 1 | `DP-2` | ASUS ROG Swift **PG32UCDM** | 32" QD-OLED (gen3) | 3840x2160 @ 240 Hz, HDR |
+| 2 | `DP-3` | ASUS ROG Swift **PG32UCDM3** | 32" QD-OLED (gen4) | 3840x2160 @ 240 Hz, DP 2.1 |
+| 3 | *(not connected)* | Alienware **AW2725DF** | 27" QD-OLED | 2560x1440 @ 360 Hz, HDR |
 
-Capture the gen4 panel's model string from EDID once attached and correct the
-table.
+Monitor 3 has no recorded baseline. Take one the next time it is attached.
 
 ---
 
@@ -39,8 +38,10 @@ What ASUS actually documents for automatic Pixel Cleaning:
   Mode. Check the OSD power-saving setting on any panel that never seems to
   clean.
 - The oft-quoted "~4 hours of panel-on time" is the **Pixel Cleaning
-  *Reminder*** default, not a documented prerequisite for the automatic
-  cycle. Do not assume a 4-hour gate; it is unverified.
+  *Reminder*** default, not a prerequisite for the automatic cycle. Measured
+  on this host, both ASUS panels clean about once per hour of panel-on time,
+  i.e. on nearly every standby window of a few minutes (see
+  [Baselines](#-baselines)). There is no 4-hour gate.
 
 Behaviour is firmware-dependent: the PG32UCDM MCM111 release notes cite an
 "Enhanced Pixel Cleaning Mechanism" and changed indicator-light behaviour, so
@@ -87,6 +88,11 @@ qdbus6 org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement \
 Ten idle minutes is short enough to catch normal breaks and long enough not to
 blank mid-read. Nothing else idle-related is enabled: there is no suspend action
 on AC, so idling never interrupts running work.
+
+Why this exists: until 2026-09-16 the file had idle screen-off disabled
+(`TurnOffDisplayWhenIdle=false`, `TurnOffDisplayIdleTimeoutSec=-1`). The GPU
+scanned out for as long as the session was unlocked, and the panels only got a
+standby window after a lock plus 15 minutes. Those are the values to roll back to.
 
 ---
 
@@ -147,6 +153,26 @@ libvirt) are unrelated and harmless.
 
 ---
 
+## 📊 Baselines
+
+Read from OSD → OLED Care. "Interval" is panel-on time since the last clean.
+
+| Date | Panel | OLED time | Pixel clean times | Interval | Notes |
+|------|-------|-----------|-------------------|----------|-------|
+| 2026-09-17 | PG32UCDM | 3549 h | 64 | 1 h | FW MCM109; before the standby fix took effect, ~1 clean / 55 h |
+| 2026-10-18 | PG32UCDM | 3707 h | 189 | 0 h | +125 cleans in +158 h → **~1 clean / 1.3 h** |
+| 2026-10-18 | PG32UCDM3 | 75 h | 72 | 0 h | ~1 clean / h |
+| 2026-10-20 | PG32UCDM | 3721 h | 200 | — | +11 cleans in +14 h → ~1 clean / 1.3 h; FW not re-read |
+| 2026-10-20 | PG32UCDM3 | 89 h | 84 | — | +12 cleans in +14 h → ~1 clean / 1.2 h |
+| — | AW2725DF | — | — | — | not connected |
+
+Pass/fail: the count should keep pace with on-time at about one clean per hour.
+If a panel's count stalls across days of normal use, something is preventing or
+interrupting its standby windows. Record the firmware revision with each reading.
+Gen3 was MCM109 at the first baseline and has not been re-read since.
+
+---
+
 ## ⚠️ Notes
 
 - Running **manual** Pixel Cleaning from the OSD resets that panel's usage
@@ -155,9 +181,14 @@ libvirt) are unrelated and harmless.
 - To verify a clean actually ran, use the OSD: OLED Panel Care shows a
   pixel-clean count. Note it before an unattended standby window and check it
   after — that's the only ground truth.
+- The counters are **not readable over DDC/CI**. A read of the standard and
+  manufacturer (E0–FF) VCP codes on 2026-10-18 contained none of the OSD
+  values. The only overlap is VCP `C0` (display usage time), which the
+  PG32UCDM3 reports and the PG32UCDM doesn't support.
 - Never cut AC to a panel that may be mid-cycle — no switched strips, no smart
   plugs on a timer.
-- Leave Pixel Cleaning Reminder enabled so the monitor prompts at its threshold.
+- Leave Pixel Cleaning Reminder enabled at its 4 h default. It only prompts;
+  the automatic cycle runs regardless.
 - PowerDevil drives the panels over DDC/CI (`/dev/i2c-5`, `/dev/i2c-6`) via
   libddcutil and logs noisy unsupported-feature probes. Harmless, though DDC
   transactions against a monitor in standby can be flaky.
@@ -166,10 +197,10 @@ libvirt) are unrelated and harmless.
 
 ## 🔌 Gen4 panel / DP 2.1
 
-When the third panel lands, confirm it enters standby cleanly on
-`kscreen-doctor --dpms off` while running its native DP 2.1 UHBR20 mode.
-Link-training behaviour at UHBR20 on NVIDIA is the thing to watch; if it won't
-blank, drop to DP 1.4 + DSC in the OSD and retest before suspecting KWin.
+The PG32UCDM3 enters standby and cleans in its current link mode: its counter
+advanced on 2026-10-18. If a later firmware or driver change stops it blanking,
+the likely cause is link training at UHBR20 on NVIDIA. In that case drop to
+DP 1.4 + DSC in the OSD and retest before suspecting KWin.
 
-Re-check per-output DPMS behaviour once three outputs are live — the idle logic
-is session-wide, but the panels each track their own hours.
+If the AW2725DF is reattached as monitor 3, re-check DPMS on all three
+outputs. The idle logic is session-wide, but each panel tracks its own hours.
